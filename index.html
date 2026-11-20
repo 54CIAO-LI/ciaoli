@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     1. HTML DOCUMENT STRUCTURE
+     Selected Works — Y2K / Millennium portfolio · mobile-first · single file
+     Sections: 1 Document · 2 Meta & SEO · 3 Google Fonts · 4 CSS · 5 HTML content · 6 JavaScript
+     ========================================================= -->
+<html lang="zh-Hant">
+<head>
+<!-- =========================================================
+     2. META VIEWPORT & SEO
+     ========================================================= -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Selected Works</title>
+<meta name="description" content="Selected visual design works: social media posts, web design, infographics and UI. 視覺設計作品集：社群貼文、網頁、資訊圖表與介面設計。">
+<meta name="theme-color" content="#CDCDE6">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Selected Works">
+<meta property="og:description" content="Social media posts, web, infographics and UI design.">
+<script>/* apply the saved (or system) theme before the page paints */(function(){var m;try{m=localStorage.getItem("sw-theme")}catch(e){}if(m!=="dark"&&m!=="light"){m=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.mode=m;var e;try{e=localStorage.getItem("sw-edition")}catch(x){}if(e==="blackletter")document.documentElement.dataset.edition=e})();</script>
+
+<!-- =========================================================
+     3. GOOGLE FONTS
+     Y2K edition: Orbitron — letters and numbers · IBM Plex Mono — English · Noto Sans TC — 中文
+     Blackletter edition: UnifrakturCook — hero + titles · Inter — navigation + text
+     All fonts are served by Google Fonts under the SIL Open Font License 1.1
+     (free for commercial use and web embedding; licence texts ship with this file as OFL-*.txt).
+     ========================================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Orbitron:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=UnifrakturCook:wght@700&display=swap">
+
+<style>
+/* =========================================================
+   4. CSS STYLES — Y2K / Millennium × editorial · mobile-first
+   ---------------------------------------------------------
+   4.1  Tokens: light theme, dark theme
+   4.2  Base + type
+   4.3  Shared parts (chrome type, sparkle, pills, notices)
+   4.4  Header, navigation, theme switch
+   4.5  Intro / hero
+   4.6  Category sections
+   4.7  Album covers (the collection)
+   4.8  Project page
+   4.9  Lightbox
+   4.10 Back to top, footer
+   Breakpoints: 640px tablet · 1024px desktop · 1440px large
+   ========================================================= */
+
+/* ---------- 4.1 Tokens ---------- */
+:root {
+  /* slide palette (brand) */
+  --lav: #CDCDE6;  --green: #73BD73;  --lime: #B4F694;
+  --ink-0: #171717; --grey-0: #555555; --cream: #F5F5F2; --white: #FFFFFF;
+
+  /* light theme — semantic colours */
+  --bg: #CDCDE6;                       /* page */
+  --bg-bloom-1: rgba(180, 246, 148, .38);
+  --bg-bloom-2: rgba(245, 245, 242, .85);
+  --bg-bloom-3: rgba(226, 214, 246, .9);
+  --grid-line: rgba(23, 23, 23, .045);
+  --ink: #171717;                      /* text — 13:1 on --bg */
+  --ink-2: #4A4A4A;                    /* secondary — 5.9:1 on --bg */
+  --line: rgba(23, 23, 23, .16);
+  --line-strong: rgba(23, 23, 23, .78);
+  --surface: rgba(245, 245, 242, .58); /* glass */
+  --surface-hi: rgba(255, 255, 255, .82);
+  --surface-solid: #EEEEF6;
+  --edge: rgba(23, 23, 23, .2);
+  --rim: rgba(255, 255, 255, .85);     /* bright top edge on glass */
+  --accent: #73BD73;
+  --accent-ink: #2E6B34;               /* green text / hover — 5.2:1 on --bg */
+  --hi: #B4F694;                       /* highlight fill (always with dark text) */
+  --on-hi: #171717;
+  --head-bg: rgba(220, 220, 238, .74);
+  --scrim: rgba(23, 23, 32, .32);
+  --shadow-1: 0 1px 0 rgba(255,255,255,.9) inset, 0 10px 24px -18px rgba(23,23,23,.55);
+  --shadow-2: 0 1px 0 rgba(255,255,255,.9) inset, 0 26px 50px -28px rgba(23,23,23,.6);
+  --chrome: linear-gradient(180deg, #ffffff 0%, #ececf5 16%, #a3a3bd 44%, #4d4d61 50%, #b9b9cf 57%, #ffffff 76%, #a9a9c2 100%);
+  --chrome-text: linear-gradient(180deg, #3a3a4c 0%, #6a6a84 30%, #232330 49%, #8c8ca8 52%, #2a2a38 78%, #5c5c74 100%);
+  --chrome-bar: linear-gradient(180deg, #fbfbfd 0%, #e2e2ef 48%, #c8c8dc 52%, #ececf5 100%);
+  --holo: linear-gradient(115deg, #CDCDE6 0%, #F5F5F2 20%, #B4F694 40%, #E2D6F6 60%, #D2EEF0 80%, #CDCDE6 100%);
+  --gloss: linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.6) 48%, rgba(220,220,238,.6) 52%, rgba(255,255,255,.88) 100%);
+  --strip: linear-gradient(180deg, #2a2a36, #171717 40%, #171717 60%, #2a2a36);
+
+  /* type */
+  --f-disp: "Orbitron", "Arial Black", sans-serif;                  /* letters + numbers */
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;         /* English text */
+  --f-text: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;  /* 中文 */
+  --t-hero: clamp(3rem, 1.3rem + 8.2vw, 7.5rem);
+  --t-h1: clamp(2.25rem, 1.2rem + 4.6vw, 5rem);
+  --t-h2: clamp(1.5rem, 1.05rem + 2vw, 2.75rem);
+  --t-sub: clamp(1rem, .93rem + .35vw, 1.1875rem);
+  --t-label: .6875rem;                 /* mono labels, uppercase */
+
+  /* space + shape */
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --gap: clamp(10px, 1.4vw, 18px);
+  --sec: clamp(64px, 9vw, 136px);      /* section rhythm */
+  --head-h: 64px;
+  --r-s: 8px; --r-m: 14px; --r-l: 22px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+/* dark theme — same brand, deep violet night instead of plain black */
+:root[data-mode="dark"] {
+  --bg: #16162A;
+  --bg-bloom-1: rgba(115, 189, 115, .16);
+  --bg-bloom-2: rgba(205, 205, 230, .10);
+  --bg-bloom-3: rgba(120, 92, 210, .24);
+  --grid-line: rgba(205, 205, 230, .055);
+  --ink: #EEEEF8;                      /* 15:1 on --bg */
+  --ink-2: #B4B4CE;                    /* 8.6:1 on --bg */
+  --line: rgba(205, 205, 230, .16);
+  --line-strong: rgba(238, 238, 248, .7);
+  --surface: rgba(48, 48, 76, .5);
+  --surface-hi: rgba(64, 64, 98, .7);
+  --surface-solid: #23233A;
+  --edge: rgba(205, 205, 230, .2);
+  --rim: rgba(255, 255, 255, .14);
+  --accent: #73BD73;
+  --accent-ink: #B4F694;               /* lime text on dark — 13:1 */
+  --head-bg: rgba(22, 22, 42, .76);
+  --scrim: rgba(6, 6, 14, .55);
+  --shadow-1: 0 1px 0 rgba(255,255,255,.08) inset, 0 12px 28px -18px rgba(0,0,0,.8);
+  --shadow-2: 0 1px 0 rgba(255,255,255,.08) inset, 0 30px 60px -30px rgba(0,0,0,.9);
+  --chrome: linear-gradient(180deg, #f4f4fb 0%, #c4c4da 18%, #6e6e8c 46%, #2c2c40 50%, #8a8aa8 57%, #e6e6f2 78%, #8e8eaa 100%);
+  --chrome-text: linear-gradient(180deg, #ffffff 0%, #d9d9ea 32%, #8d8daa 49%, #f2f2fa 53%, #b8b8d0 80%, #ffffff 100%);
+  --chrome-bar: linear-gradient(180deg, #3d3d58 0%, #2e2e46 48%, #25253a 52%, #34344e 100%);
+  --holo: linear-gradient(115deg, #2c2c48 0%, #353556 20%, #2d4b3a 40%, #3d2f5c 60%, #2a4652 80%, #2c2c48 100%);
+  --gloss: linear-gradient(180deg, rgba(255,255,255,.17) 0%, rgba(255,255,255,.07) 48%, rgba(0,0,0,.12) 52%, rgba(255,255,255,.09) 100%);
+  --strip: linear-gradient(180deg, #0f0f1c, #08080f 40%, #08080f 60%, #0f0f1c);
+  color-scheme: dark;
+}
+
+/* ---------- 4.2 Base + type ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; overflow-x: clip; scroll-padding-top: calc(var(--head-h) + 12px); -webkit-text-size-adjust: 100%; background: var(--bg); }
+html.is-locked, html.is-locked body { overflow: hidden; }
+body {
+  margin: 0;
+  font: 400 1rem/1.7 var(--f-text);
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(80vw 60vw at 0% -10%, var(--bg-bloom-1), transparent 60%),
+    radial-gradient(70vw 55vw at 105% 15%, var(--bg-bloom-2), transparent 62%),
+    radial-gradient(90vw 70vw at 50% 115%, var(--bg-bloom-3), transparent 60%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: auto, auto, auto, 40px 40px, 40px 40px;
+  background-attachment: fixed;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "tnum" 1;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: 1.5px; }
+a:hover { color: var(--accent-ink); }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 7px var(--hi); border-radius: var(--r-s); }
+[tabindex="-1"]:focus { outline: none; box-shadow: none; }
+.wrap { width: 100%; max-width: 1360px; margin-inline: auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.disp { font-family: var(--f-disp); font-weight: 500; letter-spacing: .02em; }
+.kicker { margin: 0; font: 600 var(--t-label)/1.5 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); }
+.skip { position: absolute; left: var(--gut-l); top: -120px; z-index: 80; padding: 14px 18px; background: var(--ink); color: var(--bg); border-radius: var(--r-s); font: 500 .9375rem/1 var(--f-mono); }
+.skip:focus { top: calc(10px + env(safe-area-inset-top, 0px)); color: var(--bg); }
+
+/* theme change: soft fade (View Transitions where available, colour transition otherwise) */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .38s; animation-timing-function: ease; }
+html.theme-shift, html.theme-shift *, html.theme-shift *::before, html.theme-shift *::after {
+  transition: background-color .45s ease, color .45s ease, border-color .45s ease, box-shadow .45s ease, fill .45s ease !important;
+}
+
+/* ---------- 4.3 Shared parts ---------- */
+.chrome {
+  background: var(--chrome-text); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 1px 0 var(--rim)) drop-shadow(0 6px 12px rgba(23,23,23,.18));
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) { .chrome { color: var(--ink); background: none; } }
+.spark { position: absolute; width: 26px; height: 26px; fill: var(--white); filter: drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 1px rgba(23,23,23,.4)); pointer-events: none; }
+@keyframes holo { to { background-position: 200% 50%; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-v { to { transform: translate(0, -50%) rotate(360deg); } }   /* vinyl keeps its vertical centring while turning */
+
+/* glossy pill — external links, crumbs, small actions */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; white-space: nowrap;
+  font: 600 .75rem/1.2 var(--f-mono); letter-spacing: .06em; color: var(--ink); text-decoration: none;
+  background: var(--gloss); border: 1px solid var(--edge); border-radius: 999px;
+  box-shadow: inset 0 1px 0 var(--rim), 0 8px 16px -10px rgba(23,23,23,.45);
+  transition: transform .2s var(--ease), background-color .3s ease, border-color .3s ease;
+}
+.pill:hover { color: var(--ink); background: var(--holo); background-size: 200% 100%; animation: holo 3s linear infinite; border-color: var(--line-strong); }
+.pill:active { transform: translateY(1px) scale(.98); }
+.pill .ext__arrow { transition: transform .25s var(--ease); }
+.pill:hover .ext__arrow { transform: translate(2px, -2px); }
+.pill--sm { padding: 0 14px; font-size: .6875rem; }
+.ext__url { display: block; margin-top: 6px; font: 400 .75rem/1.5 var(--f-mono); color: var(--ink-2); overflow-wrap: anywhere; user-select: all; }
+.notice { margin: 0; padding: 12px 16px; max-width: 60ch; border-radius: var(--r-m); background: var(--surface); border: 1px solid var(--line); font: 400 .8125rem/1.75 var(--f-text); color: var(--ink-2); }
+
+/* ---------- 4.4 Header, navigation, theme switch ---------- */
+.site-head {
+  position: sticky; top: 0; z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: var(--head-bg);
+  backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+}
+.head__in { display: flex; align-items: center; gap: 10px; min-height: var(--head-h); }
+.mark { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-right: auto; font: 700 .75rem/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+.mark:hover { color: var(--ink); }
+.mark:hover .mark__disc { animation: spin 2.4s linear infinite; }
+.mark__disc { flex: none; display: inline-block; width: 30px; height: 30px; border-radius: 50%;
+  background: radial-gradient(circle, var(--bg) 0 12%, rgba(23,23,23,.55) 13% 15%, transparent 16%),
+              conic-gradient(from 30deg, #e9e9f4, #b4f694, #d2eef0, #e2d6f6, #ffffff, #a3a3bd, #e9e9f4);
+  box-shadow: inset 0 0 0 1px rgba(23,23,23,.3), 0 4px 10px -4px rgba(23,23,23,.5); }
+
+/* round chrome buttons: theme + menu */
+.theme-btn, .menu-btn, .edition-btn {
+  position: relative; display: inline-grid; place-items: center; flex: none; width: 48px; height: 48px; padding: 0;
+  border: 1px solid var(--edge); border-radius: 50%; cursor: pointer; color: var(--ink);
+  background: var(--chrome-bar);
+  box-shadow: inset 0 1px 0 var(--rim), inset 0 -3px 8px rgba(120,120,150,.35), 0 8px 16px -10px rgba(23,23,23,.5);
+  transition: transform .2s var(--ease), box-shadow .2s ease;
+}
+.theme-btn:hover, .menu-btn:hover, .edition-btn:hover { background: var(--holo); background-size: 200% 100%; }
+.theme-btn:active, .menu-btn:active, .edition-btn:active { transform: scale(.94); }
+/* edition switch shows the edition it switches to */
+.edition-btn__bl { font: 700 1.5rem/1 "UnifrakturCook", "UnifrakturMaguntia", serif; }
+.edition-btn__y2k { display: none; font: 700 .6875rem/1 var(--f-disp); letter-spacing: .04em; }
+:root[data-edition="blackletter"] .edition-btn__bl { display: none; }
+:root[data-edition="blackletter"] .edition-btn__y2k { display: inline; }
+.theme-btn svg { position: absolute; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; transition: transform .5s var(--ease), opacity .3s ease; }
+.theme-btn__moon { fill: currentColor; stroke: none; }
+.theme-btn__sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
+:root[data-mode="dark"] .theme-btn__sun { opacity: 1; transform: none; }
+:root[data-mode="dark"] .theme-btn__moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+.menu-btn__bars { position: relative; width: 20px; height: 14px; }
+.menu-btn__bars i { position: absolute; left: 0; width: 100%; height: 2px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease), opacity .2s ease, top .35s var(--ease); }
+.menu-btn__bars i:nth-child(1) { top: 0; } .menu-btn__bars i:nth-child(2) { top: 6px; } .menu-btn__bars i:nth-child(3) { top: 12px; }
+.menu-btn[aria-expanded="true"] .menu-btn__bars i:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.menu-btn[aria-expanded="true"] .menu-btn__bars i:nth-child(2) { opacity: 0; }
+.menu-btn[aria-expanded="true"] .menu-btn__bars i:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+/* menu panel (phone + tablet) */
+.nav {
+  position: fixed; z-index: 49; left: 0; right: 0; top: calc(var(--head-h) + env(safe-area-inset-top, 0px));
+  max-height: calc(100dvh - var(--head-h) - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain;
+  padding: 18px var(--gut-r) calc(28px + env(safe-area-inset-bottom, 0px)) var(--gut-l);
+  background: var(--head-bg); backdrop-filter: blur(22px) saturate(1.4); -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border-bottom: 1px solid var(--line); box-shadow: 0 30px 50px -30px rgba(0,0,0,.6);
+  visibility: hidden; opacity: 0; transform: translateY(-12px); clip-path: inset(0 0 100% 0);
+  transition: opacity .3s ease, transform .4s var(--ease), clip-path .45s var(--ease), visibility 0s linear .45s;
+}
+.site-head.is-open .nav { visibility: visible; opacity: 1; transform: none; clip-path: inset(0 0 0 0); transition-delay: 0s; }
+.nav__label { margin: 0 0 12px; font: 600 var(--t-label)/1.4 var(--f-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+.nav ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.nav a {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 14px;
+  min-height: 60px; padding: 8px 16px 8px 8px; border-radius: 18px; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: inset 0 1px 0 var(--rim);
+  font: 600 .9375rem/1.25 var(--f-mono); letter-spacing: .02em;
+  transition: background-color .25s ease, border-color .25s ease, transform .2s var(--ease);
+}
+.nav a:hover { color: var(--ink); background: var(--surface-hi); border-color: var(--line-strong); }
+.nav a:active { transform: scale(.99); }
+.nav__orb { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; font: 500 .9375rem/1 var(--f-disp); color: #171717;   /* light chrome in both themes */
+  background: radial-gradient(circle at 30% 24%, rgba(255,255,255,.95) 0 12%, transparent 34%), linear-gradient(180deg, #fbfbfd, #dcdcea 48%, #c4c4d8 52%, #ececf5);
+  border: 1px solid var(--edge); }
+.nav__tc { display: block; font: 400 .8125rem/1.3 var(--f-text); color: var(--ink-2); }
+.nav__go { font: 500 1rem/1 var(--f-mono); color: var(--ink-2); }
+.nav a[aria-current] { background: var(--holo); border-color: var(--line-strong); }
+.nav a[aria-current] .nav__orb { background: radial-gradient(circle at 32% 28%, #fff 0 12%, transparent 30%), var(--hi); color: var(--on-hi); }
+.scrim { position: fixed; inset: 0; z-index: 45; background: var(--scrim); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; transition: opacity .3s ease; }
+.scrim.is-on { opacity: 1; }
+
+/* ---------- 4.5 Intro / hero ---------- */
+.intro { position: relative; padding-block: 28px 8px; }
+.intro__text { position: relative; z-index: 2; }
+.intro__kicker { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.intro__title { margin: 14px 0 0; font: 900 var(--t-hero)/.9 var(--f-disp); letter-spacing: -.015em; text-transform: uppercase; }
+.intro__title .line { display: block; }
+.intro__tc { margin: 18px 0 0; font: 500 var(--t-sub)/1.6 var(--f-text); color: var(--ink-2); max-width: 30em; }
+
+/* collage: three album sleeves fanned over a disc (decorative) */
+.intro__art { position: relative; aspect-ratio: 16 / 11; max-width: 680px; margin: 32px auto 0; }
+.art { position: absolute; width: 56%; border-radius: 4px var(--r-s) var(--r-s) 4px; overflow: hidden; border: 1px solid var(--edge); box-shadow: var(--shadow-2); transition: transform .8s var(--ease); }
+.art::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 7px; z-index: 1; background: linear-gradient(90deg, rgba(255,255,255,.55), transparent 50%, rgba(0,0,0,.25)), var(--lav); }
+.art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(125deg, rgba(255,255,255,.45), transparent 32%); pointer-events: none; }
+.art img { width: 100%; }
+.art--1 { left: 0; top: 0; transform: rotate(-6deg); }
+.art--2 { left: 22%; top: 9%; transform: rotate(1.5deg); z-index: 2; }
+.art--3 { right: 0; bottom: 0; transform: rotate(5deg); z-index: 3; }
+.art-disc { position: absolute; z-index: 1; right: 2%; top: 0; width: 46%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, var(--bg) 0 10%, rgba(23,23,23,.45) 10.5% 12%, transparent 12.5%),
+              repeating-radial-gradient(circle, rgba(255,255,255,.0) 0 3px, rgba(255,255,255,.08) 3px 4px),
+              conic-gradient(from 20deg, #e9e9f4, #b4f694, #d2eef0, #e2d6f6, #ffffff, #a3a3bd, #e9e9f4);
+  box-shadow: inset 0 0 0 1px rgba(23,23,23,.25), var(--shadow-2); }   /* static: decoration should not compete with the work */
+.intro .spark--1 { top: -2%; left: 46%; }
+.intro .spark--2 { bottom: 4%; left: 2%; width: 18px; height: 18px; }
+
+/* category index */
+.index { display: grid; grid-template-columns: minmax(0, 1fr); margin: 40px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line-strong); }
+.index li { border-bottom: 1px solid var(--line); }
+.index a { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2px 14px; min-height: 72px; padding: 12px 4px; text-decoration: none; transition: background-color .3s ease, padding .3s var(--ease); }
+.index a:hover { color: var(--ink); background: var(--surface); padding-left: 12px; }
+.index__thumb { position: relative; width: 52px; aspect-ratio: 1; }
+.index__thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; border: 1px solid var(--edge); }
+.index__l { position: absolute; right: -6px; bottom: -6px; display: grid; place-items: center; width: 24px; height: 24px; font: 500 .6875rem/1 var(--f-disp); color: var(--on-hi); border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0 14%, transparent 34%), var(--hi); border: 1px solid rgba(23,23,23,.25); }
+.index__t { font: 600 .9375rem/1.35 var(--f-mono); min-width: 0; word-break: keep-all; }
+.index__t span { display: block; font: 400 .8125rem/1.4 var(--f-text); color: var(--ink-2); }
+
+/* ---------- 4.6 Category sections ---------- */
+.cat { position: relative; padding-block: var(--sec) 0; outline: none; }
+.cat:last-of-type { padding-bottom: var(--sec); }
+.cat__head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px 16px; margin-bottom: 44px; padding-top: 20px; border-top: 1px solid var(--line-strong); }
+/* chrome sphere with the category letter */
+.cat__letter {
+  display: grid; place-items: center; width: clamp(60px, 8vw, 104px); aspect-ratio: 1; border-radius: 50%;
+  font: 900 clamp(1.5rem, 1rem + 2.4vw, 3.25rem)/1 var(--f-disp); color: #171717;
+  background: radial-gradient(circle at 30% 26%, #fff 0 10%, rgba(255,255,255,0) 32%), radial-gradient(circle at 70% 80%, rgba(23,23,23,.25), transparent 55%), linear-gradient(180deg, #fbfbfd, #d6d6e6 48%, #bdbdd2 52%, #ececf5);
+  border: 1px solid rgba(23,23,23,.2);
+  box-shadow: inset 0 -6px 14px rgba(120,120,150,.45), 0 16px 26px -14px rgba(23,23,23,.55);
+}
+.cat--web .cat__letter, .cat--ui .cat__letter { background: radial-gradient(circle at 30% 26%, #fff 0 10%, rgba(255,255,255,0) 32%), radial-gradient(circle at 70% 80%, rgba(46,107,52,.35), transparent 55%), var(--lime); }
+.cat__titles h2 { margin: 0; font: 700 var(--t-h2)/1.05 var(--f-mono); letter-spacing: -.02em; }
+.cat__tc { display: block; margin-top: 6px; font: 500 var(--t-sub)/1.4 var(--f-text); color: var(--ink-2); letter-spacing: 0; }
+.cat__aside { grid-column: 1 / -1; display: grid; gap: 12px; justify-items: start; }
+.cat__aside:empty { display: none; }
+.cat__link { margin: 0; }
+
+/* ---------- 4.7 The collection — each project as a collectable object ----------
+   Materials share one system: off-white paper, clear plastic, black vinyl/tape,
+   soft layered shadows. Only the cover image is content; the rest is decoration. */
+:root { --paper: #F8F7F2; --paper-edge: rgba(23,23,23,.1); --vinyl: #141418;
+  --obj-shadow: 0 1px 1px rgba(23,23,23,.08), 0 20px 34px -20px rgba(23,23,23,.6);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .28 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+:root[data-mode="dark"] { --paper: #E7E4DB; --paper-edge: rgba(0,0,0,.25); --vinyl: #0B0B0F;
+  --obj-shadow: 0 1px 1px rgba(0,0,0,.3), 0 24px 40px -20px rgba(0,0,0,.9); }
+
+.works { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; margin: 0; padding: 0; list-style: none; align-items: start; }
+.work { min-width: 0; }
+.work__link { display: block; text-decoration: none; border-radius: var(--r-m); color: inherit; }
+.work__link:hover { color: var(--ink); }
+.work__btn { width: 100%; padding: 0; border: 0; background: none; font: inherit; text-align: left; cursor: zoom-in; }
+.work__media { display: block; }
+.work__media img { width: 100%; }
+.work__cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: 22px; }
+.work__name { font: 700 1rem/1.35 var(--f-mono); letter-spacing: -.01em; }
+.work__name span { font: 500 .875rem/1.4 var(--f-text); color: var(--ink-2); margin-left: 4px; letter-spacing: 0; }
+.work__meta { font: 600 var(--t-label)/1.6 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.work__more { display: none; }
+.work__more--show { display: inline; }
+.chapters { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.works--illus .work { width: min(82%, 420px); justify-self: center; }          /* illustration pieces stay at a moderate size */
+
+.obj { position: relative; display: block; transition: transform .7s var(--ease); }
+.obj * { transition: transform .8s var(--ease), box-shadow .6s ease, opacity .5s ease; }
+.obj img { display: block; width: 100%; }
+/* paper: used by prints, polaroids, zines, clippings, posters */
+.pol, .print, .zine__page, .zine__cover, .clip, .poster, .neg__print, .contact__print {
+  display: block; background-color: var(--paper); background-image: var(--grain); box-shadow: var(--obj-shadow); border: 1px solid var(--paper-edge); }
+/* translucent tape */
+.tape { position: absolute; z-index: 4; width: clamp(44px, 22%, 92px); height: 20px; background: rgba(236, 234, 214, .62);
+  border-left: 1px dashed rgba(0,0,0,.08); border-right: 1px dashed rgba(0,0,0,.08); backdrop-filter: blur(1px); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.tape--top { top: -10px; left: 40%; transform: rotate(-3deg); }
+.tape--l { top: 6px; left: -18px; transform: rotate(-34deg); }
+.tape--r { top: 6px; right: -18px; transform: rotate(32deg); }
+
+/* Polaroid prints — the cover on top, two works tucked behind */
+.obj--polaroid { padding: 7% 9% 3% 3%; }
+.pol { padding: 3.6% 3.6% 13%; }
+.pol--front { position: relative; z-index: 3; transform: rotate(-2.5deg); }
+.pol--back { position: absolute; width: 42%; }
+.pol--1 { top: 0; right: 1%; transform: rotate(9deg); z-index: 1; }
+.pol--2 { bottom: 0; right: 4%; transform: rotate(-6deg); z-index: 2; }
+
+/* CD in a clear jewel case, disc tucked behind */
+.obj--cd { padding-right: 13%; }
+.cd__case { position: relative; z-index: 2; display: block; padding: 2.6% 2.6% 2.6% 8%; border-radius: 6px;
+  background: linear-gradient(135deg, rgba(255,255,255,.7), rgba(255,255,255,.22) 40%, rgba(255,255,255,.4)); border: 1px solid rgba(255,255,255,.85);
+  box-shadow: inset 0 0 0 1px rgba(23,23,23,.14), var(--obj-shadow); backdrop-filter: blur(2px); }
+.cd__case::before { content: ""; position: absolute; left: 1.2%; top: 4%; bottom: 4%; width: 4.4%; border-radius: 3px;   /* hinge */
+  background: repeating-linear-gradient(180deg, rgba(23,23,23,.18) 0 2px, rgba(255,255,255,.5) 2px 6px); }
+.cd__case::after { content: ""; position: absolute; inset: 0; border-radius: 6px; pointer-events: none;   /* plastic glare */
+  background: linear-gradient(115deg, rgba(255,255,255,.55) 0 12%, transparent 30% 62%, rgba(255,255,255,.25) 75%, transparent 90%); }
+:root[data-mode="dark"] .cd__case { background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.06) 40%, rgba(255,255,255,.12)); border-color: rgba(255,255,255,.3); }
+.cd__disc { position: absolute; z-index: 1; right: 0; top: 50%; height: 84%; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+  transform: translate(0, -50%); background: conic-gradient(from 20deg, #e9e9f4, #b4f694, #d2eef0, #e2d6f6, #ffffff, #a3a3bd, #e9e9f4);
+  -webkit-mask: radial-gradient(circle, transparent 0 8%, #000 8.5%); mask: radial-gradient(circle, transparent 0 8%, #000 8.5%);
+  box-shadow: inset 0 0 0 1px rgba(23,23,23,.3); }
+.cd__disc img { height: 100%; object-fit: cover; opacity: .55; mix-blend-mode: luminosity; }
+.cd__disc::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, transparent 0 22%, rgba(255,255,255,.8) 22.5% 24%, transparent 24.5%), conic-gradient(from 200deg, rgba(255,255,255,.5), transparent 18%, rgba(180,246,148,.45) 33%, transparent 48%, rgba(226,214,246,.55) 68%, transparent 84%); }
+
+/* Vinyl record half out of its sleeve; one work is the centre label */
+.obj--vinyl { padding-right: 20%; }
+.vinyl__sleeve { position: relative; z-index: 2; display: block; padding: 2%; border-radius: 3px; background: var(--paper); background-image: var(--grain);
+  box-shadow: inset 0 0 0 1px var(--paper-edge), var(--obj-shadow); }
+.vinyl__sleeve::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,.28), transparent 35%); }
+.vinyl__rec { position: absolute; z-index: 1; right: 0; top: 50%; height: 94%; aspect-ratio: 1; border-radius: 50%;
+  transform: translate(0, -50%); background:
+    conic-gradient(from 30deg, rgba(255,255,255,.12), transparent 12%, rgba(255,255,255,.08) 25%, transparent 40%, rgba(255,255,255,.12) 55%, transparent 70%, rgba(255,255,255,.07) 85%, transparent),
+    repeating-radial-gradient(circle, var(--vinyl) 0 1.5px, #24242b 1.5px 2.6px);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.6), var(--obj-shadow); }
+.vinyl__label { position: absolute; inset: 31%; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 3px var(--vinyl), 0 0 0 4px rgba(255,255,255,.15);
+  -webkit-mask: radial-gradient(circle, transparent 0 7%, #000 7.5%); mask: radial-gradient(circle, transparent 0 7%, #000 7.5%); }
+.vinyl__label img { height: 100%; object-fit: cover; }
+
+/* Film negative — a print with a strip of the series beneath it */
+.obj--negative { padding-bottom: 2%; }
+.neg__print { position: relative; z-index: 2; padding: 2.4%; transform: rotate(1.5deg); }
+.neg__strip { position: relative; z-index: 3; display: block; width: 94%; margin: -9% 0 0 4%; overflow: hidden; transform: rotate(-2.5deg);
+  padding: 6.5% 2.5%; background: #2a1e14; border-radius: 3px; box-shadow: var(--obj-shadow); }
+.neg__strip::before, .neg__strip::after { content: ""; position: absolute; left: 0; right: 0; height: 3.4%; min-height: 6px;
+  background: repeating-linear-gradient(90deg, transparent 0 7px, rgba(245,235,215,.85) 7px 13px, transparent 13px 20px); }
+.neg__strip::before { top: 2.2%; } .neg__strip::after { bottom: 2.2%; }
+.neg__track { display: flex; gap: 2.4%; width: 130%; }
+.neg__frame { flex: 1 1 0; border-radius: 2px; overflow: hidden; outline: 1px solid rgba(255,220,170,.18); }
+.neg__frame img { aspect-ratio: 3 / 2; object-fit: cover; filter: sepia(.35) saturate(1.15) contrast(1.05); }
+
+/* VHS — sleeve with a coloured spine; the cassette sits behind */
+.obj--vhs { padding-bottom: 16%; }
+.vhs__sleeve { position: relative; z-index: 2; display: block; padding: 2.4% 2.4% 2.4% 12%; border-radius: 4px; background: #121216;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), var(--obj-shadow); transform: rotate(-1.5deg); }
+.vhs__spine { position: absolute; left: 2.2%; top: 4%; bottom: 4%; width: 7.6%; display: flex; flex-direction: column; align-items: center; gap: 6%; }
+.vhs__spine b { writing-mode: vertical-rl; transform: rotate(180deg); font: 900 clamp(.5rem, .9vw, .75rem)/1 var(--f-disp); letter-spacing: .2em; color: #F5F5F2; }
+.vhs__spine i { display: block; width: 100%; flex: 1; border-radius: 2px; background: var(--tone); }
+.vhs__spine i:nth-of-type(2) { background: var(--lime); flex: .6; } .vhs__spine i:nth-of-type(3) { background: var(--lav); flex: .4; }
+.vhs__tape { position: absolute; z-index: 1; left: 16%; right: 10%; bottom: 3%; height: 34%; display: flex; align-items: center; justify-content: space-between; gap: 6%;
+  padding: 0 8%; border-radius: 6px; background: linear-gradient(180deg, #2a2a30, #151519); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), var(--obj-shadow); transform: rotate(2deg); }
+.vhs__reel { width: 18%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #e8e8ee 0 18%, #2c2c33 19% 46%, #6b5240 47% 100%); box-shadow: inset 0 0 0 2px #0c0c0f; }
+.vhs__label { flex: 1; height: 42%; border-radius: 3px; background: linear-gradient(90deg, var(--tone) 0 18%, #F5F5F2 18%); }
+
+/* Zine — a stapled print with pages peeking out */
+.obj--zine { padding: 5% 7% 4% 2%; }
+.zine__page { position: absolute; width: 56%; padding: 3%; }
+.zine__page--1 { top: 0; right: 0; transform: rotate(7deg); }
+.zine__page--2 { bottom: 0; right: 3%; transform: rotate(-4deg); }
+.zine__cover { position: relative; z-index: 3; padding: 3%; transform: rotate(-1.8deg); }
+.zine__staple { position: absolute; left: 1.4%; top: 22%; width: 1.4%; min-width: 3px; height: 56%;
+  background: linear-gradient(180deg, #9a9aaa 0 10%, transparent 10% 90%, #9a9aaa 90%); }
+
+/* Fanned photo prints (a series of pages) */
+.obj--prints { padding: 6% 6% 2% 2%; }
+.print { padding: 2.2%; }
+.print--back { position: absolute; width: 90%; top: 0; right: 0; }
+.print--1 { transform: rotate(5deg); } .print--2 { transform: rotate(2.5deg) translate(-2%, 2%); } .print--3 { transform: rotate(-1deg) translate(-4%, 4%); }
+.print--front { position: relative; z-index: 4; transform: rotate(-2deg); }
+
+/* Clipping + poster — taped to the wall */
+.clip { position: relative; padding: 2.6%; transform: rotate(1.4deg); }
+.poster { position: relative; padding: 3%; transform: rotate(-1.2deg); }
+.works--info .work:nth-child(2) .poster { transform: rotate(1.6deg); }
+
+/* Contact sheet — the series as frames, with the cover printed on top */
+.obj--contact { padding: 16% 0 0 6%; }
+.contact { position: absolute; top: 0; right: 0; width: 76%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5%;
+  padding: 4% 3.5%; background: #1b1b22; border-radius: 3px; box-shadow: var(--obj-shadow); transform: rotate(3deg); }
+.contact__frame { border-radius: 2px; overflow: hidden; outline: 1px solid rgba(255,255,255,.14); }
+.contact__frame img { aspect-ratio: 16 / 9; object-fit: cover; }
+.contact__print { position: relative; z-index: 2; width: 82%; padding: 2.4%; transform: rotate(-2.2deg); }
+
+/* Stickers — transparent lettering stuck on a print (the PNGs keep their own transparency) */
+.obj--stickers { padding: 4% 6% 8% 4%; }
+.stk__print { position: relative; z-index: 1; display: block; padding: 2.4%; background-color: var(--paper); background-image: var(--grain); border: 1px solid var(--paper-edge); box-shadow: var(--obj-shadow); transform: rotate(1.2deg); }
+.stk { position: absolute; z-index: 3; filter: drop-shadow(0 6px 8px rgba(23,23,23,.28)); }
+.stk--1 { width: 50%; left: -2%; bottom: 0; transform: rotate(-9deg); }
+.stk--2 { width: 52%; right: 0; top: 2%; transform: rotate(6deg); }
+
+/* Sticker sheet — the set on a backing sheet, one sticker half peeled */
+.sheet { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5%; padding: 7%; background-color: var(--paper); background-image: var(--grain);
+  border: 1px solid var(--paper-edge); border-radius: 6px; box-shadow: var(--obj-shadow); transform: rotate(-1.5deg); }
+.sheet__item { display: block; overflow: hidden; border-radius: 16%; outline: 2px dashed rgba(23,23,23,.12); outline-offset: 4px; box-shadow: 0 2px 4px rgba(23,23,23,.18); }
+.sheet__item img { aspect-ratio: 1; object-fit: cover; }
+.sheet__item--4 { transform-origin: 0 0; transform: rotate(-7deg) translate(4%, -2%); box-shadow: 0 10px 16px -6px rgba(23,23,23,.45); }
+
+/* returning from a project: a brief glow on the object you came from */
+.work.is-back .obj { filter: drop-shadow(0 0 14px var(--hi)); }
+
+/* gentle reveal — content is always visible; only a small lift animates */
+.reveal { transition: transform .9s var(--ease); }
+.reveal.is-pending { transform: translateY(24px); }
+.reveal.is-in { transform: none; }
+
+/* ---------- 4.8 Project page ---------- */
+.project { padding-block: 16px var(--sec); }
+.crumbs { padding-top: 6px; }
+.project__head { display: grid; gap: 28px; padding-block: 28px 40px; }
+.project__head h1 { margin: 14px 0 0; font: 900 var(--t-h1)/.98 var(--f-disp); text-transform: uppercase; letter-spacing: -.01em; }
+.project__tc { display: block; margin-top: 12px; font: 500 var(--t-h2)/1.25 var(--f-text); color: var(--ink-2); text-transform: none; letter-spacing: 0; }
+.project__head .notice { margin-top: 20px; }
+.hint { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 16px 0 0; font: 500 .75rem/1.5 var(--f-mono); color: var(--ink-2); }
+.project__cover { margin: 0; max-width: 560px; }
+.project--illus .project__cover { max-width: 400px; }
+.project--illus .project__body { max-width: 940px; margin-inline: auto; }
+.project--illus .b-tall { max-width: 560px; }
+.project__body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 28px; border-top: 1px solid var(--line-strong); }
+.b, .b figure, figure.b { margin: 0; min-width: 0; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: var(--r-s); }
+.zoom img.is-alpha, .b-letter .zoom img { box-shadow: none !important; border-radius: 0; }
+.zoom img { width: 100%; border-radius: var(--r-s); box-shadow: 0 0 0 1px var(--line), 0 14px 30px -20px rgba(0,0,0,.6); transition: transform .45s var(--ease), box-shadow .45s ease; }
+/* rows: phone shows two per row; wide images and single images take the full width */
+.b-rows { display: grid; gap: var(--gap); }
+.row { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: flex-start; }
+.row figure { flex: 1 1 calc(50% - var(--gap)) !important; }
+.row figure:only-child, .row figure.is-wide { flex-basis: 100% !important; }
+.b-stack { display: flex; flex-direction: column; gap: var(--gap); }
+.b-stack > * { flex: none !important; width: 100%; }
+.stack__main { order: -1; }
+.stack__side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+/* film strip — a series; scrolls sideways inside its own band */
+.b-strip { position: relative; padding: 34px 12px; border-radius: var(--r-l); background: var(--strip); border: 1px solid rgba(0,0,0,.6); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), var(--shadow-2); }
+.b-strip::before, .b-strip::after { content: ""; position: absolute; left: 14px; right: 14px; height: 8px; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--lav) 0 14px, transparent 14px 28px); opacity: .85; }
+.b-strip::before { top: 13px; } .b-strip::after { bottom: 13px; }
+.strip__track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; padding-bottom: 2px; scrollbar-width: thin; }
+.strip__track:focus-visible { box-shadow: 0 0 0 7px var(--hi); }
+.strip__track figure { flex: 0 0 68%; scroll-snap-align: center; }
+.b-strip.is-tall .strip__track figure { flex-basis: 46%; }
+.strip__track .zoom img { box-shadow: none; border-radius: 4px; }
+/* browser frame (kept for web blocks) */
+.browser { overflow: hidden; border-radius: var(--r-m); background: var(--cream); border: 1px solid var(--edge); box-shadow: var(--shadow-2); }
+.browser__bar { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--chrome-bar); border-bottom: 1px solid var(--edge); }
+.browser__dots { display: flex; gap: 6px; flex: none; }
+.browser__dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--lav); border: 1px solid rgba(23,23,23,.25); }
+.browser__dots i:nth-child(2) { background: var(--green); } .browser__dots i:nth-child(3) { background: var(--lime); }
+.browser__url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 3px 12px; border-radius: 999px; background: var(--surface-solid); font: 400 .75rem/1.5 var(--f-mono); color: var(--ink-2); }
+.browser .zoom, .browser .zoom img { border-radius: 0; box-shadow: none; }
+.b-browser figcaption { margin-top: 14px; }
+.b-tall { width: 100%; max-width: 620px; justify-self: center; }
+/* UI grid — phone: detailed screens full width, simple components two per row */
+.b-ui { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; align-items: start; }
+.ui { margin: 0; grid-column: 1 / -1; min-width: 0; }
+.ui--m-half { grid-column: span 1; }
+.ui--m-last { order: 1; }                                     /* the sparse full-width one closes the set on phones */
+.ui__name { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); font: 600 .75rem/1.4 var(--f-mono); letter-spacing: .06em; color: var(--ink-2); }
+.ui--feature .ui__name { font-size: .8125rem; color: var(--ink); }
+/* lettering: transparent PNGs on a holographic glass panel — no fill is added to the images */
+.b-letter { position: relative; overflow: hidden; padding: 20px 16px 24px; border-radius: var(--r-l);
+  background: linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,255,255,.12)), var(--holo); border: 1px solid var(--rim); box-shadow: var(--shadow-2); }
+:root[data-mode="dark"] .b-letter { background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0)), var(--holo); }
+.b-letter__label { position: relative; z-index: 1; margin: 0 0 14px; font: 600 var(--t-label)/1.4 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); }
+.letter__grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; align-items: center; }
+.letter__grid figure:first-child { grid-column: 1 / -1; width: 84%; justify-self: center; }
+.letter__grid figure:only-child { width: min(84%, 520px); }
+.b-letter .zoom img { box-shadow: none; border-radius: 0; filter: drop-shadow(0 10px 12px rgba(23,23,23,.18)); }
+/* pager — the neighbouring albums */
+.pager { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line-strong); }
+.pn { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 14px; min-height: 76px; padding: 10px 16px 10px 10px; border-radius: var(--r-m); text-decoration: none; background: var(--surface); border: 1px solid var(--line); transition: background-color .3s ease, border-color .3s ease, transform .3s var(--ease); }
+.pn:hover { color: var(--ink); background: var(--surface-hi); border-color: var(--line-strong); }
+.pn__thumb { position: relative; display: block; overflow: hidden; border-radius: 3px 6px 6px 3px; border: 1px solid var(--edge); }
+.pn__thumb::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--tone); }
+.pn__thumb img { width: 100%; aspect-ratio: 1.28; object-fit: cover; }
+.pn__text { display: grid; gap: 2px; }
+.pn__dir { font: 600 var(--t-label)/1.4 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+.pn__name { font: 700 .9375rem/1.4 var(--f-mono); }
+.pn__name span[lang] { font: 500 .875rem/1.4 var(--f-text); color: var(--ink-2); white-space: nowrap; }
+.placeholder { display: grid; place-items: center; width: 100%; aspect-ratio: var(--ar, 1); padding: 16px; text-align: center; border-radius: var(--r-s); border: 2px dashed var(--ink-2); background: var(--surface); font: 600 .9375rem/1.5 var(--f-mono); color: var(--ink); }
+.placeholder small { display: block; font-weight: 400; font-size: .8125rem; color: var(--ink-2); word-break: break-all; }
+
+/* ---------- 4.9 Lightbox (native <dialog>) — always dark, the work stays in focus ---------- */
+.lightbox { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(14, 14, 24, .985); color: #F5F5F2; }
+.lightbox::backdrop { background: rgba(10, 10, 18, .6); }
+.lb { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px)); }
+.lb__top, .lb__bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lb__bottom { flex-wrap: wrap; }
+.lb__stage { position: relative; min-height: 0; margin-block: 10px; }
+.lb__stage img { position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px; opacity: 0; transition: opacity .35s ease; }
+.lb__stage img.is-shown { opacity: 1; }
+.lb__stage.is-tall { overflow-y: auto; overscroll-behavior: contain; }
+.lb__stage.is-tall img { position: static; display: block; margin: 0 auto; width: min(100%, 760px); max-height: none; }
+.lb__caption { order: -1; flex-basis: 100%; margin: 0 0 6px; font: 400 .875rem/1.5 var(--f-text); color: #e6e6ee; }
+.lb__count { font: 500 .8125rem/1 var(--f-disp); letter-spacing: .06em; color: #d9d9e6; }
+.lb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 52px; min-height: 52px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,.45); background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.05) 50%, rgba(255,255,255,.1)); color: #F5F5F2; font: 500 .875rem/1 var(--f-mono); cursor: pointer; transition: background-color .2s ease, transform .2s var(--ease); }
+.lb-btn:hover { background-color: rgba(245, 245, 242, .2); }
+.lb-btn:active { transform: scale(.96); }
+.lb-btn:focus-visible { outline-color: var(--lime); box-shadow: none; }
+
+/* ---------- 4.10 Back to top, footer ---------- */
+.to-top {
+  position: fixed; z-index: 40; right: var(--gut-r); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; text-decoration: none;
+  font: 700 1.375rem/1 var(--f-mono); color: #171717;
+  background: radial-gradient(circle at 32% 24%, #fff 0 14%, rgba(255,255,255,0) 36%), linear-gradient(180deg, #ffffff 0%, #ececf5 16%, #a3a3bd 44%, #6a6a84 50%, #b9b9cf 57%, #ffffff 76%, #a9a9c2 100%);
+  border: 1px solid rgba(23,23,23,.35);
+  box-shadow: inset 0 -4px 10px rgba(80,80,110,.45), inset 0 2px 0 rgba(255,255,255,.9), 0 12px 24px -10px rgba(0,0,0,.6);
+  opacity: 0; visibility: hidden; transform: translateY(14px) scale(.9);
+  transition: opacity .3s ease, transform .3s var(--ease), visibility 0s linear .3s, box-shadow .2s ease;
+}
+.to-top.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .3s ease, transform .3s var(--ease), visibility 0s, box-shadow .2s ease; }
+.to-top:hover { color: #171717; transform: translateY(-3px); box-shadow: inset 0 -4px 10px rgba(80,80,110,.45), inset 0 2px 0 #fff, 0 0 0 4px var(--hi), 0 16px 28px -10px rgba(0,0,0,.6); }
+.to-top:active { transform: translateY(1px) scale(.95); }
+.to-top:focus-visible { border-radius: 50%; }
+html.is-locked .to-top { visibility: hidden; }
+.site-foot { padding-block: 0 calc(96px + env(safe-area-inset-bottom, 0px)); }
+.site-foot .wrap { display: grid; gap: 10px; padding-top: 22px; border-top: 1px solid var(--line-strong); font: 400 .8125rem/1.75 var(--f-text); color: var(--ink-2); }
+.site-foot p { margin: 0; max-width: 64ch; }
+.foot__mark { display: flex; align-items: center; gap: 10px; font: 600 var(--t-label)/1.6 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+.foot__mark .mark__disc { width: 22px; height: 22px; }
+
+/* =========================================================
+   TABLET — min-width: 640px
+   ========================================================= */
+@media (min-width: 640px) {
+  :root { --head-h: 72px; }
+  body { font-size: 1.0625rem; background-size: auto, auto, auto, 48px 48px, 48px 48px; }
+  .intro { padding-block: 48px 8px; }
+  .intro__art { margin-top: 44px; }
+  .index { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+  .cat__head { grid-template-columns: auto auto minmax(0, 1fr); gap: 18px 24px; margin-bottom: 52px; }
+  .cat__aside { grid-column: 3; }
+
+  .works { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; row-gap: 72px; }
+  .works--social .work:nth-child(even) { margin-top: 88px; }
+  .works--web .work:first-child { grid-column: 1 / -1; width: 86%; }
+  .works--info .work:nth-child(2) { margin-top: 96px; }
+  .works--ui .work { grid-column: 1 / -1; width: 90%; justify-self: center; }
+  .works--illus .work { width: 84%; }
+  .works--illus .work:nth-child(odd) { justify-self: start; }
+  .works--illus .work:nth-child(even) { justify-self: end; margin-top: 80px; }
+  .work__more { display: inline; }
+  /* hover: each object shows its character, gently */
+  .work__link:hover .obj, .work__link:focus-visible .obj { transform: translateY(-6px); }
+  .work__link:active .obj { transform: translateY(-2px) scale(.99); }
+  .work__link:hover .work__more { color: var(--accent-ink); text-decoration: underline; text-underline-offset: .25em; }
+  .work__link:hover .pol--1 { transform: rotate(15deg) translate(8%, -6%); }
+  .work__link:hover .pol--2 { transform: rotate(-12deg) translate(10%, 6%); }
+  .work__link:hover .pol--front { transform: rotate(-4deg) translateX(-2%); }
+  .work__link:hover .cd__case { transform: translateX(-5%); }
+  .work__link:hover .cd__disc { transform: translate(0, -50%) rotate(160deg); }
+  .work__link:hover .vinyl__sleeve { transform: translateX(-6%); }
+  .work__link:hover .vinyl__rec { animation: spin-v 3.2s linear infinite; }
+  .work__link:hover .neg__track { transform: translateX(-22%); }
+  .work__link:hover .neg__strip { transform: rotate(-1deg); }
+  .work__link:hover .vhs__tape { transform: rotate(0deg) translateY(28%); }
+  .work__link:hover .vhs__sleeve { transform: rotate(-.5deg); }
+  .work__link:hover .zine__cover { transform: rotate(-5deg) translate(-4%, -2%); }
+  .work__link:hover .zine__page--1 { transform: rotate(11deg) translate(4%, -2%); }
+  .work__link:hover .print--1 { transform: rotate(9deg) translate(3%, -3%); }
+  .work__link:hover .print--2 { transform: rotate(5deg) translate(0, 0); }
+  .work__link:hover .print--front { transform: rotate(-3.5deg) translate(-2%, 1%); }
+  .work__link:hover .clip, .work__btn:hover .poster { transform: rotate(0deg); box-shadow: 0 1px 1px rgba(23,23,23,.08), 0 34px 48px -24px rgba(23,23,23,.65); }
+  .work__link:hover .contact__print { transform: rotate(-4deg) translateY(10%); }
+  .work__link:hover .contact { transform: rotate(1.5deg); }
+  .work__link:hover .stk--1 { transform: rotate(-14deg) translate(-4%, 4%); }
+  .work__link:hover .stk--2 { transform: rotate(10deg) translate(4%, -6%); }
+  .work__link:hover .sheet__item--4 { transform: rotate(-16deg) translate(8%, -6%); }
+  .work__link:hover .sheet__item--main { transform: scale(1.04); }
+
+  .project__head { padding-block: 40px 52px; }
+  .project__body { gap: 32px; padding-top: 40px; }
+  .row { flex-wrap: nowrap; }
+  .row figure, .row figure.is-wide { flex: var(--f, 1) 1 0 !important; }   /* widths follow each image's ratio, so a row shares one height */
+  .b-stack { flex-direction: row; align-items: flex-start; }
+  .b-stack > * { width: auto; }
+  .b-stack > .stack__main { order: 0; flex: var(--f) 1 0 !important; }
+  .b-stack > .stack__side { flex: var(--f) 1 0 !important; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+  .zoom:hover img { transform: translateY(-3px); box-shadow: 0 0 0 1px var(--line-strong), 0 28px 50px -30px rgba(0,0,0,.65); }
+  .browser .zoom:hover img { transform: none; }
+  .b-strip { padding: 40px 24px; }
+  .b-ui { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 40px 24px; }
+  .ui--feature { grid-column: 1 / -1; }
+  .ui--half { grid-column: span 3; }
+  .ui--third, .ui--m-half, .ui--m-last { grid-column: span 2; order: 0; }
+  .strip__track figure { flex: 0 0 34%; }
+  .b-strip.is-tall .strip__track figure { flex-basis: 22%; }
+  .b-letter { padding: 28px 36px 40px; }
+  .letter__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 44px; }
+  .letter__grid figure, .letter__grid figure:first-child { flex: var(--r) 1 0; width: auto; min-width: 0; max-width: calc(var(--r) * 300px); }
+  .letter__grid figure:only-child { flex: 0 1 560px; max-width: 560px; }   /* a single artwork gets room to breathe */
+  .pager { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 88px; }
+  .pn--next { grid-template-columns: minmax(0, 1fr) 64px; text-align: right; }
+  .pn--next .pn__thumb { order: 2; }
+  .lb__bottom { flex-wrap: nowrap; }
+  .lb__caption { order: 0; flex: 1; text-align: center; margin: 0; }
+  .to-top { width: 56px; height: 56px; right: max(24px, var(--gut-r)); bottom: 24px; }
+  .site-foot .wrap { grid-template-columns: auto minmax(0, 1fr); gap: 12px 40px; align-items: start; }
+  .site-foot p:last-child { justify-self: end; text-align: right; }
+  .nav ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav li:first-child { grid-column: 1 / -1; }
+}
+
+/* =========================================================
+   DESKTOP — min-width: 1024px
+   ========================================================= */
+@media (min-width: 1024px) {
+  .menu-btn, .scrim, .nav__label, .nav__tc, .nav__go { display: none !important; }
+  .nav {
+    position: static; max-height: none; overflow: visible; padding: 0; background: none; border: 0; box-shadow: none;
+    backdrop-filter: none; -webkit-backdrop-filter: none; visibility: visible; opacity: 1; transform: none; clip-path: none; transition: none;
+  }
+  .nav ul { display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); box-shadow: inset 0 1px 0 var(--rim); }
+  .nav li:first-child { grid-column: auto; }
+  .nav a { display: inline-flex; gap: 8px; min-height: 44px; padding: 0 14px 0 4px; border-radius: 999px; background: none; border: 1px solid transparent; box-shadow: none; font-size: .75rem; letter-spacing: .06em; }
+  .nav a:hover { background: var(--surface-hi); border-color: transparent; }
+  .nav a[aria-current] { background: var(--holo); border-color: var(--edge); }
+  .nav__orb { width: 30px; height: 30px; font-size: .6875rem; }
+  .head__in { gap: 14px; }
+  .theme-btn { order: 4; width: 44px; height: 44px; }
+  .edition-btn { order: 3; width: 44px; height: 44px; }
+
+  .intro { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: end; padding-block: 64px 0; }
+  .intro__text { grid-column: 1; grid-row: 1; }
+  .intro__title { font-size: min(7.4vw, 7.25rem); }
+  .intro__art { grid-column: 2; grid-row: 1; width: 100%; margin: 0 0 6px; }
+  .intro > .index { grid-column: 1 / -1; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 0; margin-top: 64px; }
+  .index li { border-bottom: 0; border-right: 1px solid var(--line); }
+  .index li:last-child { border-right: 0; }
+  .index a { padding: 16px 18px; min-height: 96px; }
+  .index a:hover { padding-left: 22px; }
+
+  .cat__head { grid-template-columns: 120px auto minmax(0, 1fr) minmax(0, .9fr); gap: 24px 32px; margin-bottom: 72px; padding-top: 18px; }
+  .cat__aside { grid-column: 4; justify-items: end; text-align: left; }
+  .cat__aside .notice { max-width: 46ch; }
+
+  .works { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(28px, 2.6vw, 44px); row-gap: clamp(56px, 5vw, 88px); }
+  /* social: a loose, hand-placed arrangement — every object keeps its own size and offset */
+  .works--social .work:nth-child(1) { grid-column: 1 / 6; }
+  .works--social .work:nth-child(2) { grid-column: 7 / 12; margin-top: clamp(80px, 9vw, 140px); }
+  .works--social .work:nth-child(3) { grid-column: 2 / 7; margin-top: 0; }
+  .works--social .work:nth-child(4) { grid-column: 8 / 13; margin-top: clamp(60px, 7vw, 120px); }
+  .works--social .work:nth-child(5) { grid-column: 1 / 6; margin-top: 0; }
+  .works--social .work:nth-child(6) { grid-column: 7 / 11; margin-top: clamp(90px, 10vw, 160px); }
+  /* web: the fanned prints lead; two clippings pinned beside */
+  .works--web .work:nth-child(1) { grid-column: 1 / 8; grid-row: span 2; width: auto; }
+  .works--web .work:nth-child(2) { grid-column: 9 / 13; margin-top: 24px; }
+  .works--web .work:nth-child(3) { grid-column: 8 / 12; }
+  /* infographics: two posters at different heights */
+  .works--info .work:nth-child(1) { grid-column: 3 / 7; }
+  .works--info .work:nth-child(2) { grid-column: 8 / 12; margin-top: clamp(96px, 10vw, 160px); }
+  /* ui: the contact sheet, centred */
+  .works--ui .work { grid-column: 3 / 11; width: auto; }
+  /* illustration: four pieces pinned loosely */
+  .works--illus .work { width: auto; justify-self: stretch; }
+  .works--illus .work:nth-child(1) { grid-column: 2 / 6; }
+  .works--illus .work:nth-child(2) { grid-column: 8 / 12; margin-top: clamp(60px, 7vw, 120px); }
+  .works--illus .work:nth-child(3) { grid-column: 3 / 6; margin-top: 0; }
+  .works--illus .work:nth-child(4) { grid-column: 8 / 11; margin-top: clamp(40px, 5vw, 80px); }
+
+  .project__head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: end; padding-block: 48px 64px; }
+  .project__cover { justify-self: end; width: 100%; }
+  .project__body { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 3vw, 44px); padding-top: 56px; }
+  .project__body > .b { grid-column: 1 / -1; }
+  .project__body > .b.is-half { grid-column: auto; }
+  .b-ui { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(48px, 4.4vw, 64px) clamp(24px, 2.4vw, 36px); }
+  .ui--feature { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 9fr) minmax(0, 3fr); column-gap: clamp(24px, 2.4vw, 36px); }
+  .ui--feature > .ui__name { align-self: end; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--line-strong);
+    font: 700 clamp(1.25rem, .8rem + 1vw, 1.75rem)/1.15 var(--f-mono); letter-spacing: -.01em; color: var(--ink); }
+  .ui--half { grid-column: span 6; }
+  .ui--third, .ui--m-half, .ui--m-last { grid-column: span 4; }
+  .strip__track { overflow-x: visible; }
+  .strip__track figure, .b-strip.is-tall .strip__track figure { flex: 1 1 0; }
+  .pager { margin-top: 120px; }
+  .pn { grid-template-columns: 96px minmax(0, 1fr); padding: 14px 22px 14px 14px; }
+  .pn--next { grid-template-columns: minmax(0, 1fr) 96px; }
+  .pn:hover { transform: translateY(-3px); }
+  .site-foot { padding-bottom: 48px; }
+}
+
+/* ---------- LARGE DESKTOP — min-width: 1440px ---------- */
+@media (min-width: 1440px) {
+  .wrap { max-width: 1440px; }
+  .project__body { gap: 48px; }
+}
+
+/* ---------- Motion + system preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  .reveal.is-pending { transform: none; }
+}
+@media (forced-colors: active) {
+  .obj img, .zoom img, .browser, .nav, .to-top, .menu-btn, .theme-btn, .edition-btn, .pn { border: 1px solid CanvasText; }
+  .chrome { color: CanvasText; background: none; }
+  .menu-btn__bars i { background: CanvasText; }
+}
+
+/* =========================================================
+   4.11 BLACKLETTER TYPOGRAPHY EDITION
+   ---------------------------------------------------------
+   A second art direction on the same content: contemporary gothic ×
+   dark editorial × Y2K. Blackletter (UnifrakturCook, SIL OFL 1.1) is the
+   identity for the hero, section titles and selected project names;
+   navigation and body text use Inter, labels stay in IBM Plex Mono.
+   Everything here is scoped to :root[data-edition="blackletter"],
+   so the Y2K edition above is never changed by it.
+   ========================================================= */
+:root[data-edition="blackletter"] {
+  --f-black: "UnifrakturCook", "UnifrakturMaguntia", "Old English Text MT", serif;
+  --f-sans: "Inter", "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
+  --f-text: var(--f-sans);
+  /* light: lavender paper, black ink, lime as the single highlight */
+  --bg: #EEEDF5;
+  --bg-bloom-1: rgba(180, 246, 148, .16);
+  --bg-bloom-2: rgba(255, 255, 255, .55);
+  --bg-bloom-3: rgba(205, 205, 230, .7);
+  --grid-line: transparent;
+  --ink: #111114; --ink-2: #4A4A52;
+  --line: rgba(17, 17, 20, .16); --line-strong: #111114;
+  --surface: rgba(255, 255, 255, .5); --surface-hi: rgba(255, 255, 255, .85); --surface-solid: #F7F6FA;
+  --edge: rgba(17, 17, 20, .28); --rim: rgba(255, 255, 255, .6);
+  --head-bg: rgba(238, 237, 245, .88);
+  --accent-ink: #2E6B34;
+  --r-s: 2px; --r-m: 3px; --r-l: 4px;
+  --shadow-1: none; --shadow-2: 0 18px 36px -26px rgba(17,17,20,.55);
+  --print: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* dark: ink-black night with lavender type — not plain black, the brand stays */
+:root[data-edition="blackletter"][data-mode="dark"] {
+  --bg: #0E0E15;
+  --bg-bloom-1: rgba(115, 189, 115, .07);
+  --bg-bloom-2: rgba(205, 205, 230, .05);
+  --bg-bloom-3: rgba(120, 92, 210, .16);
+  --ink: #F1F0F8; --ink-2: #B4B3CA;
+  --line: rgba(241, 240, 248, .16); --line-strong: rgba(241, 240, 248, .82);
+  --surface: rgba(255, 255, 255, .04); --surface-hi: rgba(255, 255, 255, .09); --surface-solid: #17171F;
+  --edge: rgba(241, 240, 248, .24); --rim: rgba(255, 255, 255, .06);
+  --head-bg: rgba(14, 14, 21, .88);
+  --accent-ink: #B4F694;
+  --shadow-2: 0 22px 44px -26px rgba(0,0,0,.95);
+}
+:root[data-edition="blackletter"] body { background-image:
+    var(--print),
+    radial-gradient(80vw 60vw at 0% -10%, var(--bg-bloom-1), transparent 60%),
+    radial-gradient(70vw 55vw at 105% 15%, var(--bg-bloom-2), transparent 62%),
+    radial-gradient(90vw 70vw at 50% 115%, var(--bg-bloom-3), transparent 60%);
+  background-size: 200px 200px, auto, auto, auto; letter-spacing: -.005em; }
+
+/* --- header: blackletter wordmark, modern sans navigation, square controls --- */
+:root[data-edition="blackletter"] .site-head { border-bottom: 1px solid var(--line-strong); }
+:root[data-edition="blackletter"] .mark { font: 700 clamp(1.125rem, .95rem + .8vw, 1.375rem)/1 var(--f-black); letter-spacing: 0; text-transform: none; white-space: nowrap; }
+:root[data-edition="blackletter"] .theme-btn, :root[data-edition="blackletter"] .menu-btn, :root[data-edition="blackletter"] .edition-btn {
+  border-radius: 2px; background: transparent; border: 1px solid var(--line-strong); box-shadow: none; }
+:root[data-edition="blackletter"] .theme-btn:hover, :root[data-edition="blackletter"] .menu-btn:hover, :root[data-edition="blackletter"] .edition-btn:hover {
+  background: var(--ink); color: var(--bg); }
+:root[data-edition="blackletter"] .nav a { font: 600 .9375rem/1.25 var(--f-sans); letter-spacing: -.01em; border-radius: 2px; box-shadow: none; }
+:root[data-edition="blackletter"] .nav__orb { border-radius: 2px; background: transparent; border: 1px solid var(--line-strong); color: var(--ink); font: 700 1.25rem/1 var(--f-black); }
+:root[data-edition="blackletter"] .nav a[aria-current] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+:root[data-edition="blackletter"] .nav a[aria-current] .nav__orb { background: var(--hi); color: #111114; border-color: var(--hi); }
+:root[data-edition="blackletter"] .nav a[aria-current] .nav__tc, :root[data-edition="blackletter"] .nav a[aria-current] .nav__go { color: inherit; opacity: .75; }
+
+/* --- shared parts: rectangular, ruled, printed --- */
+:root[data-edition="blackletter"] .pill { border-radius: 2px; background: transparent; border: 1px solid var(--line-strong); box-shadow: none; font: 600 .8125rem/1.2 var(--f-sans); letter-spacing: 0; }
+:root[data-edition="blackletter"] .pill:hover { background: var(--ink); color: var(--bg); animation: none; }
+:root[data-edition="blackletter"] .notice { border-radius: 2px; background: transparent; border: 0; border-left: 3px solid var(--line-strong); padding: 4px 0 4px 14px; }
+:root[data-edition="blackletter"] .kicker { letter-spacing: .2em; }
+:root[data-edition="blackletter"] .chrome { filter: drop-shadow(0 1px 0 var(--rim)); }
+
+/* --- hero: oversized blackletter against a quiet mono caption --- */
+:root[data-edition="blackletter"] .intro__title { font: 700 clamp(4.25rem, 1.6rem + 12vw, 11rem)/.8 var(--f-black); letter-spacing: 0; text-transform: none; margin-top: 18px; }
+:root[data-edition="blackletter"] .intro__title .line + .line { margin-left: .9em; }      /* staggered, editorial */
+:root[data-edition="blackletter"] .intro__tc { font: 500 var(--t-sub)/1.6 var(--f-sans); margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--line-strong); max-width: 26em; }
+:root[data-edition="blackletter"] .art, :root[data-edition="blackletter"] .art::before { border-radius: 2px; }
+:root[data-edition="blackletter"] .index { border-top: 3px double var(--line-strong); }
+:root[data-edition="blackletter"] .index__thumb img { border-radius: 2px; }
+:root[data-edition="blackletter"] .index__l { border-radius: 2px; background: var(--ink); color: var(--bg); border: 0; font: 700 .9375rem/1 var(--f-black); }
+:root[data-edition="blackletter"] .index__t { font: 600 .9375rem/1.35 var(--f-sans); letter-spacing: -.01em; }
+
+/* --- sections: double rule, blackletter initial, blackletter title --- */
+:root[data-edition="blackletter"] .cat__head { border-top: 3px double var(--line-strong); padding-top: 22px; }
+:root[data-edition="blackletter"] .cat__letter { border-radius: 2px; background: transparent !important; border: 1px solid var(--line-strong); color: var(--ink);
+  box-shadow: 6px 6px 0 var(--hi); font: 700 clamp(2.5rem, 1.6rem + 3vw, 4.5rem)/1 var(--f-black); }
+:root[data-edition="blackletter"] .cat__titles h2 { font: 700 clamp(2.25rem, 1.3rem + 3.6vw, 4.75rem)/.95 var(--f-black); letter-spacing: 0; }
+:root[data-edition="blackletter"] .cat__tc { font: 500 var(--t-sub)/1.4 var(--f-sans); margin-top: 10px; }
+
+/* --- project names: chosen per work (data-face) --- */
+:root[data-edition="blackletter"] .work__cap { border-top: 1px solid var(--line-strong); padding-top: 12px; margin-top: 20px; }
+:root[data-edition="blackletter"] .work__name { font: 700 1.0625rem/1.3 var(--f-sans); letter-spacing: -.02em; }
+:root[data-edition="blackletter"] .work[data-face="gothic"] .work__name { font: 700 1.625rem/1.05 var(--f-black); letter-spacing: 0; }
+:root[data-edition="blackletter"] .work__name span { font-family: var(--f-sans); font-size: .875rem; }
+:root[data-edition="blackletter"] .work__meta { letter-spacing: .14em; }
+:root[data-edition="blackletter"] .work.is-back .obj { filter: drop-shadow(0 0 0 transparent) drop-shadow(6px 6px 0 var(--hi)); }
+
+/* --- project page --- */
+:root[data-edition="blackletter"] .crumbs .pill { border-color: var(--line); }
+:root[data-edition="blackletter"] .project__head h1 { font: 800 var(--t-h1)/.95 var(--f-sans); letter-spacing: -.045em; text-transform: none; }
+:root[data-edition="blackletter"] .project[data-face="gothic"] .project__head h1 { font: 700 clamp(3rem, 1.6rem + 6.4vw, 7.5rem)/.85 var(--f-black); letter-spacing: 0; }
+:root[data-edition="blackletter"] .project__tc { font-family: var(--f-sans); margin-top: 16px; }
+:root[data-edition="blackletter"] .project__body { border-top: 3px double var(--line-strong); }
+:root[data-edition="blackletter"] .zoom img, :root[data-edition="blackletter"] .browser { border-radius: 2px; }
+:root[data-edition="blackletter"] .b-strip { border-radius: 2px; }
+:root[data-edition="blackletter"] .b-letter { border-radius: 2px; background: var(--surface); border: 1px solid var(--line-strong); }
+:root[data-edition="blackletter"] .b-letter__label { font-family: var(--f-mono); }
+:root[data-edition="blackletter"] .pager { border-top: 3px double var(--line-strong); }
+:root[data-edition="blackletter"] .pn { border-radius: 2px; background: transparent; border: 1px solid var(--line-strong); }
+:root[data-edition="blackletter"] .pn:hover { background: var(--ink); color: var(--bg); }
+:root[data-edition="blackletter"] .pn:hover .pn__dir, :root[data-edition="blackletter"] .pn:hover .pn__name span[lang] { color: inherit; opacity: .75; }
+:root[data-edition="blackletter"] .pn__thumb { border-radius: 2px; }
+:root[data-edition="blackletter"] .pn__name { font: 700 .9375rem/1.35 var(--f-sans); }
+
+/* --- lightbox, back to top, footer --- */
+:root[data-edition="blackletter"] .lb-btn { border-radius: 2px; background: transparent; font-family: var(--f-sans); }
+:root[data-edition="blackletter"] .lb-btn:hover { background: #F1F0F8; color: #111114; }
+:root[data-edition="blackletter"] .to-top { border-radius: 2px; background: var(--ink); color: var(--bg); border: 0; box-shadow: 6px 6px 0 var(--hi); font-family: var(--f-sans); }
+:root[data-edition="blackletter"] .to-top:hover { color: var(--bg); box-shadow: 3px 3px 0 var(--hi); transform: translate(3px, 3px); }
+:root[data-edition="blackletter"] .to-top:focus-visible { border-radius: 2px; }
+:root[data-edition="blackletter"] .site-foot .wrap { border-top: 3px double var(--line-strong); }
+:root[data-edition="blackletter"] .foot__mark { font: 700 1.25rem/1.2 var(--f-black); letter-spacing: 0; text-transform: none; }
+:root[data-edition="blackletter"] .scrim { background: rgba(10, 10, 14, .45); }
+
+@media (min-width: 1024px) {
+  :root[data-edition="blackletter"] .nav ul { border-radius: 2px; background: transparent; border: 1px solid var(--line-strong); box-shadow: none; padding: 3px; }
+  :root[data-edition="blackletter"] .nav a { font-size: .8125rem; border-radius: 1px; }
+  :root[data-edition="blackletter"] .nav__orb { width: 30px; height: 30px; font-size: 1rem; border: 0; }
+  :root[data-edition="blackletter"] .intro { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; }
+  :root[data-edition="blackletter"] .intro__title { font-size: min(11.5vw, 11rem); }
+  :root[data-edition="blackletter"] .cat__titles h2 { max-width: 12ch; }
+}
+@media (forced-colors: active) {
+  :root[data-edition="blackletter"] .cat__letter, :root[data-edition="blackletter"] .to-top { box-shadow: none; }
+}
+:root[data-edition="blackletter"] .ui__name { font-family: var(--f-mono); }
+:root[data-edition="blackletter"] .ui--feature > .ui__name { font-family: var(--f-sans); font-weight: 700; letter-spacing: -.03em; }
+</style>
+</head>
+<body>
+<!-- =========================================================
+     5. HTML CONTENT
+     The works themselves are generated by the script (section 6)
+     from the CATEGORIES and WORKS lists, so edits happen in one place.
+     ========================================================= -->
+<a class="skip" href="#view">Skip to works · 跳到作品</a>
+
+<!-- Header: logo + responsive navigation.
+     Phone / tablet: the menu button opens #site-menu as a glass panel.
+     Desktop (≥1024px): the same list shows in full inside the bar. -->
+<header class="site-head" id="site-head">
+  <div class="wrap head__in">
+    <a class="mark" href="#top"><span class="mark__disc" aria-hidden="true"></span>A Visual Mixtape</a>
+    <!-- Design edition switch: Y2K ⇄ Blackletter Typography (remembers the last choice) -->
+    <button class="edition-btn" id="edition-btn" type="button" aria-pressed="false" aria-label="切換為歌德字體版本 Blackletter edition">
+      <span class="edition-btn__bl" aria-hidden="true">A</span><span class="edition-btn__y2k" aria-hidden="true">Y2K</span>
+    </button>
+    <!-- Light / dark theme switch (remembers the last choice) -->
+    <button class="theme-btn" id="theme-btn" type="button" aria-pressed="false" aria-label="切換為深色模式 Dark mode">
+      <svg class="theme-btn__sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
+      <svg class="theme-btn__moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8z"/></svg>
+    </button>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu 選單">
+      <span class="menu-btn__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <nav class="nav" id="site-menu" aria-label="作品分類 Categories">
+      <p class="nav__label" aria-hidden="true">Browse · 瀏覽</p>
+      <ul>
+        <li><a href="#top"><span class="nav__orb" aria-hidden="true">✦</span><span>All Works<span class="nav__tc" lang="zh-Hant">作品總覽</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+        <li><a href="#social"><span class="nav__orb" aria-hidden="true">A</span><span>Social<span class="nav__tc" lang="zh-Hant">社群貼文設計</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+        <li><a href="#web"><span class="nav__orb" aria-hidden="true">B</span><span>Web<span class="nav__tc" lang="zh-Hant">網頁設計</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+        <li><a href="#info"><span class="nav__orb" aria-hidden="true">C</span><span>Infographic<span class="nav__tc" lang="zh-Hant">資訊圖表設計</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+        <li><a href="#ui"><span class="nav__orb" aria-hidden="true">D</span><span>UI<span class="nav__tc" lang="zh-Hant">介面設計</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+        <li><a href="#illus"><span class="nav__orb" aria-hidden="true">E</span><span>Illustration<span class="nav__tc" lang="zh-Hant">插畫與塗鴉字體</span></span><span class="nav__go" aria-hidden="true">→</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- Covers the page while the menu is open; a click here closes the menu. -->
+<div class="scrim" id="scrim" hidden></div>
+
+<main id="view" tabindex="-1">
+  <noscript><p class="wrap">This gallery needs JavaScript to show the works. 請開啟 JavaScript 以瀏覽作品。</p></noscript>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="foot__mark"><span class="mark__disc" aria-hidden="true"></span>A Visual Mixtape · Portfolio Archive 2022–2026</p>
+    <p lang="zh-Hant">※ 社群貼文、網頁與資訊圖表作品完成於任職期間，相關著作權及智慧財產權均歸原公司所有，僅供個人作品集展示使用。</p>
+  </div>
+</footer>
+
+<!-- Back to top: arrow only, appears after scrolling -->
+<a class="to-top" id="to-top" href="#top" aria-label="Back to top"><span aria-hidden="true">↑</span></a>
+
+<p id="live" class="sr-only" aria-live="polite"></p>
+
+<dialog class="lightbox" id="lightbox" aria-label="放大檢視">
+  <div class="lb">
+    <div class="lb__top">
+      <span class="lb__count" id="lb-count" aria-live="polite"></span>
+      <button class="lb-btn" id="lb-close" type="button">Close <span aria-hidden="true">✕</span><span class="sr-only">關閉</span></button>
+    </div>
+    <div class="lb__stage"><img id="lb-img" alt=""></div>
+    <div class="lb__bottom">
+      <button class="lb-btn" id="lb-prev" type="button"><span aria-hidden="true">←</span> Previous<span class="sr-only">上一張</span></button>
+      <p class="lb__caption" id="lb-caption"></p>
+      <button class="lb-btn" id="lb-next" type="button">Next <span aria-hidden="true">→</span><span class="sr-only">下一張</span></button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* =========================================================
+   6. JAVASCRIPT
+   6.1 Image settings — edit here
+   ========================================================= */
+window.IMG_BASE = "img/";
+/* Images load from IMG_BASE + key + ".jpg", e.g. img/p2_cover.jpg.
+   Put the img/ folder next to this file, or on CodePen upload the images somewhere
+   public and paste that URL here (end it with "/").
+   Any image that cannot be found shows a clearly labelled placeholder. */
+
+
+/* 6.2 Image data */
+/* File type for images that are not .jpg (transparent PNGs). */
+window.EXT = {"pa_l1": "png", "pa_l2": "png", "pa_l3": "png", "p2_n01": "gif", "p2_n02": "gif", "p5_n18": "gif", "p5_n24": "gif", "il_ybsg": "png", "il_aug": "png"};
+/* Image sizes [width, height] — update if a replacement image has a different ratio. */
+const DIMS = {"ig1_full":[800,2000],"ig2_full":[800,2000],"p1_cover":[1616,1264],"p1_g1":[1200,1200],"p1_g2":[1200,1200],"p1_g3":[1200,1200],"p1_g4":[1200,1200],"p1_g5":[1200,1200],"p1_g6":[1200,1200],"p1_s1":[1200,1200],"p1_s2":[1200,1200],"p1_s3":[1200,1200],"p1_st1":[1080,1920],"p1_st2":[1080,1920],"p1_st3":[1080,1920],"p1_st4":[1080,1920],"p1_st5":[1080,1920],"p1_st6":[1080,1920],"p1_st7":[1080,1920],"p2_cover":[1616,1264],"p3_cover":[1616,1264],"p3_g1":[1200,1200],"p3_g2":[1200,1200],"p3_g3":[1200,1200],"p3_g4":[1200,1200],"p3_g5":[1200,1200],"p3_g6":[1200,1200],"p3_m1":[1200,630],"p3_m2":[1200,600],"p3_m3":[1200,600],"p3_s1":[1200,1200],"p3_s2":[1200,1200],"p3_s3":[1200,1200],"p4_cover":[1616,1264],"p4_g1":[1200,1200],"p4_g2":[1200,1200],"p4_g3":[1200,1200],"p4_g4":[1200,1200],"p4_g5":[1200,1200],"p4_g6":[1200,1200],"p4_i0":[960,630],"p4_i1":[3000,1000],"p4_i2":[3000,1000],"p4_i3":[3000,1000],"p4_s1":[1200,1200],"p4_s2":[1200,1200],"p4_s3":[1200,1200],"p5_c1":[1200,1200],"p5_c2":[1200,1200],"p5_c3":[1200,1200],"p5_c4":[1200,1200],"p5_c5":[1200,1200],"p5_cover":[1616,1264],"p5_s1":[1200,1200],"p5_s2":[1200,1200],"p5_s3":[1200,1200],"p5_w1":[1920,1080],"p5_w2":[1920,1080],"p5_w3":[1920,1080],"p6_cover":[1616,1264],"p6_g1":[1200,1200],"p6_g2":[1201,1201],"p6_g3":[1200,1200],"p6_g4":[1200,1200],"p6_g5":[1200,1200],"p6_g6":[1200,1200],"p6_k1":[1200,630],"p6_k2":[1200,630],"p6_k3":[1200,1200],"p6_k4":[1200,1200],"p6_k5":[1200,1200],"p6_m1":[1200,630],"p6_m2":[1200,630],"p6_m3":[1200,630],"p6_s1":[1200,1200],"p6_s2":[1200,1200],"p6_s3":[1200,1200],"ui_1":[2560,1440],"ui_10":[2560,1440],"ui_2":[2560,1440],"ui_3":[2560,1440],"ui_4":[2560,1440],"ui_5":[2560,1440],"ui_6":[2560,1440],"ui_7":[2560,1440],"ui_8":[2560,1440],"ui_9":[2560,1440],"ui_cover":[3232,2528],"w_dl":[1600,900],"w_gl1":[1600,900],"w_gl2":[1600,900],"w_gl3":[1600,900],"w_gl4":[1600,900],"w_vi":[1600,1040],"pa_01":[1200,1200],"pa_02":[1200,1200],"pa_03":[1200,1200],"pa_04":[1200,800],"pa_05":[1200,1200],"pa_06":[1200,1200],"pa_07":[1200,1200],"pa_08":[1200,1200],"pa_09":[1200,1200],"pa_10":[1200,600],"pa_11":[1200,800],"pa_12":[1200,1200],"pa_13":[1200,1200],"pa_14":[1200,1200],"pa_15":[1200,1200],"pa_16":[1200,1200],"pa_17":[1200,1200],"pa_18":[1200,800],"pa_19":[1200,1200],"pa_20":[1200,1200],"pa_21":[1200,1200],"pa_22":[1200,1200],"pa_23":[1200,1200],"pa_24":[1200,1200],"pa_25":[1200,1200],"pa_26":[1200,1200],"pa_27":[1200,1200],"pa_28":[1200,1200],"pa_29":[1200,1200],"pa_30":[800,1200],"pa_31":[1200,1200],"pa_32":[1200,1200],"pa_33":[1200,1200],"pa_34":[1200,1200],"pa_35":[1200,1200],"pa_36":[1200,1200],"pa_37":[1200,1200],"pa_38":[1200,1200],"pa_39":[1200,800],"pa_40":[1200,1200],"pa_41":[1200,1200],"pa_42":[1200,1200],"pa_43":[1200,1200],"pa_44":[1200,1200],"pa_45":[1200,1200],"pa_46":[1200,1200],"pa_47":[1200,1200],"pa_48":[1200,1200],"pa_49":[1200,1200],"pa_50":[1200,1200],"pa_51":[1200,800],"pa_52":[1200,1200],"pa_l1":[987,271],"pa_l2":[549,373],"pa_l3":[568,293],"p1_n01":[1800,945],"p1_n02":[1200,1200],"p1_n03":[1200,1200],"p1_n04":[1200,1200],"p1_n05":[1200,1200],"p1_n06":[1200,1200],"p1_n07":[1200,1200],"p2_n01":[1200,1200],"p2_n02":[1200,1200],"p3_n01":[1200,1200],"p3_n02":[1200,1200],"p3_n03":[1200,1200],"p3_n04":[1200,1200],"p3_n05":[1200,1200],"p3_n06":[1200,1200],"p3_n07":[1200,1200],"p3_n08":[1200,1200],"p3_n09":[1200,1200],"p3_n10":[1200,1200],"p3_n11":[1200,1200],"p3_n12":[1200,1200],"p3_n13":[1200,1200],"p3_n14":[1200,1200],"p3_n15":[1200,1200],"p3_n16":[1200,1200],"p3_n17":[1200,1200],"p3_n18":[1200,1200],"p3_n19":[600,600],"p3_n20":[600,600],"p3_n21":[1200,1200],"p3_n22":[1200,1200],"p3_n23":[1200,1200],"p3_n24":[1200,1200],"p3_n25":[1200,1200],"p3_n26":[1200,1200],"p3_n27":[1200,1200],"p3_n28":[1200,1200],"p3_n29":[1200,1200],"p3_n30":[1500,1500],"p3_n31":[1200,1200],"p3_n32":[1200,1200],"p3_n33":[1200,1200],"p3_n34":[1200,1200],"p3_n35":[1200,1200],"p3_n36":[1200,1200],"p3_n37":[1200,1200],"p3_n38":[1200,1200],"p3_n39":[1200,1200],"p3_n40":[1200,1200],"p3_n41":[1200,1200],"p4_n01":[1800,945],"p4_n02":[1200,1200],"p4_n03":[1200,1200],"p4_n04":[1250,375],"p4_n05":[1200,1200],"p4_n06":[1200,1200],"p4_n07":[1000,2500],"p4_n08":[1000,2500],"p4_n09":[1200,1200],"p4_n10":[1200,1200],"p4_n11":[1200,1200],"p4_n12":[1200,1200],"p5_n01":[1250,375],"p5_n02":[1920,1080],"p5_n03":[1200,1200],"p5_n04":[1920,1080],"p5_n05":[1920,1080],"p5_n06":[1200,1200],"p5_n07":[1920,1080],"p5_n08":[3000,2000],"p5_n09":[1200,1200],"p5_n10":[1200,1200],"p5_n11":[1920,1080],"p5_n12":[1200,1200],"p5_n13":[1080,1920],"p5_n14":[1200,800],"p5_n15":[1200,1200],"p5_n16":[1200,1200],"p5_n17":[1200,1200],"p5_n18":[1200,1200],"p5_n19":[1200,1200],"p5_n20":[1200,1200],"p5_n21":[1200,1200],"p5_n22":[1200,1200],"p5_n23":[1200,1200],"p5_n24":[1200,1200],"p6_n01":[1838,922],"p6_n02":[1200,630],"p6_n03":[1200,1200],"il_sto":[2048,2048],"il_halloween":[2048,2048],"il_aug_cover":[2400,2400],"il_ybsg":[2138,1214],"il_aug":[2050,763],"il_cup":[2576,2576],"il_doll":[2576,2576],"il_ice_bunny":[2400,2400],"il_ice_dog":[2400,2400],"il_goodday":[1280,1280]};
+/* Image descriptions for screen readers (alt text). */
+const ALT = {
+"p1_cover": "手機遊戲 社群貼文設計作品總覽",
+"p1_g1": "社群貼文：正義之劍介紹",
+"p1_g2": "社群貼文：狩獵惡魔 就喜歡用這連招!",
+"p1_g3": "社群貼文：下一個被我踹的是誰!",
+"p1_g4": "社群貼文：冰元素",
+"p1_g5": "社群貼文：火元素",
+"p1_g6": "社群貼文：雷元素",
+"p1_s1": "社群貼文：尼祿",
+"p1_s2": "社群貼文：蕾蒂",
+"p1_s3": "社群貼文：但丁 維吉爾",
+"p1_st1": "社群貼文：倒數7天",
+"p1_st2": "社群貼文：倒數6天 正式公測",
+"p1_st3": "社群貼文：正式公測 倒數5天",
+"p1_st4": "社群貼文：倒數4天 正式公測",
+"p1_st5": "社群貼文：正式公測 倒數3天",
+"p1_st6": "社群貼文：再2天 正式公測",
+"p1_st7": "社群貼文：距離正式公測 最後1天",
+"p2_cover": "寵物 App 社群貼文設計作品總覽",
+"p3_cover": "手機遊戲 社群貼文設計作品總覽",
+"p3_g1": "社群貼文：紅月事件",
+"p3_g2": "社群貼文：不給糖就搗蛋",
+"p3_g3": "社群貼文：你的最強屬性",
+"p3_g4": "社群貼文：公會戰GVG",
+"p3_g5": "社群貼文：寵物嘉年華-刺激大亂鬥一觸即發",
+"p3_g6": "社群貼文：夏日大作戰",
+"p3_m1": "社群貼文：新舊聯動新火花",
+"p3_m2": "社群貼文：冒險輔助組合包重磅推出",
+"p3_m3": "社群貼文：1月1日 新服傾城之戰",
+"p3_s1": "社群貼文：預下載正式開啟",
+"p3_s2": "社群貼文：新伺服器開放",
+"p3_s3": "社群貼文：聖誕節快樂",
+"p4_cover": "手機遊戲 社群貼文設計作品總覽",
+"p4_g1": "社群貼文：戰鬥口號募集中!",
+"p4_g2": "社群貼文：前有地雷 請盡速排除",
+"p4_g3": "社群貼文：古巨基即將啟動",
+"p4_g4": "社群貼文：畢業扔帽趣",
+"p4_g5": "社群貼文：小暑一聲雷",
+"p4_g6": "社群貼文：特種兵旅遊",
+"p4_i0": "社群貼文：礦工三岔路",
+"p4_i1": "社群貼文：冒煙的洞窟",
+"p4_i2": "社群貼文：寧靜的洞窟",
+"p4_i3": "社群貼文：發光的洞窟",
+"p4_s1": "社群貼文：獸人百科 搖滾哥",
+"p4_s2": "社群貼文：獸人百科 女僕屁",
+"p4_s3": "社群貼文：屁精的MBTI",
+"p5_c1": "社群貼文：倒數6天",
+"p5_c2": "社群貼文：倒數5天",
+"p5_c3": "社群貼文：倒數4天",
+"p5_c4": "社群貼文：倒數3天",
+"p5_c5": "社群貼文：倒數2天",
+"p5_cover": "手機遊戲 社群貼文設計作品總覽",
+"p5_s1": "社群貼文：版主招募",
+"p5_s2": "社群貼文：特派員小兔",
+"p5_s3": "社群貼文：女巫桃樂絲",
+"p5_w1": "社群貼文：巨鴨合照",
+"p5_w2": "社群貼文：紅包大FUN送",
+"p5_w3": "社群貼文：紳士漂漂尋找大作戰",
+"p6_cover": "手機遊戲 社群貼文設計作品總覽",
+"p6_g1": "社群貼文：三周年抽獎",
+"p6_g2": "社群貼文：跨服KVM",
+"p6_g3": "社群貼文：月夏夜狂想曲活動",
+"p6_g4": "社群貼文：甜粽還是鹹粽",
+"p6_g5": "社群貼文：聖誕節活動",
+"p6_g6": "社群貼文：春節活動預告-活動預告",
+"p6_k1": "社群貼文：全民賽玩法介紹",
+"p6_k2": "社群貼文：全民賽玩法介紹2",
+"p6_k3": "社群貼文：報名開始",
+"p6_k4": "社群貼文：選手資格確認提醒",
+"p6_k5": "社群貼文：全民賽開放報名中",
+"p6_m1": "社群貼文：官網儲值抽獎活動",
+"p6_m2": "社群貼文：感恩節活動預熱",
+"p6_m3": "社群貼文：ROX購物節",
+"p6_s1": "社群貼文：月夏夜狂想曲活動",
+"p6_s2": "社群貼文：甜粽還是鹹粽",
+"p6_s3": "社群貼文：元宵節活動",
+"w_gl1": "解凍格陵蘭 專題網頁首頁截圖（Climate 篇）",
+"w_gl2": "解凍格陵蘭 專題網頁首頁截圖（Fishing 篇）",
+"w_gl3": "解凍格陵蘭 專題網頁首頁截圖（Farming 篇）",
+"w_gl4": "解凍格陵蘭 專題網頁首頁截圖（Living 篇）",
+"w_dl": "霾葬大林蒲 專題網頁首頁截圖",
+"w_vi": "隱形病毒 專題網頁首頁截圖",
+"ig1_full": "資訊圖表：哪一款遊戲機是你的居家防疫神器？",
+"ig2_full": "資訊圖表：團購調查",
+"ui_cover": "UI Practice 介面練習封面",
+"ui_1": "Daily UI #01 Sign Up 介面練習",
+"ui_10": "Daily UI #10 Off Switch 介面練習",
+"ui_2": "Daily UI #02 Credit Card Checkout 介面練習",
+"ui_3": "Daily UI #03 Calculation 介面練習",
+"ui_4": "Daily UI #04 App Icon 介面練習",
+"ui_5": "Daily UI #05 User Profile 介面練習",
+"ui_6": "Daily UI #06 Settings 介面練習",
+"ui_7": "Daily UI #07 404 Page Design 介面練習",
+"ui_8": "Daily UI #08 Social Share 介面練習",
+"ui_9": "Daily UI #09 Flash Message 介面練習",
+"pa_01": "社群貼文：寵物公園FUN電趣",
+"pa_02": "社群貼文：喵皇的一天",
+"pa_03": "社群貼文：汪星人的一天",
+"pa_04": "社群貼文：毛孩時光機",
+"pa_05": "社群貼文：世界烏龜日",
+"pa_06": "社群貼文：小型猛獸現身",
+"pa_07": "社群貼文：柴犬顏色大全",
+"pa_08": "社群貼文：國際柯基日",
+"pa_09": "社群貼文：毛孩的端午粽",
+"pa_10": "社群貼文：一天不吸貓渾身不對勁",
+"pa_11": "社群貼文：寵物上相討論區，寵友齊聚拿好禮",
+"pa_12": "社群貼文：貓咪體香來源：喜歡曬太陽",
+"pa_13": "社群貼文：貓咪體香來源：天生愛清潔",
+"pa_14": "社群貼文：下刀的角度與位置",
+"pa_15": "社群貼文：守護小肉球毛孩剪指甲指南",
+"pa_16": "社群貼文：夏天警報-容易造成中暑的行為",
+"pa_17": "社群貼文：夏天警報",
+"pa_18": "社群貼文：定期健檢很重要",
+"pa_19": "社群貼文：更換飼料的黃金比例",
+"pa_20": "社群貼文：毛孩換新飼料",
+"pa_21": "社群貼文：獵人也要挑對獵物",
+"pa_22": "社群貼文：冷氣病",
+"pa_23": "社群貼文：毛孩暈車怎麼辦",
+"pa_24": "社群貼文：狗狗分離焦慮怎麼辦",
+"pa_25": "社群貼文：分享寵僕貼文鮮食宅配到家",
+"pa_26": "社群貼文：常見的毛孩錯誤抱法1-你抱對毛孩了嗎",
+"pa_27": "社群貼文：常見的毛孩錯誤抱法2-趴抱",
+"pa_28": "社群貼文：常見的毛孩錯誤抱法3-雙腳懸空",
+"pa_29": "社群貼文：常見的毛孩錯誤抱法4-嬰兒抱",
+"pa_30": "社群貼文：乾糧濕糧該怎麼選",
+"pa_31": "社群貼文：毛孩避難包清單",
+"pa_32": "社群貼文：毛孩避難包清單2",
+"pa_33": "社群貼文：毛孩防災",
+"pa_34": "社群貼文：分享寵僕影片，主食宅配到家",
+"pa_35": "社群貼文：寄宿不焦慮",
+"pa_36": "社群貼文：聯名活動開跑啦",
+"pa_37": "社群貼文：異寵到來-鼠婦",
+"pa_38": "社群貼文：毛孩電影推薦",
+"pa_39": "社群貼文：毛孩表演賽",
+"pa_40": "社群貼文：寵僕話題開聊中",
+"pa_41": "社群貼文：你知道我是什麼龜嗎",
+"pa_42": "社群貼文：澤龜VS陸龜",
+"pa_43": "社群貼文：如何判斷毛孩冷不冷",
+"pa_44": "社群貼文：寵僕x生活倉庫聯名活動",
+"pa_45": "社群貼文：毛孩迷因大解析",
+"pa_46": "社群貼文：為什麼剪浪浪耳朵",
+"pa_47": "社群貼文：每月認識一隻狗-杜賓",
+"pa_48": "社群貼文：毛孩零食挑選攻略",
+"pa_49": "社群貼文：雙寶家庭注意",
+"pa_50": "社群貼文：你知道貓咪不用頻繁洗澡嗎",
+"pa_51": "社群貼文：猫の日",
+"pa_52": "社群貼文：貓咪見縫就能鑽",
+"pa_l1": "標題字設計：寵僕話題",
+"pa_l2": "標題字設計：毛孩放映館",
+"pa_l3": "標題字設計：貓之日",
+"p1_n01": "社群貼文：你的惡魔獵人之路",
+"p1_n02": "社群貼文：尼祿2選1",
+"p1_n03": "社群貼文：打擊軌跡-惡魔獵人",
+"p1_n04": "社群貼文：打擊軌跡-選項",
+"p1_n05": "社群貼文：物理全力衝擊",
+"p1_n06": "社群貼文：完美次元斬",
+"p1_n07": "社群貼文：風格昇龍拳大比拚",
+"p2_n01": "社群貼文（動態）：新年運勢-今年發大柴",
+"p2_n02": "社群貼文（動態）：鸚鵡說我愛你",
+"p3_n01": "社群貼文：為了更強的裝備 討伐 MINI 跟 MVP 吧",
+"p3_n02": "社群貼文：神秘的都市傳說",
+"p3_n03": "社群貼文：重生的命運藥劑",
+"p3_n04": "社群貼文：創作屬於自己的頭飾吧",
+"p3_n05": "社群貼文：最閃亮的礦物",
+"p3_n06": "社群貼文：地下城放大鏡",
+"p3_n07": "社群貼文：地下城放大鏡2",
+"p3_n08": "社群貼文：萬鑽石經驗談",
+"p3_n09": "社群貼文：萬鑽經驗談2",
+"p3_n10": "社群貼文：全新通行證預告-雪原行者",
+"p3_n11": "社群貼文：全新限時活動",
+"p3_n12": "社群貼文：天降禮物",
+"p3_n13": "社群貼文：天降禮物兌換商店",
+"p3_n14": "社群貼文：逃學小鹿",
+"p3_n15": "社群貼文：萌寵聖誕換新裝",
+"p3_n16": "社群貼文：地圖角落祕密寶箱",
+"p3_n17": "社群貼文：公會BOSS 巴風特登場",
+"p3_n18": "社群貼文：貍之助全新時裝",
+"p3_n19": "社群貼文：禮包內容1",
+"p3_n20": "社群貼文：禮包內容2",
+"p3_n21": "社群貼文：GVG小課堂開課啦-中央區",
+"p3_n22": "社群貼文：GVG小課堂開課啦-前門區",
+"p3_n23": "社群貼文：GVG小課堂開課啦-魔物房",
+"p3_n24": "社群貼文：年夜飯分享",
+"p3_n25": "社群貼文：新年新目標",
+"p3_n26": "社群貼文：新年登入活動-打卡祝福",
+"p3_n27": "社群貼文：新春大作戰總集篇",
+"p3_n28": "社群貼文：GNJOY官網儲值回饋",
+"p3_n29": "社群貼文：限時活動-速通企劃",
+"p3_n30": "社群貼文：先遣賽冠軍賽就在明天",
+"p3_n31": "社群貼文：派派快跑",
+"p3_n32": "社群貼文：活動預告-卡片兌換任務",
+"p3_n33": "社群貼文：活動預告-KVM戰隊賽",
+"p3_n34": "社群貼文：來解答Q&A",
+"p3_n35": "社群貼文：限時活動-尋回樂章",
+"p3_n36": "社群貼文：卡片升星素材數量",
+"p3_n37": "社群貼文：系統優化卡片升星",
+"p3_n38": "社群貼文：限時活動-甜蜜楓糖",
+"p3_n39": "社群貼文：怪物即將來襲守護大家的萬聖節吧",
+"p3_n40": "社群貼文：系列活動即將開始",
+"p3_n41": "社群貼文：RO重生週年慶倒數7天",
+"p4_n01": "社群貼文：嘣嘣獸人",
+"p4_n02": "社群貼文：移動堡壘雛形解說",
+"p4_n03": "社群貼文：逃離木乃伊",
+"p4_n04": "社群貼文：巴哈姆特哈拉板",
+"p4_n05": "社群貼文：知名獸人們預熱",
+"p4_n06": "社群貼文：音樂台基本教練",
+"p4_n07": "社群貼文：機械爪測試！",
+"p4_n08": "社群貼文：腦袋嘣一下-獸喜燒",
+"p4_n09": "社群貼文：你可能不知道的獸人大小事 PART1",
+"p4_n10": "社群貼文：你可能不知道的獸人大小事 PART2",
+"p4_n11": "社群貼文：快來救救獸人！！",
+"p4_n12": "社群貼文：白露互動-美味食堂",
+"p5_n01": "社群貼文：晶核-巴哈姆特哈啦板",
+"p5_n02": "社群貼文：魔導先鋒試玩會",
+"p5_n03": "社群貼文：試玩會-報名促進廣告",
+"p5_n04": "社群貼文：試玩會-實體獎勵追加",
+"p5_n05": "社群貼文：領航測試",
+"p5_n06": "社群貼文：白色情人節",
+"p5_n07": "社群貼文：重要公告",
+"p5_n08": "社群貼文：倒數7天",
+"p5_n09": "社群貼文：端午節快樂",
+"p5_n10": "社群貼文：TT關注好禮活動",
+"p5_n11": "社群貼文：父親節快樂合照",
+"p5_n12": "社群貼文：影武者躲藏處大募集",
+"p5_n13": "社群貼文：稱讚上車P",
+"p5_n14": "社群貼文：立冬鍋物測驗",
+"p5_n15": "社群貼文：立冬鍋物測驗2",
+"p5_n16": "社群貼文：立冬鍋物測驗3",
+"p5_n17": "社群貼文：立冬鍋物測驗4",
+"p5_n18": "社群貼文（動態）：元旦運勢",
+"p5_n19": "社群貼文：團結兔兔有多暖",
+"p5_n20": "社群貼文：晶牌刮刮樂",
+"p5_n21": "社群貼文：晶牌刮刮樂2",
+"p5_n22": "社群貼文：馬上幫小兔換新裝",
+"p5_n23": "社群貼文：年夜飯吃飽飽",
+"p5_n24": "社群貼文（動態）：開工幸運色",
+"p6_n01": "社群貼文：聖誕佳節 歡慶好禮",
+"p6_n02": "社群貼文：全家儲值回饋",
+"p6_n03": "社群貼文：ROX冰雪節",
+"il_sto": "角色插畫：戴帽子的女孩與氣球",
+"il_halloween": "插畫：萬聖節南瓜派對",
+"il_aug_cover": "塗鴉字體：AUGUST 主視覺（富士山與花田）",
+"il_ybsg": "塗鴉字體：YBSG",
+"il_aug": "塗鴉字體：AUGUST 兔耳字",
+"il_cup": "圖示插畫：柳橙飲料杯",
+"il_doll": "角色插畫：喝柳橙汁的娃娃",
+"il_ice_bunny": "圖示插畫：兔子冰淇淋",
+"il_ice_dog": "圖示插畫：小狗冰淇淋",
+"il_goodday": "問候圖：GOOD DAY 早安你好，祝您一天順利"
+};
+
+/* 6.3 Content + behaviour */
+/* =========================================================
+   Selected Works — human-centred portfolio
+   The whole site is generated from CATEGORIES + WORKS below.
+   Replace an image by keeping its file name, or edit the keys here
+   (and its size in DIMS, its description in ALT).
+   ========================================================= */
+
+const IMG_BASE = window.IMG_BASE || "img/";   // set in section 6.1 above
+const NOTICE = "作品完成於任職期間，相關著作權及智慧財產權均歸原公司所有，僅供個人作品集展示使用。";
+
+const CATEGORIES = [
+  { id: "social", letter: "A", en: "Social Media Post Design", tc: "社群貼文設計" },
+  { id: "web", letter: "B", en: "Web Design", tc: "網頁設計", notice: true },
+  { id: "info", letter: "C", en: "Infographic Design", tc: "資訊圖表設計", notice: true, link: { label: "Online Infographic", tc: "線上資訊圖表", url: "https://www.thenewslens.com/article/155771" } },
+  { id: "ui", letter: "D", en: "UI Design", tc: "介面設計" },
+  { id: "illus", letter: "E", en: "Illustration & Graffiti", tc: "插畫與塗鴉字體" },
+];
+
+/* Block types on a project page
+   rows    : justified rows — images keep their own ratio, each row shares one height
+   stack   : one main image with smaller images stacked beside it
+   strip   : a series on a soft film band (scrolls sideways on phones)
+   browser : a web screenshot in a simple browser frame, with a link to the live page
+   tall    : one long image, centred
+   letter  : transparent PNG lettering on a glass panel — the PNG keeps its own transparency */
+/* Each work: id, cat, n (catalogue no.), en / tc (names), cover, year (from the work files),
+   tone (accent colour taken from the cover), disc (one signature work used on a disc / record label),
+   obj (how the work is shown on the home page: polaroid, cd, vinyl, negative, vhs, zine, prints, clip, poster, contact, stickers, sheet),
+   objx (extra works used by that object, e.g. the prints behind a polaroid),
+   homeOnly (the cover is shown on the home page only, not on the project page),
+   face (Blackletter edition only: "gothic" sets the project name in Blackletter; others stay modern),
+   notice (copyright line), blocks (project page layout), live (opens a web page), direct (opens the image). */
+const k = (p, ids) => ids.map((i) => `${p}_${i}`);
+const WORKS = [
+  { id: "pet-app", obj: "polaroid", objx: ["pa_07", "pa_45"], year: "2025–2026", tone: "#74e1ba", disc: "pa_07", cat: "social", n: "01", en: "Pet App", tc: "寵物 App", cover: "p2_cover", notice: true, layout: "wide",
+    blocks: [
+      { t: "rows", rows: [k("pa", ["01", "02", "03"])] },
+      { t: "stack", main: "pa_04", side: k("pa", ["05", "06"]) },
+      { t: "rows", rows: [k("pa", ["07", "08", "09"]), k("pa", ["10", "11"]), k("pa", ["12", "13", "15", "14"])] },
+      { t: "rows", rows: [k("pa", ["17", "16", "18"]), k("pa", ["21", "20", "19"]), k("pa", ["22", "23", "24", "25"])] },
+      { t: "strip", imgs: k("pa", ["26", "27", "28", "29"]) },
+      { t: "stack", main: "pa_30", side: k("pa", ["33", "31", "32", "34"]), cols: 2, left: true },
+      { t: "rows", rows: [k("pa", ["35", "36", "37", "38"])] },
+      { t: "letter", imgs: k("pa", ["l2", "l1", "l3"]), label: "Title Lettering · 標題字設計" },
+      { t: "rows", rows: [k("pa", ["39", "40", "41"]), k("pa", ["42", "43", "44", "46"])] },
+      { t: "rows", rows: [k("pa", ["45", "47", "48", "49"]), k("pa", ["50", "51", "52"])] },
+      { t: "rows", rows: [["p2_n01", "p2_n02"]] },
+    ] },
+  { id: "mobile-game-02", face: "gothic", obj: "cd", year: "2023–2025", tone: "#6588ec", disc: "p6_g1", cat: "social", n: "02", en: "Mobile Game", tc: "手機遊戲", cover: "p6_cover", notice: true, layout: "narrow",
+    blocks: [
+      { t: "rows", rows: [["p6_g1", "p6_g2", "p6_n01"], ["p6_g3", "p6_m1", "p6_g4"], ["p6_k3", "p6_k4", "p6_k1"]] },
+      { t: "rows", rows: [["p6_k2", "p6_k5"], ["p6_n02", "p6_m2"]] },
+      { t: "stack", main: "p6_m3", side: ["p6_g5", "p6_n03"] },
+      { t: "rows", rows: [["p6_g6", "p6_s3"]] },
+    ] },
+  { id: "mobile-game-03", face: "gothic", obj: "vinyl", year: "2024–2025", tone: "#2f5fd0", disc: "p3_g1", cat: "social", n: "03", en: "Mobile Game", tc: "手機遊戲", cover: "p3_cover", notice: true, layout: "narrow",
+    blocks: [
+      { t: "rows", rows: [["p3_n01", "p3_g1", "p3_g3"], ["p3_n02", "p3_n03", "p3_s1", "p3_g2"], ["p3_n04", "p3_m1", "p3_n05"]] },
+      { t: "rows", rows: [["p3_s2", "p3_n06", "p3_n07"], ["p3_n08", "p3_n09", "p3_n10", "p3_n11"], ["p3_n12", "p3_n13", "p3_n14", "p3_n15"]] },
+      { t: "rows", rows: [["p3_n16", "p3_n17", "p3_g4"], ["p3_g5", "p3_n18", "p3_m2"], ["p3_n19", "p3_n20", "p3_s3", "p3_m3"]] },
+      { t: "strip", imgs: ["p3_n21", "p3_n22", "p3_n23"] },
+      { t: "rows", rows: [["p3_n24", "p3_n25", "p3_n26"], ["p3_n27", "p3_n28", "p3_n29", "p3_n30"], ["p3_n31", "p3_g6", "p3_n32", "p3_n33"]] },
+      { t: "rows", rows: [["p3_n34", "p3_n35", "p3_n36"], ["p3_n37", "p3_n38", "p3_n39", "p3_n40", "p3_n41"]] },
+    ] },
+  { id: "mobile-game-04", face: "gothic", obj: "negative", objx: ["p5_c1", "p5_c2", "p5_c3", "p5_c4", "p5_c5"], year: "2025–2026", tone: "#674ef2", disc: "p5_w1", cat: "social", n: "04", en: "Mobile Game", tc: "手機遊戲", cover: "p5_cover", notice: true, layout: "wide",
+    blocks: [
+      { t: "rows", rows: [["p5_n01"], ["p5_s1", "p5_s2", "p5_w2"], ["p5_n02", "p5_n03", "p5_n04"]] },
+      { t: "rows", rows: [["p5_n05", "p5_n06", "p5_n07"]] },
+      { t: "strip", imgs: ["p5_c5", "p5_c4", "p5_c3", "p5_c2", "p5_c1", "p5_n08"] },
+      { t: "rows", rows: [["p5_n09", "p5_n10", "p5_n11"], ["p5_n12", "p5_n13", "p5_w1", "p5_w3", "p5_s3"]] },
+      { t: "strip", imgs: ["p5_n14", "p5_n15", "p5_n16", "p5_n17"] },
+      { t: "rows", rows: [["p5_n18", "p5_n19", "p5_n20", "p5_n21"], ["p5_n22", "p5_n23", "p5_n24"]] },
+    ] },
+  { id: "mobile-game-05", face: "gothic", obj: "vhs", year: "2024", tone: "#c0201c", disc: "p1_s3", cat: "social", n: "05", en: "Mobile Game", tc: "手機遊戲", cover: "p1_cover", notice: true, layout: "wide",
+    blocks: [
+      { t: "rows", rows: [["p1_g1", "p1_s1", "p1_s2"], ["p1_n01"]] },
+      { t: "strip", imgs: ["p1_st4", "p1_st2", "p1_st1", "p1_st6", "p1_st5", "p1_st3", "p1_st7"], tall: true },
+      { t: "rows", rows: [["p1_g2", "p1_g3", "p1_s3", "p1_n02"], ["p1_g4", "p1_n03", "p1_n04", "p1_g5"], ["p1_n05", "p1_g6", "p1_n06", "p1_n07"]] },
+    ] },
+  { id: "mobile-game-06", face: "gothic", obj: "zine", objx: ["p4_s1", "p4_g1"], year: "2024", tone: "#d79816", disc: "p4_s1", cat: "social", n: "06", en: "Mobile Game", tc: "手機遊戲", cover: "p4_cover", notice: true, layout: "narrow",
+    blocks: [
+      { t: "rows", rows: [["p4_n01", "p4_s1"], ["p4_g1", "p4_g2", "p4_s2", "p4_n02"], ["p4_i1"]] },
+      { t: "rows", rows: [["p4_i2"], ["p4_i3"]] },
+      { t: "stack", main: "p4_i0", side: ["p4_n03", "p4_g3"] },
+      { t: "rows", rows: [["p4_n04"], ["p4_n05", "p4_g4", "p4_g5", "p4_n06"], ["p4_n07", "p4_n08", "p4_n09", "p4_n10"]] },
+      { t: "rows", rows: [["p4_g6", "p4_n11", "p4_n12"]] },
+    ] },
+
+  { id: "melting-greenland", obj: "prints", objx: ["w_gl4", "w_gl3", "w_gl2"], year: "2022", tone: "#8bb8d5", cat: "web", n: "01", en: "Melting Greenland", tc: "解凍格陵蘭", cover: "w_gl1", notice: true, layout: "full",
+    live: "https://vip.udn.com/newmedia/2022/greenland/climate/",
+    chapters: [["Climate", "https://vip.udn.com/newmedia/2022/greenland/climate/"], ["Fishing", "https://vip.udn.com/newmedia/2022/greenland/fishing/"], ["Farming", "https://vip.udn.com/newmedia/2022/greenland/farming/"], ["Living", "https://vip.udn.com/newmedia/2022/greenland/living/"]],
+    blocks: [
+      { t: "browser", img: "w_gl1", url: "vip.udn.com/newmedia/2022/greenland/climate", link: "https://vip.udn.com/newmedia/2022/greenland/climate/" },
+      { t: "browser", img: "w_gl2", url: "vip.udn.com/newmedia/2022/greenland/fishing", link: "https://vip.udn.com/newmedia/2022/greenland/fishing/", half: true },
+      { t: "browser", img: "w_gl3", url: "vip.udn.com/newmedia/2022/greenland/farming", link: "https://vip.udn.com/newmedia/2022/greenland/farming/", half: true },
+      { t: "browser", img: "w_gl4", url: "vip.udn.com/newmedia/2022/greenland/living", link: "https://vip.udn.com/newmedia/2022/greenland/living/" },
+    ] },
+  { id: "dalinpo", obj: "clip", year: "2023", tone: "#9aa6c6", cat: "web", n: "02", en: "Dalinpo", tc: "霾葬大林蒲", cover: "w_dl", notice: true, layout: "wide", live: "https://vip.udn.com/newmedia/2023/dalinpo/",
+    blocks: [{ t: "browser", img: "w_dl", url: "vip.udn.com/newmedia/2023/dalinpo", link: "https://vip.udn.com/newmedia/2023/dalinpo/" }] },
+  { id: "invisible-virus", obj: "clip", year: "2022", tone: "#6b6b85", cat: "web", n: "03", en: "Invisible Virus", tc: "隱形病毒", cover: "w_vi", notice: true, layout: "narrow", live: "https://topic.udn.com/event/newmedia_2022-violence",
+    blocks: [{ t: "browser", img: "w_vi", url: "topic.udn.com/event/newmedia_2022-violence", link: "https://topic.udn.com/event/newmedia_2022-violence" }] },
+
+  { id: "game-console-survey", obj: "poster", tone: "#d4b905", cat: "info", n: "01", en: "Game Console Survey", tc: "遊戲機使用調查", cover: "ig1_full", notice: true, layout: "tall", direct: true,
+    blocks: [{ t: "tall", img: "ig1_full" }] },
+  { id: "group-buying-survey", obj: "poster", tone: "#c8102e", cat: "info", n: "02", en: "Group Buying Survey", tc: "團購調查", cover: "ig2_full", notice: true, layout: "tall", direct: true,
+    blocks: [{ t: "tall", img: "ig2_full" }] },
+
+  { id: "daily-ui", homeOnly: true, obj: "contact", objx: ["ui_9", "ui_6", "ui_1", "ui_5", "ui_7", "ui_4", "ui_10", "ui_8"], tone: "#e8a4a5", disc: "ui_7", cat: "ui", n: "01", en: "Daily UI Practice", tc: "UI 練習", cover: "ui_cover", notice: false, layout: "full",
+    blocks: [
+      /* UI grid with three clear steps — feature (9/12), half (6/12), third (4/12).
+         Every screen is 16:9, so a row always shares one height. On phones: detailed
+         screens run full width; the simplest components pair up two per row (m: "half"). */
+      { t: "ui", items: [
+        { k: "ui_2", name: "Credit Card Checkout", s: "feature" },
+        { k: "ui_1", name: "Sign Up", s: "half" },        { k: "ui_5", name: "User Profile", s: "half" },
+        { k: "ui_3", name: "Calculation", s: "half" },    { k: "ui_9", name: "Flash Message", s: "half" },
+        { k: "ui_6", name: "Settings", s: "half" },       { k: "ui_4", name: "App Icon", s: "half" },
+        { k: "ui_7", name: "404 Page Design", s: "third", m: "half" },
+        { k: "ui_8", name: "Social Share", s: "third", m: "last" },
+        { k: "ui_10", name: "On / Off Switch", s: "third", m: "half" },
+      ] },
+    ] },
+
+  { id: "character-illustration", cat: "illus", n: "01", en: "Character Illustration", tc: "角色插畫", cover: "il_sto", notice: false, layout: "wide",
+    tone: "#00c8f2", obj: "prints", objx: ["il_halloween"],
+    blocks: [
+      { t: "rows", rows: [["il_sto", "il_halloween"]] },
+    ] },
+  { id: "graffiti-lettering", face: "gothic", cat: "illus", n: "02", en: "Graffiti Lettering", tc: "塗鴉字體", cover: "il_aug_cover", notice: false, layout: "wide",
+    tone: "#0a6ee6", obj: "stickers", objx: ["il_ybsg"],
+    blocks: [
+      { t: "tall", img: "il_aug_cover" },
+      { t: "letter", imgs: ["il_aug", "il_ybsg"], label: "Graffiti Lettering · 塗鴉字體" },
+    ] },
+  { id: "icon-illustration", cat: "illus", n: "03", en: "Icon Illustration", tc: "圖示插畫", cover: "il_cup", notice: false, layout: "wide",
+    tone: "#f7a35c", obj: "sheet", objx: ["il_doll", "il_ice_bunny", "il_ice_dog"],
+    blocks: [
+      { t: "rows", rows: [["il_cup", "il_doll"], ["il_ice_bunny", "il_ice_dog"]] },
+    ] },
+  { id: "good-day", cat: "illus", n: "04", en: "Good Day", tc: "早安問候圖", cover: "il_goodday", notice: false, layout: "tall", direct: true,
+    tone: "#e040a0", obj: "poster",
+    blocks: [{ t: "tall", img: "il_goodday" }] },
+];
+
+/* ---------- helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ratio = (key) => (DIMS[key] ? DIMS[key][0] / DIMS[key][1] : 1);
+const extOf = (key) => (window.EXT && EXT[key]) || "jpg";                                   // PNGs are listed in EXT
+const src = (key) => (window.IMGDATA && IMGDATA[key]) || `${IMG_BASE}${key}.${extOf(key)}`;  // embedded images win when present
+const altOf = (key, w) => ALT[key] || `${w.tc} 作品圖`;
+const catOf = (w) => CATEGORIES.find((c) => c.id === w.cat);
+const keysOf = (w) => [...new Set(w.blocks.flatMap((b) => b.rows ? b.rows.flat() : b.items ? b.items.map((it) => it.k) : b.imgs || (b.main ? [b.main, ...b.side] : [b.img])))];
+/* External links: always a real <a href> (works with middle-click, long-press, copy link).
+   The URL is also printed under the link so it can be copied if a preview blocks new tabs. */
+const ext = (url, label, cls = "ext") => `<a class="${cls}" href="${url}" target="_blank" rel="noopener noreferrer" data-ext>${label}<span class="sr-only">（在新分頁開啟）</span> <span class="ext__arrow" aria-hidden="true">↗</span></a>`;
+
+function pic(key, w, { zoom = false, eager = false } = {}) {
+  const d = DIMS[key];
+  if (!d) return placeholder(key, 1);
+  const alpha = extOf(key) === "png";                                    // transparent artwork keeps its transparency — no backing, no frame
+  const im = `<img${alpha ? ' class="is-alpha"' : ""} data-key="${key}" src="${src(key)}" width="${d[0]}" height="${d[1]}" alt="${esc(altOf(key, w))}" ${eager ? "" : 'loading="lazy"'} decoding="async">`;
+  if (!zoom) return im;
+  return `<button class="zoom" type="button" data-key="${key}" aria-label="放大檢視：${esc(altOf(key, w))}">${im}</button>`;
+}
+
+/* A clearly labelled box shown when an image is missing or fails to load.
+   It keeps the image's own ratio, so the layout does not jump. */
+function placeholder(key, ar) {
+  return `<span class="placeholder" role="img" aria-label="圖片待補：${esc(key)}" style="--ar:${ar}">Image missing · 圖片待補<small>${esc(IMG_BASE + key)}.${extOf(key)}</small></span>`;
+}
+document.addEventListener("error", (e) => {
+  const im = e.target;
+  if (!(im instanceof HTMLImageElement) || im.id === "lb-img" || !im.closest("#view")) return;
+  const key = im.closest("[data-key]")?.dataset.key || im.dataset.key || "";
+  im.replaceWith(document.createRange().createContextualFragment(placeholder(key, (+im.getAttribute("width") / +im.getAttribute("height")) || 1)));
+}, true);
+
+/* decorative four-point sparkle */
+const SPARK = (cls) => `<svg class="spark ${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0z"/></svg>`;
+
+/* ---------- home ---------- */
+const imgTag = (key, cls = "", lazy = true) => `<img${cls ? ` class="${cls}"` : ""} src="${src(key)}" alt="" width="${DIMS[key][0]}" height="${DIMS[key][1]}"${lazy ? ' loading="lazy"' : ""} decoding="async">`;
+
+/* A collectable object for each project. Only the cover carries alt text;
+   the extra pieces (prints, discs, frames) are decorative and hidden from screen readers. */
+const decoImg = (key) => DIMS[key] ? imgTag(key) : "";
+const tape = (cls = "") => `<span class="tape ${cls}" aria-hidden="true"></span>`;
+function object(w, { eager = false } = {}) {
+  const main = `<span class="work__media">${pic(w.cover, w, { eager })}</span>`;
+  const x = w.objx || [];
+  const t = w.obj || "cd";
+  let inner = "";
+  switch (t) {
+    case "polaroid":
+      inner = `${x.map((k, i) => `<span class="pol pol--back pol--${i + 1}" aria-hidden="true">${decoImg(k)}</span>`).join("")}
+        <span class="pol pol--front">${tape("tape--top")}${main}</span>`; break;
+    case "cd":
+      inner = `<span class="cd__disc" aria-hidden="true">${decoImg(w.disc)}</span><span class="cd__case">${main}</span>`; break;
+    case "vinyl":
+      inner = `<span class="vinyl__rec" aria-hidden="true"><span class="vinyl__label">${decoImg(w.disc)}</span></span><span class="vinyl__sleeve">${main}</span>`; break;
+    case "negative":
+      inner = `<span class="neg__print">${main}</span>
+        <span class="neg__strip" aria-hidden="true"><span class="neg__track">${x.map((k) => `<span class="neg__frame">${decoImg(k)}</span>`).join("")}</span></span>`; break;
+    case "vhs":
+      inner = `<span class="vhs__tape" aria-hidden="true"><span class="vhs__reel"></span><span class="vhs__label"></span><span class="vhs__reel"></span></span>
+        <span class="vhs__sleeve"><span class="vhs__spine" aria-hidden="true"><b>VHS</b><i></i><i></i><i></i></span>${main}</span>`; break;
+    case "zine":
+      inner = `${x.map((k, i) => `<span class="zine__page zine__page--${i + 1}" aria-hidden="true">${decoImg(k)}</span>`).join("")}
+        <span class="zine__cover"><span class="zine__staple" aria-hidden="true"></span>${main}</span>`; break;
+    case "prints":
+      inner = `${x.map((k, i) => `<span class="print print--back print--${i + 1}" aria-hidden="true">${decoImg(k)}</span>`).join("")}
+        <span class="print print--front">${main}</span>`; break;
+    case "clip":
+    case "poster":
+      inner = `<span class="${t}">${tape("tape--l")}${tape("tape--r")}${main}</span>`; break;
+    case "stickers":   /* transparent lettering stuck onto the print */
+      inner = `<span class="stk__print">${main}</span>${x.map((k, i) => `<span class="stk stk--${i + 1}" aria-hidden="true">${decoImg(k)}</span>`).join("")}`; break;
+    case "sheet":      /* a sticker sheet: the cover plus the rest of the set */
+      inner = `<span class="sheet"><span class="sheet__item sheet__item--main">${main}</span>${x.map((k, i) => `<span class="sheet__item sheet__item--${i + 2}" aria-hidden="true">${decoImg(k)}</span>`).join("")}</span>`; break;
+    case "contact":
+      inner = `<span class="contact" aria-hidden="true">${x.map((k) => `<span class="contact__frame">${decoImg(k)}</span>`).join("")}</span>
+        <span class="contact__print">${main}</span>`; break;
+  }
+  return `<span class="obj obj--${t}" style="--tone:${w.tone || "var(--accent)"}">${inner}</span>`;
+}
+
+function renderHome() {
+  const view = $("#view");
+  view.innerHTML = `
+    <section class="intro wrap" aria-labelledby="intro-title">
+      <div class="intro__text">
+        <p class="kicker intro__kicker"><span>A Visual Mixtape</span><span aria-hidden="true">/</span><span>A Personal Collection</span></p>
+        <h1 id="intro-title" class="intro__title" tabindex="-1"><span class="line">Selected</span> <span class="line chrome">Works</span></h1>
+        <p class="intro__tc">作品集 · 社群貼文、網頁、資訊圖表與介面設計</p>
+      </div>
+      <div class="intro__art" aria-hidden="true">
+        ${["p6_cover", "p1_cover", "p2_cover"].map((key, i) => `<span class="art art--${i + 1}">${imgTag(key, "", false)}</span>`).join("")}
+        <span class="art-disc"></span>
+        ${SPARK("spark--1")}${SPARK("spark--2")}
+      </div>
+      <ol class="index" aria-label="作品分類">
+        ${CATEGORIES.map((c) => {
+          const works = WORKS.filter((w) => w.cat === c.id);
+          return `<li><a href="#${c.id}"><span class="index__thumb" aria-hidden="true">${imgTag(works[0].cover, "", false)}<span class="index__l">${c.letter}</span></span><span class="index__t">${c.en}<span lang="zh-Hant">${c.tc}</span></span></a></li>`;
+        }).join("")}
+      </ol>
+    </section>
+    ${CATEGORIES.map((c) => {
+      const works = WORKS.filter((w) => w.cat === c.id);
+      const link = c.link ? `<p class="cat__link">${ext(c.link.url, `${c.link.label} · ${c.link.tc}`, "pill")}</p>` : "";
+      return `
+      <section class="cat cat--${c.id}" id="${c.id}" aria-labelledby="h-${c.id}" tabindex="-1">
+        <div class="wrap">
+          <header class="cat__head">
+            <span class="cat__letter" aria-hidden="true">${c.letter}</span>
+            <div class="cat__titles">
+              <h2 id="h-${c.id}">${c.en}<span class="cat__tc" lang="zh-Hant">${c.tc}</span></h2>
+            </div>
+            <div class="cat__aside">
+              ${link}
+              ${c.notice ? `<p class="notice notice--cat" lang="zh-Hant"><span aria-hidden="true">※ </span>${NOTICE}</p>` : ""}
+            </div>
+          </header>
+          <ul class="works works--${c.id}" role="list">
+            ${works.map((w) => {
+              const cap = (more) => `<span class="work__cap">
+                    <span class="work__name">${esc(w.en)} <span lang="zh-Hant">${esc(w.tc)}</span></span>
+                    <span class="work__meta">${more}</span>
+                  </span>`;
+              /* live: the card opens the published web page in a new tab */
+              if (w.live) return `
+              <li class="work work--${w.layout} reveal" id="c-${w.id}" data-face="${w.face || "modern"}">
+                <a class="work__link" href="${w.live}" target="_blank" rel="noopener noreferrer" data-ext>
+                  ${object(w)}
+                  ${cap(`<span class="work__more work__more--show">Visit the live page · 前往網頁<span class="sr-only">（在新分頁開啟）</span> <span aria-hidden="true">↗</span></span>`)}
+                </a>
+                ${w.chapters ? `<ul class="chapters" aria-label="${esc(w.tc)} 各篇章">${w.chapters.map(([t, u]) => `<li><a class="pill pill--sm" href="${u}" target="_blank" rel="noopener noreferrer">${t}<span class="sr-only">（在新分頁開啟）</span> <span aria-hidden="true">↗</span></a></li>`).join("")}</ul>` : ""}
+              </li>`;
+              /* direct: the card itself opens the full image (no project page) */
+              if (w.direct) return `
+              <li class="work work--${w.layout} reveal" id="c-${w.id}" data-face="${w.face || "modern"}">
+                <button class="work__link work__btn" type="button" data-key="${w.cover}" aria-label="放大檢視：${esc(w.en)} ${esc(w.tc)}">
+                  ${object(w)}
+                  ${cap(`<span class="work__more work__more--show"><span aria-hidden="true">⤢</span> View full image · 檢視完整圖表</span>`)}
+                </button>
+              </li>`;
+              return `
+              <li class="work work--${w.layout} reveal" id="c-${w.id}" data-face="${w.face || "modern"}">
+                <a class="work__link" href="#work-${w.id}">
+                  ${object(w, { eager: c.id === "social" })}
+                  ${cap(`<span class="work__more">View project<span class="sr-only">：${esc(w.en)} ${esc(w.tc)}</span> <span aria-hidden="true">→</span></span>`)}
+                </a>
+              </li>`;
+            }).join("")}
+          </ul>
+        </div>
+      </section>`;
+    }).join("")}`;
+  document.title = "Selected Works";
+  observeReveal();
+}
+
+/* ---------- project page ---------- */
+const row = (keys, w) => `<div class="row">${keys.map((key) => `<figure${ratio(key) > 1.3 ? ' class="is-wide"' : ""} style="--f:${ratio(key)}">${pic(key, w, { zoom: true })}</figure>`).join("")}</div>`;
+function block(b, w) {
+  switch (b.t) {
+    case "rows": return `<div class="b b-rows">${b.rows.map((r) => row(r, w)).join("")}</div>`;
+    case "ui":
+      return `<div class="b b-ui">${b.items.map((it) => `<figure class="ui ui--${it.s}${it.m ? ` ui--m-${it.m}` : ""}">${pic(it.k, w, { zoom: true })}<figcaption class="ui__name">${esc(it.name)}</figcaption></figure>`).join("")}</div>`;
+    case "stack": {
+      const cols = b.cols || 1, rowsN = Math.ceil(b.side.length / cols);
+      const sideRatio = ratio(b.side[0]) * cols / rowsN;
+      const main = `<figure class="stack__main" style="--f:${ratio(b.main)}">${pic(b.main, w, { zoom: true })}</figure>`;
+      const side = `<div class="stack__side" style="--f:${sideRatio};--cols:${cols}">${b.side.map((key) => `<figure>${pic(key, w, { zoom: true })}</figure>`).join("")}</div>`;
+      return `<div class="b b-stack">${b.left ? side + main : main + side}</div>`;
+    }
+    case "strip":
+      return `<div class="b b-strip${b.tall ? " is-tall" : ""}"><p class="sr-only">系列作品，共 ${b.imgs.length} 張；在手機上可左右滑動。</p><div class="strip__track" tabindex="0" role="group" aria-label="系列作品">${b.imgs.map((key) => `<figure>${pic(key, w, { zoom: true })}</figure>`).join("")}</div></div>`;
+    case "browser":
+      return `<figure class="b b-browser${b.half ? " is-half" : ""}">
+          <div class="browser">
+            <div class="browser__bar"><span class="browser__dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="browser__url">${esc(b.url)}</span></div>
+            ${pic(b.img, w, { zoom: true })}
+          </div>
+          <figcaption>${ext(b.link, "Visit the live page · 前往網頁", "pill")}<span class="ext__url">${esc(b.link.replace(/^https?:\/\//, ""))}</span></figcaption>
+        </figure>`;
+    case "letter":
+      return `<div class="b b-letter"><p class="b-letter__label">${esc(b.label)}</p><div class="letter__grid">${b.imgs.map((key) => `<figure style="--r:${ratio(key)}">${pic(key, w, { zoom: true })}</figure>`).join("")}</div></div>`;
+    case "tall": return `<figure class="b b-tall">${pic(b.img, w, { zoom: true })}</figure>`;
+  }
+  return "";
+}
+
+function renderWork(id) {
+  const w = WORKS.find((x) => x.id === id);
+  if (!w) return renderHome();
+  const c = catOf(w), pages = WORKS.filter((x) => !(x.direct || x.live) || x === w), i = pages.indexOf(w);   // works that open directly have no page in the sequence
+  const prev = pages[(i - 1 + pages.length) % pages.length], next = pages[(i + 1) % pages.length];
+  const navItem = (x, dir) => `<a class="pn pn--${dir}" href="#work-${x.id}" style="--tone:${x.tone}"><span class="pn__thumb" aria-hidden="true">${imgTag(x.cover)}</span><span class="pn__text"><span class="pn__dir">${dir === "prev" ? "← Previous" : "Next →"}</span><span class="pn__name">${esc(x.en)} <span lang="zh-Hant">${esc(x.tc)}</span></span></span></a>`;
+  $("#view").innerHTML = `
+    <article class="project project--${c.id} wrap" aria-labelledby="p-title" data-face="${w.face || "modern"}">
+      <nav class="crumbs" aria-label="麵包屑"><a class="pill" href="#${c.id}"><span aria-hidden="true">←</span> ${c.en}</a></nav>
+      <header class="project__head" style="--tone:${w.tone}">
+        <div class="project__titles">
+          <p class="kicker">${c.en} <span lang="zh-Hant">${c.tc}</span></p>
+          <h1 id="p-title" tabindex="-1">${esc(w.en)} <span class="project__tc" lang="zh-Hant">${esc(w.tc)}</span></h1>
+          ${w.notice ? `<p class="notice" lang="zh-Hant"><span aria-hidden="true">※ </span>${NOTICE}</p>` : ""}
+          <p class="hint">Tap any image to enlarge · 點選圖片可放大</p>
+        </div>
+        ${keysOf(w).includes(w.cover) || w.homeOnly ? "" : `<figure class="project__cover">${object(w, { eager: true })}</figure>`}
+      </header>
+      <div class="project__body">${w.blocks.map((b) => block(b, w)).join("")}</div>
+      <nav class="pager" aria-label="其他作品">${navItem(prev, "prev")}${navItem(next, "next")}</nav>
+    </article>`;
+  document.title = `${w.en} ${w.tc} — Selected Works`;
+}
+
+/* ---------- lightbox (native <dialog>: focus stays inside, Esc closes) ---------- */
+const lb = { keys: [], i: 0, opener: null };
+function openLightbox(btn) {
+  const scope = btn.closest(".project__body, .works") || document;              // browse within this project, or within this home-page group
+  lb.keys = [...scope.querySelectorAll(".zoom, .work__btn")].map((b) => b.dataset.key);
+  lb.i = lb.keys.indexOf(btn.dataset.key);
+  lb.opener = btn;
+  showLb();
+  $("#lightbox").showModal();
+}
+function showLb() {
+  const key = lb.keys[lb.i], w = WORKS.find((x) => current === `work-${x.id}`);
+  const im = $("#lb-img");
+  im.classList.remove("is-shown");
+  im.src = src(key); im.width = DIMS[key][0]; im.height = DIMS[key][1];
+  const stage = $(".lb__stage");
+  stage.classList.toggle("is-tall", DIMS[key][0] / DIMS[key][1] < 0.6);   // long infographics: full width, scroll to read
+  stage.scrollTop = 0;
+  if (stage.classList.contains("is-tall")) { stage.tabIndex = 0; stage.setAttribute("aria-label", "長圖，可上下捲動閱讀"); stage.setAttribute("role", "region"); }
+  else { stage.removeAttribute("tabindex"); stage.removeAttribute("aria-label"); stage.removeAttribute("role"); }
+  im.alt = altOf(key, w || { tc: "" });
+  $("#lb-count").textContent = `${lb.i + 1} / ${lb.keys.length}`;
+  $("#lb-caption").textContent = im.alt;
+  im.decode?.().catch(() => {}).finally(() => im.classList.add("is-shown"));
+}
+const stepLb = (d) => { lb.i = (lb.i + d + lb.keys.length) % lb.keys.length; showLb(); };
+
+/* ---------- gentle reveal: content is always visible; only a small lift is animated ---------- */
+function observeReveal() {
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach((el) => {
+    if (el.getBoundingClientRect().top > innerHeight) { el.classList.add("is-pending"); io.observe(el); }
+  });
+}
+
+/* ---------- routing: #work-<id> opens a project, other #names scroll ---------- */
+/* The current view lives in `current`, so the site works even where the page
+   address cannot change (embedded previews, CodePen, pages with a <base> tag).
+   The address bar is updated too when the browser allows it. */
+let current = decodeURIComponent(location.hash.slice(1));
+let lastWork = null;                                    // the project you just left — used to land back on its cover
+const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* swap views with a soft cross-fade where the browser supports View Transitions */
+function swap(fn) {
+  if (document.startViewTransition && !calm()) document.startViewTransition(fn);
+  else fn();
+}
+function go(h) {
+  const changesView = h.startsWith("work-") || current.startsWith("work-");
+  current = h;
+  try { history.pushState({ h }, "", location.href.split("#")[0] + "#" + h); } catch (err) { /* address can't change here — fine */ }
+  changesView ? swap(route) : route();
+}
+/* jump to the top without animation — works in every browser (some Safari versions reject behavior: "instant") */
+function jumpTop() {
+  const root = document.documentElement, prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto"; window.scrollTo(0, 0); root.style.scrollBehavior = prev;
+}
+function route() {
+  const h = current;
+  if (h === "view") { $("#view").focus(); return; }                         // skip link
+  const live = $("#live");
+  if (h.startsWith("work-")) {
+    lastWork = h.slice(5);
+    renderWork(h.slice(5));
+    jumpTop();
+    $("#p-title")?.focus({ preventScroll: true });
+    live.textContent = `已開啟作品頁：${document.title}`;
+  } else {
+    if (!$(".intro")) renderHome();
+    document.title = "Selected Works";
+    if (h === "top" || !h) jumpTop();
+    let target = h && h !== "top" ? document.getElementById(h) : null;
+    // coming back from a project: land on that project's cover instead of the section top
+    const back = lastWork && WORKS.find((w) => w.id === lastWork);
+    if (back && (!h || h === back.cat)) {
+      const card = document.getElementById(`c-${back.id}`);
+      if (card) { jumpTop(); card.scrollIntoView({ block: "center" }); card.querySelector(".work__link")?.focus({ preventScroll: true }); card.classList.add("is-back"); setTimeout(() => card.classList.remove("is-back"), 1600); target = null; }
+    }
+    lastWork = null;
+    if (target) { target.scrollIntoView({ behavior: calm() ? "auto" : "smooth" }); target.focus({ preventScroll: true }); }
+  }
+  document.querySelectorAll(".nav a").forEach((a) => {
+    const on = a.getAttribute("href") === `#${h}` || (a.getAttribute("href") === "#top" && (!h || h === "top")) || (h.startsWith("work-") && WORKS.find((w) => `work-${w.id}` === h)?.cat === a.getAttribute("href").slice(1));
+    on ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current");
+  });
+}
+
+/* ---------- light / dark theme ----------
+   The choice is stored in this browser; without a stored choice the system setting is used.
+   (An inline script in <head> applies it before the page paints, so there is no flash.) */
+const themeBtn = $("#theme-btn");
+const getMode = () => document.documentElement.dataset.mode === "dark" ? "dark" : "light";
+function syncThemeBtn() {
+  const dark = getMode() === "dark";
+  themeBtn.setAttribute("aria-pressed", String(dark));
+  themeBtn.setAttribute("aria-label", dark ? "切換為淺色模式 Light mode" : "切換為深色模式 Dark mode");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#16162A" : "#CDCDE6");
+}
+function setMode(mode) {
+  const apply = () => { document.documentElement.dataset.mode = mode; syncThemeBtn(); };
+  try { localStorage.setItem("sw-theme", mode); } catch (err) { /* storage blocked — the choice lasts for this visit */ }
+  if (calm()) return apply();
+  if (document.startViewTransition) return document.startViewTransition(apply);
+  const root = document.documentElement;                          // fallback: soft colour transition
+  root.classList.add("theme-shift"); apply();
+  setTimeout(() => root.classList.remove("theme-shift"), 500);
+}
+themeBtn.addEventListener("click", () => setMode(getMode() === "dark" ? "light" : "dark"));
+syncThemeBtn();
+
+/* ---------- design edition: Y2K (default) or Blackletter Typography ----------
+   Both editions share the same content and code; the Blackletter styles live in their own
+   CSS section, scoped to :root[data-edition="blackletter"], so neither overrides the other. */
+const editionBtn = $("#edition-btn");
+const getEdition = () => document.documentElement.dataset.edition === "blackletter" ? "blackletter" : "y2k";
+function syncEditionBtn() {
+  const bl = getEdition() === "blackletter";
+  editionBtn.setAttribute("aria-pressed", String(bl));
+  editionBtn.setAttribute("aria-label", bl ? "切換為 Y2K 版本 Y2K edition" : "切換為歌德字體版本 Blackletter edition");
+  editionBtn.title = bl ? "Y2K edition" : "Blackletter edition";
+}
+function setEdition(ed) {
+  const apply = () => { document.documentElement.dataset.edition = ed; syncEditionBtn(); };
+  try { localStorage.setItem("sw-edition", ed); } catch (err) { /* storage blocked — lasts for this visit */ }
+  if (!calm() && document.startViewTransition) document.startViewTransition(apply); else apply();
+}
+editionBtn.addEventListener("click", () => setEdition(getEdition() === "blackletter" ? "y2k" : "blackletter"));
+syncEditionBtn();
+
+/* ---------- back to top: shows after scrolling past roughly one screen ---------- */
+const toTop = $("#to-top");
+const onScroll = () => toTop.classList.toggle("is-on", scrollY > innerHeight * 0.9);
+addEventListener("scroll", onScroll, { passive: true });
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#to-top, .js-top")) return;
+  e.preventDefault();
+  scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  ($("#p-title") || $("#intro-title") || $("#view")).focus({ preventScroll: true });   // keyboard users land at the top too
+});
+
+/* ---------- responsive navigation menu (phone + tablet) ---------- */
+const head = $("#site-head"), menuBtn = $("#menu-btn"), menu = $("#site-menu"), scrim = $("#scrim");
+const desktop = matchMedia("(min-width: 1024px)");
+const isOpen = () => menuBtn.getAttribute("aria-expanded") === "true";
+function setMenu(open, { returnFocus = true } = {}) {
+  if (desktop.matches) open = false;
+  menuBtn.setAttribute("aria-expanded", String(open));
+  menuBtn.setAttribute("aria-label", open ? "Close menu 關閉選單" : "Menu 選單");
+  head.classList.toggle("is-open", open);
+  document.documentElement.classList.toggle("is-locked", open);           // page underneath does not scroll
+  // everything outside the header is inert while the menu is open: no clicks, no Tab, hidden from screen readers
+  ["#view", ".site-foot", "#to-top", ".skip", "#theme-btn", "#edition-btn"].forEach((s) => { const el = $(s); if (el) el.inert = open; });
+  if (open) {
+    scrim.hidden = false; requestAnimationFrame(() => scrim.classList.add("is-on"));
+    menu.querySelector("a").focus({ preventScroll: true });
+  } else {
+    scrim.classList.remove("is-on");
+    setTimeout(() => { if (!isOpen()) scrim.hidden = true; }, 300);
+    if (returnFocus) menuBtn.focus({ preventScroll: true });
+  }
+}
+menuBtn.addEventListener("click", () => setMenu(!isOpen()));
+scrim.addEventListener("click", () => setMenu(false));                       // click outside closes
+menu.addEventListener("click", (e) => {
+  const a = e.target.closest("a"); if (!a) return;
+  if (isOpen()) setMenu(false, { returnFocus: false });
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && isOpen()) { e.preventDefault(); setMenu(false); }  // Esc closes
+  if (e.key === "Tab" && isOpen()) {                                         // keep Tab inside the button + menu
+    const items = [menuBtn, ...menu.querySelectorAll("a")];
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+desktop.addEventListener("change", () => { if (isOpen()) setMenu(false, { returnFocus: false }); });
+
+/* ---------- events ---------- */
+/* every in-page link (#social, #work-pet-app, #top …) is handled here, without leaving the page */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  go(decodeURIComponent(a.getAttribute("href").slice(1)));
+});
+document.addEventListener("click", (e) => {
+  const z = e.target.closest(".zoom, .work__btn");
+  if (z) return openLightbox(z);
+  if (e.target.closest("#lb-prev")) stepLb(-1);
+  if (e.target.closest("#lb-next")) stepLb(1);
+  if (e.target.closest("#lb-close") || e.target.id === "lightbox") $("#lightbox").close();
+});
+$("#lightbox").addEventListener("keydown", (e) => { if (e.key === "ArrowRight") stepLb(1); if (e.key === "ArrowLeft") stepLb(-1); });
+$("#lightbox").addEventListener("close", () => lb.opener?.focus());
+let x0 = null;
+$("#lightbox").addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+$("#lightbox").addEventListener("touchend", (e) => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50) stepLb(dx < 0 ? 1 : -1); }, { passive: true });
+
+document.documentElement.lang = "zh-Hant";
+renderHome();
+route();
+onScroll();
+addEventListener("hashchange", () => { current = decodeURIComponent(location.hash.slice(1)); route(); });
+addEventListener("popstate", (e) => { current = (e.state && e.state.h) || decodeURIComponent(location.hash.slice(1)); swap(route); });
+</script>
+</body>
+</html>
