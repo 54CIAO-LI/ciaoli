@@ -52,6 +52,7 @@
 @font-face { font-family: 'Space Grotesk'; font-weight: 300 700; font-display: swap; src: url('fonts/space-grotesk-latin-wght.woff2') format('woff2'); }
 @font-face { font-family: 'DM Mono'; font-weight: 400; font-display: swap; src: url('fonts/dm-mono-latin-400.woff2') format('woff2'); }
 @font-face { font-family: 'DM Mono'; font-weight: 500; font-display: swap; src: url('fonts/dm-mono-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Caveat'; font-weight: 600; font-display: swap; src: url('fonts/caveat-latin-600.woff2') format('woff2'); }
 @font-face { font-family: 'Noto Sans TC'; font-weight: 400; font-display: swap; src: url('fonts/noto-sans-tc-site-400.woff2') format('woff2'); }
 @font-face { font-family: 'Noto Sans TC'; font-weight: 700; font-display: swap; src: url('fonts/noto-sans-tc-site-700.woff2') format('woff2'); }
 
@@ -81,6 +82,8 @@
     --f-pixel: 'Press Start 2P', 'Courier New', monospace;
     --f-sans: 'Space Grotesk', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
     --f-mono: 'DM Mono', ui-monospace, 'Noto Sans TC', 'PingFang TC', monospace;
+    --f-hand: 'Caveat', 'Noto Sans TC', cursive;   /* handwriting: short English labels only, never body text */
+    --marker: var(--gold-3);
     --pixel: var(--f-pixel);
     --text: var(--f-sans);
     --fs-page: clamp(48px, 7.4vw, 120px);
@@ -153,9 +156,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .room .t-label, .room .t-zh { color: var(--room-mute); }
 
 /* text link: DM Mono with a gold rule; the arrow moves on hover */
-.link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0; border: 0; background: none; font: 500 13px/1 var(--f-mono); letter-spacing: .06em; color: inherit; text-decoration: none; cursor: pointer; }
+.link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0; border: 0; background: linear-gradient(var(--gold), var(--gold)) 0 calc(50% + 12px) / 100% 2px no-repeat; font: 500 13px/1 var(--f-mono); letter-spacing: .06em; color: inherit; text-decoration: none; cursor: pointer; }
 .link::after { content: "→"; transition: transform var(--t-base) var(--ease); }
-.link { background-image: linear-gradient(var(--gold), var(--gold)); background-size: 100% 2px; background-position: 0 calc(50% + 12px); background-repeat: no-repeat; }
 .link:hover::after, .link:focus-visible::after, a:hover > .link::after, a:focus-visible > .link::after { transform: translateX(6px); }
 
 /* ---------- 5. Buttons ---------- */
@@ -190,8 +192,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .head__in { height: var(--head); display: flex; align-items: center; gap: 24px; }
 .head__logo { flex: none; line-height: 0; }
 .head__logo img { width: 92px; }
-[data-theme="dark"] .head__logo { padding: 2px 8px; background: var(--gold); border-radius: 6px 6px 14px 6px; }
-[data-theme="dark"] .head__logo img { width: 80px; }
+/* dark mode: the black GIF gets a 1px cream outline so it stays legible — no plate behind it, the file is untouched */
+[data-theme="dark"] .head__logo img { filter: drop-shadow(1px 0 0 var(--ink)) drop-shadow(-1px 0 0 var(--ink)) drop-shadow(0 1px 0 var(--ink)) drop-shadow(0 -1px 0 var(--ink)); }
 .nav { margin-left: auto; }
 .nav__list { display: flex; gap: clamp(2px, .6vw, 10px); }
 .head__tools { display: flex; align-items: center; gap: clamp(2px, .6vw, 10px); padding-left: clamp(8px, 1.4vw, 20px); margin-left: clamp(4px, 1vw, 12px); border-left: 1px solid var(--rule); }
@@ -247,13 +249,51 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .crumbs a:hover { color: var(--ink); }
 .crumbs [aria-current] { color: var(--ink); }
 
+/* ---------- 2004 diary layer: hand marks, tape, stickers, flash ---------- */
+.hand { font: 600 clamp(22px, 2vw, 28px)/1 var(--f-hand); letter-spacing: .01em; }
+.doodle { display: block; overflow: visible; pointer-events: none; }
+.doodle path { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset .5s cubic-bezier(.6, 0, .3, 1), opacity .15s; }
+.doodle.is-drawn path { animation: draw .9s cubic-bezier(.6, 0, .3, 1) .5s forwards; }
+@keyframes draw { from { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+/* a felt-tip circle drawn around a word on hover / focus / current */
+.ring { position: relative; display: inline-block; }
+.ring .doodle--circle { position: absolute; left: -9%; top: -42%; width: 118%; height: 184%; color: var(--marker); }
+.ring .doodle path { stroke-width: 2.4; }
+.index__link:hover .doodle path, .index__link:focus-visible .doodle path, .case:hover .doodle path { stroke-dashoffset: 0; opacity: 1; }
+/* grease-pencil selection on contact frames and prints, like an editor marking a sheet */
+.mark { position: relative; }
+.grease { position: absolute; z-index: 1; inset: -8% -6%; width: 112%; height: 116%; color: var(--gold); }
+.grease path { stroke-width: 3; }
+.plate .grease path { stroke-width: 1; }   /* plates are larger, so the same pencil needs a thinner line in drawing units */
+.mark:hover .grease path, .mark:focus-visible .grease path, .plate:hover .grease path, .plate:focus-visible .grease path { stroke-dashoffset: 0; opacity: 1; }
+.has-star, .has-underline { position: relative; display: inline-block; }
+.has-star .doodle--star { position: absolute; right: -.55em; top: -.2em; width: .42em; height: .42em; color: var(--marker); }
+.has-underline .doodle--underline { position: absolute; left: 0; right: 0; bottom: -.22em; width: 100%; height: .22em; color: var(--marker); }
+.has-underline .doodle path { stroke-width: 4; }
+/* one strip of tape, on the small print only */
+.print { position: relative; display: block; transform: rotate(var(--tilt, 0deg)); transition: opacity .6s var(--ease), transform .5s var(--ease); }
+.print:hover { transform: rotate(0deg); }
+.print--b::before { content: ""; position: absolute; z-index: 1; top: -12px; left: 50%; width: clamp(64px, 7vw, 96px); height: 24px; margin-left: calc(clamp(64px, 7vw, 96px) / -2); background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .0) 0 6px, rgba(255, 255, 255, .25) 6px 8px), rgba(225, 197, 100, .55); transform: rotate(calc(var(--tilt, 0deg) * -3 - 2deg)); box-shadow: 0 1px 2px rgba(0, 0, 0, .08); pointer-events: none; }
+.print--a { --tilt: 0deg; }
+.print--b { --tilt: 1.6deg; }
+.print--c { --tilt: 0deg; }
+/* a price sticker, slightly crooked */
+.sticker { display: inline-block; padding: 8px 14px 7px; border-radius: 6px; background: var(--gold); color: var(--black); transform: rotate(-3deg); box-shadow: 1px 2px 0 rgba(0, 0, 0, .18); }
+/* lined note paper for the message */
+.lined { background: repeating-linear-gradient(transparent 0 calc(1.7em - 1px), var(--rule) calc(1.7em - 1px) 1.7em) 0 12px / 100% 1.7em local; }
+/* direct flash: one short white pop when a photograph is opened */
+.flash { position: fixed; inset: 0; z-index: 120; background: #fff; opacity: 0; pointer-events: none; }
+.flash.pop { animation: flash .32s ease-out; }
+@keyframes flash { 0% { opacity: 0; } 12% { opacity: .75; } 100% { opacity: 0; } }
+
 /* ==========================================================================
    HOME — brand experience: split hero (type + handheld), then three movements
    ========================================================================== */
-.hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: center; min-height: min(calc(100svh - var(--head)), 860px); padding-block: var(--s5) var(--s6); }
-.hero__copy { grid-column: 1 / span 5; display: grid; gap: var(--s4); align-content: center; }
-.hero__kicker { color: var(--ink-soft); }
-.hero__hello { animation: hello 1.6s steps(8) both; }
+.hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: center; min-height: min(calc(100svh - var(--head) - 48px), 780px); padding-block: var(--s5) var(--s6); }
+.hero__copy { grid-column: 1 / span 4; display: grid; gap: var(--s4); align-content: center; }
+.hero__kicker { display: inline-grid; justify-self: start; color: var(--ink-soft); }
+.hero__kicker .doodle { width: 100%; height: 12px; margin-top: 2px; color: var(--marker); }
+.hero__hello { font-size: clamp(36px, 4.6vw, 76px); white-space: nowrap; animation: hello 1.6s steps(8) both; }
 @keyframes hello { 0% { color: var(--wall); letter-spacing: .3em; } 100% { color: var(--ink); } }
 .index ol { border-top: 1px solid var(--rule); }
 .index__link { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding: 16px 0 14px; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
@@ -262,7 +302,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .index__link:hover .index__name, .index__link:focus-visible .index__name { transform: translateX(8px); }
 .index__link:hover .index__arrow, .index__link:focus-visible .index__arrow { opacity: 1; transform: none; }
 .index__link:hover .index__no { color: var(--gold-3); }
-.hero__device { grid-column: 7 / -1; }
+.hero__device { grid-column: 6 / -1; padding-left: clamp(0px, 2vw, 32px); }
 
 /* the handheld (brand object) */
 .gba { position: relative; width: 100%; display: grid; grid-template-columns: minmax(84px, 1fr) minmax(0, 3.2fr) minmax(84px, 1fr); align-items: center; gap: clamp(12px, 2vw, 28px); padding: clamp(16px, 2.2vw, 30px) clamp(16px, 2.4vw, 34px); background: var(--gold); border: 4px solid var(--black); border-radius: 44px 44px 110px 110px / 44px 44px 66px 66px; box-shadow: inset 0 -10px 0 rgba(0, 0, 0, .12), 10px 10px 0 var(--black); }
@@ -296,12 +336,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ab button { flex: none; width: var(--ab); height: var(--ab); padding: 0; border-radius: 50%; border: 3px solid var(--black); background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, .2), rgba(255, 255, 255, 0) 46%), var(--shell); color: var(--gold); font: calc(var(--ab) * .22)/1 var(--f-pixel); cursor: pointer; box-shadow: 0 4px 0 var(--black); transition: transform .08s steps(1), box-shadow .08s steps(1); -webkit-tap-highlight-color: transparent; }
 .ab button:hover { color: var(--room-text); }
 .ab button:active { transform: translateY(4px); box-shadow: 0 0 0 var(--black); }
-.ab .a { transform: translateY(calc(var(--ab) * -.42)); }
-.ab .a:active { transform: translateY(calc(var(--ab) * -.42 + 4px)); }
+/* B sits lower than A through layout, so the controls row reserves the height and never rides into the screen */
+.ab { align-items: flex-start; }
+.ab .b { margin-top: calc(var(--ab) * .42); }
 
 /* Select World: three prints, photographs only */
 .wall { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
-.print { display: block; transition: opacity .6s var(--ease); }
 .print img { width: 100%; }
 .wall:hover .print:not(:hover) { opacity: .45; }
 .print--a { grid-column: 1 / span 8; grid-row: 1; }
@@ -432,6 +472,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .tape__name { display: grid; gap: 2px; font: 500 clamp(17px, 1.5vw, 21px)/1.2 var(--f-sans); letter-spacing: -.01em; color: var(--room-text); }
 .tape__name .t-zh { font-size: 14px; }
 .tape__no, .tape__tc { color: var(--room-mute); }
+.tape__no { font-size: 26px; color: var(--room-text); transform: rotate(-6deg); }
 .tape__yt { padding-left: 16px; min-height: 44px; display: inline-flex; align-items: center; color: var(--room-mute); text-decoration: none; }
 .tape__yt:hover { color: var(--gold); }
 .tape__pick:hover .tape__name, .tape__pick[aria-pressed="true"] .tape__name, .tape__pick[aria-pressed="true"] .tape__no { color: var(--gold); }
@@ -439,63 +480,49 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .tape__pick[aria-pressed="true"] .tape__cover { box-shadow: 0 0 0 2px var(--gold); }
 
 /* ==========================================================================
-   SHOP — a curated catalog: three objects on white, one detail view
+   SHOP — the original three products: catalogue strip, then the chosen item
    ========================================================================== */
 .shop-head { position: relative; overflow: hidden; }
 .shop-head__pattern { position: absolute; inset: 0; background-size: 420px auto; background-position: center; opacity: .08; filter: grayscale(1); }
 .shop-head .page-head { position: relative; padding-bottom: var(--s4); }
-.catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin-top: var(--s3); }
-.case { display: grid; color: var(--ink); text-decoration: none; }
+.account { display: flex; gap: var(--s3); }
+.account__link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 500 13px/1 var(--f-mono); letter-spacing: .06em; color: var(--ink); text-decoration: none; }
+.account__link svg { width: 18px; height: 18px; fill: currentColor; shape-rendering: crispEdges; }
+.account__link:hover span { box-shadow: 0 2px 0 var(--gold); }
+.catalog-wrap { padding-bottom: 0; }
+.catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
+/* the catalog is a selector, not a gallery: small objects, the chosen one carries a gold rule */
+.case { position: relative; display: grid; grid-template-columns: clamp(64px, 6vw, 88px) minmax(0, 1fr); align-items: center; gap: clamp(12px, 1.6vw, 20px); padding: 16px clamp(0px, 1.6vw, 24px) 16px 0; color: var(--ink); text-decoration: none; }
+.case + .case { padding-left: clamp(12px, 1.6vw, 24px); border-left: 1px solid var(--rule); }
+.case::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: transparent; transition: background var(--t-fast); }
+.case:hover::after { background: var(--rule-strong); }
+.case[aria-current="page"]::after { background: var(--gold); }
 .case__art { position: relative; display: block; aspect-ratio: 1; background: #fff; overflow: hidden; }
+/* product photos are square with white around the objects: shown whole, never cropped */
 .case__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: transform .8s var(--ease); }
 .case:hover .case__art img { transform: scale(1.03); }
-.case__info { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 16px; padding: 14px 0 12px; border-bottom: 2px solid transparent; }
-.case__no { grid-column: 1 / -1; }
-.case__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font: 500 var(--fs-title)/1.2 var(--f-sans); letter-spacing: -.01em; }
-.case__name .t-zh { font-size: 14px; }
-.case__price { color: var(--ink); }
-.case[aria-current="page"] .case__info { border-bottom-color: var(--gold); }
-.case[aria-current="page"] .case__no::after { content: " · NOW"; color: var(--gold-3); }
+.case__info { display: grid; gap: 6px; }
+.case__name { font: 500 var(--fs-title)/1.2 var(--f-sans); letter-spacing: -.01em; }
+.case__price { font: 400 13px/1 var(--f-mono); letter-spacing: .02em; color: var(--mute); }
+.case[aria-current="page"] .case__name { font-weight: 600; }
 .product { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; padding-block: var(--s6) var(--s7); border-top: 1px solid var(--rule); }
-.product__media { grid-column: 1 / span 7; display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s3); }
-.product__thumbs { display: grid; gap: 12px; align-content: start; }
-.product__thumbs button { padding: 0; border: 0; background: #fff; cursor: pointer; opacity: .5; transition: opacity var(--t-fast); }
-.product__thumbs button:hover, .product__thumbs button[aria-current="true"] { opacity: 1; }
-.product__main { position: relative; background: #fff; aspect-ratio: 1; }
-.product__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .6s var(--ease); }
-.product__main img.is-on { opacity: 1; }
+.product__main { grid-column: 1 / span 7; position: relative; display: block; aspect-ratio: 1; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.product__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .product__info { grid-column: 9 / span 4; position: sticky; top: calc(var(--head) + 40px); display: grid; gap: var(--s3); }
-.price { justify-self: start; font: 500 clamp(22px, 2vw, 28px)/1 var(--f-mono); letter-spacing: .02em; }
+.price { justify-self: start; font: 500 clamp(24px, 2.2vw, 30px)/1 var(--f-mono); letter-spacing: .02em; }
 .qty { display: inline-flex; justify-self: start; align-items: stretch; border: 1px solid var(--rule-strong); }
-.qty button { width: 44px; height: 44px; border: 0; background: none; font: 400 18px/1 var(--f-mono); cursor: pointer; }
+.qty button { width: 48px; height: 48px; border: 0; background: none; font: 400 18px/1 var(--f-mono); cursor: pointer; transition: background-color var(--t-fast); }
 .qty button:hover { background: var(--gold); color: var(--black); }
-.qty input, .qty output { width: 52px; display: grid; place-items: center; border: 0; border-inline: 1px solid var(--rule); background: none; text-align: center; font: 500 15px/1 var(--f-mono); -moz-appearance: textfield; appearance: textfield; }
+.qty button:active { background: var(--gold-2); }
+.qty input { width: 56px; border: 0; border-inline: 1px solid var(--rule); background: none; text-align: center; font: 500 16px/1 var(--f-mono); -moz-appearance: textfield; appearance: textfield; }
 .qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .buy { display: grid; gap: 14px; margin-top: var(--s1); }
 .buy .btn { width: calc(100% - 12px); }
-.product__links { display: flex; flex-wrap: wrap; gap: var(--s3); padding-top: var(--s2); border-top: 1px solid var(--rule); }
-
-/* cart drawer (GBA window) */
-.scrim { position: fixed; inset: 0; z-index: 70; background: rgba(0, 0, 0, .35); opacity: 0; visibility: hidden; transition: opacity var(--t-base), visibility var(--t-base); }
-.scrim.on { opacity: 1; visibility: visible; }
-.drawer { position: fixed; z-index: 75; top: 16px; right: 16px; bottom: 16px; width: min(420px, calc(100% - 32px)); display: grid; grid-template-rows: auto 1fr auto; transform: translateX(calc(100% + 40px)); visibility: hidden; transition: transform .45s steps(6), visibility .45s; }
-.drawer.on { transform: none; visibility: visible; }
-.drawer__head { display: flex; align-items: center; justify-content: space-between; padding: 14px 12px 10px 24px; border-bottom: 1px solid var(--rule); }
-.drawer__body { overflow: auto; padding: 0 24px; }
-.drawer__foot { display: grid; gap: 18px; padding: 18px 24px 24px; }
-.line { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding-block: 16px; border-bottom: 1px solid var(--rule); }
-.line img { width: 64px; background: #fff; }
-.line__name { display: block; font: 500 15px/1.3 var(--f-sans); }
-.line .qty button { width: 34px; height: 34px; font-size: 14px; }
-.line .qty output { width: 34px; font-size: 13px; }
-.total { display: flex; justify-content: space-between; font: 500 15px/1 var(--f-mono); }
-.empty { display: grid; gap: 18px; justify-items: start; padding-block: 24px; color: var(--mute); }
-.empty img { width: 56px; }
 
 /* ==========================================================================
    CONTACT — a single message window (the original form, nothing added)
    ========================================================================== */
-.mail { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; padding-block: var(--s6) var(--s7); }
+.mail { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; align-content: center; min-height: calc(100svh - var(--head)); padding-block: var(--s6) var(--s7); }
 .mail__side { grid-column: 1 / span 4; display: grid; gap: var(--s5); align-content: start; position: sticky; top: calc(var(--head) + 40px); }
 .mail__art { position: relative; width: min(200px, 60%); aspect-ratio: 1; display: grid; place-items: center; background: var(--gold); border-radius: 12px 12px 36px 12px; }
 .mail__env { width: 100%; }
@@ -549,7 +576,7 @@ textarea.input { min-height: 140px; resize: vertical; }
 [data-theme="dark"] .lb { background: rgba(12, 11, 8, .95); }
 .lb.on { opacity: 1; visibility: visible; transition: opacity .35s var(--ease), visibility 0s; }
 .lb__stage { position: absolute; top: calc(var(--gt) + env(safe-area-inset-top)); bottom: calc(var(--gb) + env(safe-area-inset-bottom)); left: max(var(--gx), env(safe-area-inset-left)); right: max(var(--gx), env(safe-area-inset-right)); }
-.lb__img { position: absolute; left: 50%; top: 50%; max-width: none; object-fit: contain; background: rgba(0, 0, 0, .04); transform: translate(-50%, -50%) scale(.97); opacity: 0; transition: opacity .45s var(--ease), transform .55s var(--ease); user-select: none; -webkit-user-drag: none; }
+.lb__img { position: absolute; left: 50%; top: 50%; max-width: none; object-fit: contain; transform: translate(-50%, -50%) scale(.97); opacity: 0; transition: opacity .45s var(--ease), transform .55s var(--ease); user-select: none; -webkit-user-drag: none; }
 .lb__img.is-in { opacity: 1; transform: translate(-50%, -50%); }
 .lb__img.is-out-l { opacity: 0; transform: translate(calc(-50% - 32px), -50%); }
 .lb__img.is-out-r { opacity: 0; transform: translate(calc(-50% + 32px), -50%); }
@@ -670,7 +697,7 @@ textarea.input { min-height: 140px; resize: vertical; }
     .series__item .series__img, .series__item:nth-of-type(n) .series__img { grid-column: 1 / -1; order: 0; }
     .series__item .series__txt, .series__item:nth-of-type(n) .series__txt { grid-column: 1 / -1; order: 1; margin-top: var(--s3); grid-template-columns: auto 1fr; align-items: baseline; column-gap: 20px; }
     .series__txt .t-section, .series__txt .t-zh, .series__txt .link { grid-column: 1 / -1; }
-    .product__media, .product__info { grid-column: 1 / -1; }
+    .product__main, .product__info { grid-column: 1 / -1; }
     .product__info { position: static; margin-top: var(--s5); }
     .mail__side, .mail__win, .form-page__head, .form-page__body { grid-column: 1 / -1; }
     .mail__side { position: static; grid-template-columns: 1fr auto; align-items: end; margin-bottom: var(--s5); }
@@ -700,6 +727,7 @@ textarea.input { min-height: 140px; resize: vertical; }
     .gba__bezel { grid-column: 1 / -1; order: -1; }
     .gba__shoulder { display: none; }
     .ab { --ab: 46px; }
+    .gba { row-gap: clamp(20px, 6vw, 28px); }
     .feature__side { grid-template-columns: 1fr auto; }
     .feature__side .t-label { grid-column: 1 / -1; }
     .player__bar { gap: 8px 12px; padding: 12px 0; }
@@ -711,13 +739,18 @@ textarea.input { min-height: 140px; resize: vertical; }
     .tape__tc { grid-column: 3; margin-top: -8px; }
     .tape { grid-template-columns: 1fr; }
     .tape__yt { position: absolute; right: 0; bottom: 2px; padding: 0 0 0 12px; min-height: 44px; }
-    .catalog { grid-template-columns: 1fr 1fr; }
-    .catalog .case:first-child { grid-column: 1 / -1; }
 }
 @media (max-width: 600px) {
     body { font-size: 16px; }
-    .product__media { grid-template-columns: minmax(0, 1fr); }
-    .product__thumbs { grid-template-columns: repeat(3, 64px); order: 2; }
+    .print::before { top: -10px; height: 20px; }
+    .grease { inset: -6% -4%; width: 108%; height: 112%; }
+    .case { grid-template-columns: 1fr; align-items: start; gap: 10px; padding: 12px 8px 14px 0; }
+    .case + .case { padding-left: 8px; }
+    .case__art { width: 100%; max-width: 96px; }
+    .case__info { gap: 4px; }
+    .case__name { font-size: 14px; }
+    .case__price { font-size: 12px; }
+    .account { gap: var(--s2); }
     .viewer__stage { height: min(78vw, 60vh); min-height: 220px; }
     .viewer__bar { grid-template-columns: 1fr auto; }
     .viewer__dots { grid-column: 1 / -1; grid-row: 2; }
@@ -739,6 +772,7 @@ textarea.input { min-height: 140px; resize: vertical; }
     .foot__legal { margin-top: var(--s4); font-size: 12px; line-height: 1.8; }
 }
 @media (hover: none) {
+    .print { transform: rotate(var(--tilt, 0deg)); }
     .wall:hover .print:not(:hover) { opacity: 1; }
     .ico::after { display: none; }
     .ico:hover svg { transform: none; }
@@ -778,9 +812,9 @@ textarea.input { min-height: 140px; resize: vertical; }
         <a class="head__logo" href="#home" aria-label="FOTO! 首頁"><img src="img/logo.gif" width="200" height="150" alt="FOTO!"></a>
         <nav class="nav" aria-label="主選單"><ul class="nav__list" data-nav></ul></nav>
         <div class="head__tools">
-            <a class="ico ico--user" href="#login" data-user data-tip="LOG IN" aria-label="LOG IN"><svg data-px="user"></svg></a>
+            <a class="ico ico--user" href="#login" data-tip="LOG IN" aria-label="LOG IN"><svg data-px="user"></svg></a>
             <button class="ico ico--theme" type="button" data-theme-toggle aria-pressed="false" aria-label="切換為深色模式" data-tip="DARK"><svg data-px="moon"></svg></button>
-            <button class="ico ico--cart" type="button" data-open-cart data-tip="CART"><svg data-px="cart"></svg><span class="ico__badge" data-cart-count>0</span></button>
+            <a class="ico ico--cart" href="#login" data-tip="CART" aria-label="CART（前往登入）"><svg data-px="cart"></svg></a>
             <button class="ico ico--menu" type="button" data-open-menu data-tip="MENU" aria-label="開啟選單" aria-expanded="false" aria-controls="menu"><svg data-px="dpad"></svg></button>
         </div>
     </div>
@@ -805,18 +839,13 @@ textarea.input { min-height: 140px; resize: vertical; }
     <ul data-menu></ul>
     <hr>
     <ul>
-        <li><a class="menu__item" href="#login"><svg data-px="user"></svg><span data-menu-user>LOG IN</span></a></li>
-        <li><button class="menu__item" type="button" data-open-cart><svg data-px="cart"></svg><span>CART</span></button></li>
+        <li><a class="menu__item" href="#login"><svg data-px="user"></svg><span>LOG IN</span></a></li>
+        <li><a class="menu__item" href="#login"><svg data-px="cart"></svg><span>CART</span></a></li>
         <li><a class="menu__item" href="#start"><svg data-px="start"></svg><span>START</span></a></li>
     </ul>
 </nav>
 <button class="totop" type="button" aria-label="Back to top" data-totop hidden><svg data-px="up"></svg></button>
-<div class="scrim" data-scrim></div>
-<aside class="drawer px px--drop win" id="drawer" aria-label="購物車">
-    <div class="drawer__head"><h2 class="t-title">CART</h2><button class="close" type="button" data-close-cart aria-label="關閉購物車">✕</button></div>
-    <div class="drawer__body" data-cart-body></div>
-    <div class="drawer__foot" data-cart-foot></div>
-</aside>
+<div class="flash" aria-hidden="true" data-flash></div>
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="照片檢視" aria-hidden="true">
     <div class="lb__stage" data-lb-stage></div>
     <div class="lb__bar">
@@ -842,6 +871,46 @@ const A = 'assets/img/';
 const W = (max) => [640, 1280, max].filter((v, i, a) => v <= max && a.indexOf(v) === i);
 const photo = (path, w, h, widths) => ({ path, w, h, widths: widths || W(w) });
 
+// FILM roll 04 (black & white, frames 29–50) and roll 05 (colour, frames 51, 61, 63–71)
+const ROLL_BW = [
+            photo('film/r4/29', 1954, 2442, [800, 1600, 1954]),
+            photo('film/r4/29b', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/30', 2075, 2594, [800, 1600, 2075]),
+            photo('film/r4/31', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/32', 2487, 1990, [800, 1600, 2487]),
+            photo('film/r4/33', 2242, 1794, [800, 1600, 2242]),
+            photo('film/r4/34', 2383, 1906, [800, 1600, 2383]),
+            photo('film/r4/35', 2268, 1814, [800, 1600, 2268]),
+            photo('film/r4/36', 3130, 2075, [800, 1600, 2560]),
+            photo('film/r4/37', 2075, 2594, [800, 1600, 2075]),
+            photo('film/r4/38', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/39', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/40', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/41', 2061, 2576, [800, 1600, 2061]),
+            photo('film/r4/42', 2158, 1726, [800, 1600, 2158]),
+            photo('film/r4/43', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/44', 2594, 2075, [800, 1600, 2560]),
+            photo('film/r4/45', 1739, 1739, [800, 1600, 1739]),
+            photo('film/r4/46', 2075, 2075, [800, 1600, 2075]),
+            photo('film/r4/47', 2590, 2072, [800, 1600, 2560]),
+            photo('film/r4/48', 3088, 1737, [800, 1600, 2560]),
+            photo('film/r4/49', 2393, 1914, [800, 1600, 2393]),
+            photo('film/r4/50', 2311, 1849, [800, 1600, 2311])
+        ];
+const ROLL_COLOR = [
+            photo('film/r5/51', 3104, 2058, [800, 1600, 2560]),
+            photo('film/r5/61', 2481, 1985, [800, 1600, 2481]),
+            photo('film/r5/63', 2919, 1935, [800, 1600, 2560]),
+            photo('film/r5/64', 2075, 3130, [800, 1600, 2075]),
+            photo('film/r5/65', 1167, 2075, [800, 1167]),
+            photo('film/r5/66', 3130, 2075, [800, 1600, 2560]),
+            photo('film/r5/67', 3130, 2075, [800, 1600, 2560]),
+            photo('film/r5/68', 2075, 3130, [800, 1600, 2075]),
+            photo('film/r5/69', 1693, 3009, [800, 1600, 1693]),
+            photo('film/r5/70', 3130, 2075, [800, 1600, 2560]),
+            photo('film/r5/71', 3130, 2075, [800, 1600, 2560])
+        ];
+
 const WORLDS = {
     bw: {
         name: 'BLACK AND WHITE', zh: '黑白攝影', pages: 7, layout: 'bw',
@@ -856,15 +925,19 @@ const WORLDS = {
         items: (n) => Array.from({ length: 6 }, (_, k) => photo(`color/l${n}/c${k + 1}`, 400, 300, [400]))
     },
     film: {
-        name: 'FILM', zh: '底片攝影', pages: 3, layout: 'film',
+        name: 'FILM', zh: '底片攝影', pages: 5, layout: 'film',
         cover: photo('film/f2-5', 2000, 1326), select: photo('home_img/film', 2000, 1338),
         featured: [photo('film/filmcover', 2000, 1338), photo('film/filmcover2', 2000, 1326), photo('film/filmcover3', 1272, 842)],
         items: (n) => ({
             1: [photo('film/f1', 300, 200, [300]), photo('film/f2', 300, 201, [300]), photo('film/f3', 300, 201, [300]), photo('film/f4', 300, 201, [300]), photo('film/f5', 300, 201, [300]), photo('film/film6', 2000, 1326)],
             2: [photo('film/f2-1', 2000, 1326), photo('film/f2-2', 1334, 884), photo('film/f2-3', 2000, 1326), photo('film/f2-4', 1334, 884), photo('film/f2-5', 2000, 1326), photo('film/f2-6', 1334, 884)],
-            3: [photo('film/f3-1', 1334, 884), photo('film/f3-2', 2000, 1326), photo('film/f3-3', 2000, 1326), photo('film/f3-4', 2000, 1326), photo('film/f3-5', 2000, 1326), photo('film/f3-6', 2000, 1326)]
+            3: [photo('film/f3-1', 1334, 884), photo('film/f3-2', 2000, 1326), photo('film/f3-3', 2000, 1326), photo('film/f3-4', 2000, 1326), photo('film/f3-5', 2000, 1326), photo('film/f3-6', 2000, 1326)],
+            // added 2026-11: two further rolls supplied by the photographer (Noritsu scans), in their own frame order
+            4: ROLL_BW,
+            5: ROLL_COLOR
         })[n],
-        strips: (n) => [[photo('film/f1-1', 2000, 700), photo('film/f1-2', 2000, 700)], [photo('film/film2-1', 2000, 700), photo('film/film2-2', 2000, 700)], [photo('film/film3-1', 2000, 700), photo('film/film3-2', 2000, 700)]][n - 1]
+        rollOnly: (n) => n > 3,      // these rolls have no featured covers or strip scans: the page is the roll itself
+        strips: (n) => [[photo('film/f1-1', 2000, 700), photo('film/f1-2', 2000, 700)], [photo('film/film2-1', 2000, 700), photo('film/film2-2', 2000, 700)], [photo('film/film3-1', 2000, 700), photo('film/film3-2', 2000, 700)]][n - 1] || []
     }
 };
 const WORLD_KEYS = ['bw', 'color', 'film'];
@@ -879,9 +952,10 @@ const VIDEOS = [
 ];
 
 const PRODUCTS = {
-    album: { route: 'shop', name: 'PHOTO ALBUM', zh: '相簿', price: 168, img: 'shop/item1', banner: 'cloudb' },
-    postcard: { route: 'shop-postcard', name: 'POSTCARD', zh: '明信片', price: 18, img: 'shop/item2', banner: 'stoneb' },
-    bookmark: { route: 'shop-bookmark', name: 'BOOKMARK', zh: '書籤', price: 18, img: 'shop/item3', banner: 'cactusb' }
+    // exactly as on the original SHOP / POSTCARD / BOOKMARK pages: name, price, product photo, page banner
+    album: { route: 'shop', name: 'PHOTO ALBUM', price: 168, img: 'shop/item1', banner: 'cloudb' },
+    postcard: { route: 'shop-postcard', name: 'POSTCARD', price: 18, img: 'shop/item2', banner: 'stoneb' },
+    bookmark: { route: 'shop-bookmark', name: 'BOOKMARK', price: 18, img: 'shop/item3', banner: 'cactusb' }
 };
 const PRODUCT_KEYS = ['album', 'postcard', 'bookmark'];
 const productImg = (k) => photo(PRODUCTS[k].img, 1250, 1250, [640, 1250]);
@@ -916,6 +990,14 @@ const PX = {
     full: ['####....####', '#..........#', '#..........#', '#..........#', '............', '............', '............', '............', '#..........#', '#..........#', '#..........#', '####....####'],
     user: ['....####....', '...######...', '...######...', '...######...', '....####....', '............', '..########..', '.##########.', '############', '############', '############', '............']
 };
+/* hand-drawn marks — a felt-tip / grease-pencil set, drawn in currentColor so they follow the theme */
+const DOODLES = {
+    circle: { vb: '0 0 120 60', d: 'M14 34 C10 14 52 6 86 10 C112 14 118 34 100 46 C82 58 34 58 16 46 C6 39 12 24 30 18 C46 13 70 12 84 14' },
+    underline: { vb: '0 0 120 14', d: 'M3 9 C22 4 40 12 60 7 S96 3 117 8' },
+    arrow: { vb: '0 0 120 60', d: 'M6 48 C26 18 64 8 104 22 M92 12 L106 22 L94 33' },
+    star: { vb: '0 0 60 60', d: 'M30 5 L36 23 L55 23 L40 35 L46 54 L30 42 L14 54 L20 35 L5 23 L24 23 Z' }
+};
+const doodle = (name, cls = '') => `<svg class="doodle doodle--${name}${cls ? ' ' + cls : ''}" viewBox="${DOODLES[name].vb}"${name === 'circle' || name === 'underline' ? ' preserveAspectRatio="none"' : ''} aria-hidden="true" focusable="false"><path pathLength="1" d="${DOODLES[name].d}"/></svg>`;
 const pxCache = {};
 function px(name) {
     if (!pxCache[name]) {
@@ -948,16 +1030,8 @@ function img(p, { alt = '', sizes = '100vw', eager = false, max = 1280, cap = tr
 const video = (name, poster, attrs = '') => `<video data-src="assets/video/${name}.mp4" poster="${poster}" muted loop playsinline preload="none" aria-hidden="true"${attrs ? ' ' + attrs : ''}></video>`;
 
 /* ==========================================================================
-   4. Saved state: cart + signed-in name
+   4. Messages
    ========================================================================== */
-const KEY = 'foto-site-v4';
-const fresh = () => ({ cart: { album: 0, postcard: 0, bookmark: 0 }, user: null });
-let S = fresh();
-try { S = Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* storage unavailable */ }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } };
-const cartCount = () => PRODUCT_KEYS.reduce((t, k) => t + S.cart[k], 0);
-const cartTotal = () => PRODUCT_KEYS.reduce((t, k) => t + S.cart[k] * PRODUCTS[k].price, 0);
-
 let toastTimer;
 function toast(msg) {
     const t = $('[data-toast]');
@@ -966,14 +1040,6 @@ function toast(msg) {
     t.classList.add('on');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('on'), 3400);
-}
-function renderHeader() {
-    const c = cartCount();
-    $('[data-cart-count]').textContent = String(c);
-    $$('[data-open-cart]').forEach((b) => b.setAttribute('aria-label', `開啟購物車（${c} 件）`));
-    const who = S.user ? S.user.toUpperCase() : 'LOG IN';
-    const u = $('[data-user]'); u.dataset.tip = who; u.setAttribute('aria-label', S.user ? `會員：${who}` : 'LOG IN');
-    $('[data-menu-user]').textContent = S.user ? S.user.toUpperCase() : 'LOG IN';
 }
 
 /* ==========================================================================
@@ -990,11 +1056,11 @@ const CHANNELS = [
 views.home = () => `
 <section class="frame hero">
     <div class="hero__copy">
-        <p class="t-label hero__kicker">CIAO-LI Photography</p>
+        <p class="hero__kicker"><span class="hand">CIAO-LI Photography</span>${doodle('underline', 'is-drawn')}</p>
         <h1 class="t-giant hero__hello">HELLO!</h1>
         <nav class="index" aria-label="網站目錄">
             <ol>${NAV.filter((n) => n.route !== 'home').map((n, i) => `
-                <li><a class="index__link" href="#${n.route}"><span class="index__no t-label" aria-hidden="true">${pad2(i + 1)}</span><span class="index__name">${n.label}</span><span class="index__arrow" aria-hidden="true">→</span></a></li>`).join('')}
+                <li><a class="index__link" href="#${n.route}"><span class="index__no t-label" aria-hidden="true">${pad2(i + 1)}</span><span class="index__name"><span class="ring">${n.label}${doodle('circle')}</span></span><span class="index__arrow" aria-hidden="true">→</span></a></li>`).join('')}
             </ol>
         </nav>
     </div>
@@ -1045,7 +1111,7 @@ views.home = () => `
     <div class="store__side reveal">
         <h2 class="t-section" id="ft-shop">SHOP</h2>
         <ul class="store__list">${PRODUCT_KEYS.map((k) => `
-            <li><a href="#${PRODUCTS[k].route}"><span class="store__name">${PRODUCTS[k].name}<span class="t-zh"> ${PRODUCTS[k].zh}</span></span><span class="t-label">NT.${PRODUCTS[k].price}</span></a></li>`).join('')}
+            <li><a href="#${PRODUCTS[k].route}"><span class="store__name">${PRODUCTS[k].name}</span><span class="t-label">NT.${PRODUCTS[k].price}</span></a></li>`).join('')}
         </ul>
     </div>
     <a class="store__media reveal" href="#shop" tabindex="-1" aria-hidden="true">${img(productImg('album'), { sizes: '(max-width: 900px) 92vw, 46vw', max: 1250, cap: false })}</a>
@@ -1056,10 +1122,10 @@ views.foto = () => `
 <section class="frame series">${WORLD_KEYS.map((k) => `
     <a class="series__item reveal" href="#${k}-1">
         <span class="series__img">${img(WORLDS[k].select, { alt: `${WORLDS[k].zh}系列`, sizes: '(max-width: 900px) 92vw, 62vw' })}</span>
-        <span class="series__txt"><span class="t-label" aria-hidden="true">${pad2(WORLD_KEYS.indexOf(k) + 1)} / ${pad2(WORLD_KEYS.length)}</span><h2 class="t-section">${WORLDS[k].name}</h2><span class="t-zh">${WORLDS[k].zh}</span><span class="t-label series__meta">${pad2(WORLDS[k].pages)} PAGES</span><span class="link">ENTER</span></span>
+        <span class="series__txt"><span class="t-label" aria-hidden="true">${pad2(WORLD_KEYS.indexOf(k) + 1)} / ${pad2(WORLD_KEYS.length)}</span><h2 class="t-section">${WORLDS[k].name}</h2><span class="t-label series__meta">${pad2(WORLDS[k].pages)} PAGES</span><span class="link">ENTER</span></span>
     </a>
     <div class="sheet reveal" role="group" aria-label="${WORLDS[k].zh}精選印樣">
-        <ol class="sheet__frames">${WORLDS[k].featured.map((p, i) => `<li><button class="sheet__frame" type="button" data-sheet="${k}" data-i="${i}" aria-label="放大${WORLDS[k].zh}精選 ${i + 1}">${img(p, { sizes: '180px', max: 640, cap: false })}</button><span class="sheet__no" aria-hidden="true">${pad2(i + 1)} ▸ ${pad2(i + 1)}A</span></li>`).join('')}</ol>
+        <ol class="sheet__frames">${WORLDS[k].featured.map((p, i) => `<li><button class="sheet__frame mark" type="button" data-sheet="${k}" data-i="${i}" aria-label="放大${WORLDS[k].zh}精選 ${i + 1}">${img(p, { sizes: '180px', max: 640, cap: false })}${doodle('circle', 'grease')}</button><span class="sheet__no" aria-hidden="true">${pad2(i + 1)} ▸ ${pad2(i + 1)}A</span></li>`).join('')}</ol>
     </div>`).join('')}
 </section>`;
 
@@ -1068,12 +1134,13 @@ function galleryView(world, n) {
     if (!n || n < 1 || n > w.pages) return null;
     const feat = w.featured.map((_, i) => w.featured[(i + n - 1) % w.featured.length]); // each original page rotated its slider
     const items = w.items(n);
-    const hiRes = items.every((p) => p.w >= 1300);
+    const roll = !!(w.rollOnly && w.rollOnly(n));
+    const hiRes = roll || items.every((p) => p.w >= 1300);   // rolls are full-resolution scans throughout
     const layout = hiRes ? 'wide' : w.layout;
-    const span = (k) => (hiRes && [0, 3, 4].includes(k) ? ' span-2' : '');
+    const span = (k) => (!hiRes ? '' : roll ? (items[k].w > items[k].h && (k % 5 === 0 || k % 5 === 3) ? ' span-2' : '') : ([0, 3, 4].includes(k) ? ' span-2' : ''));
     const pager = Array.from({ length: w.pages }, (_, i) => `<a href="#${world}-${i + 1}"${i + 1 === n ? ' aria-current="page"' : ''} aria-label="第 ${i + 1} 頁">${pad2(i + 1)}</a>`).join('');
     const plates = items.map((p, k) => `
-        <button class="plate reveal${span(k)}" type="button" data-photo="${k}" aria-label="放大第 ${k + 1} 張"><span class="plate__img">${img(p, { alt: `${w.zh}｜第 ${n} 輯 第 ${k + 1} 張`, sizes: hiRes ? '(max-width: 900px) 92vw, 60vw' : '(max-width: 900px) 46vw, 360px' })}</span><span class="plate__no" aria-hidden="true"><span>▸ ${pad2(k + 1)}</span><span>${pad2(k + 1)}A</span></span></button>`).join('');
+        <button class="plate reveal${span(k)}" type="button" data-photo="${k}" aria-label="放大第 ${k + 1} 張"><span class="plate__img mark">${doodle('circle', 'grease')}${img(p, { alt: `${w.zh}｜第 ${n} 輯 第 ${k + 1} 張`, sizes: hiRes ? '(max-width: 900px) 92vw, 60vw' : '(max-width: 900px) 46vw, 360px' })}</span><span class="plate__no" aria-hidden="true"><span>▸ ${pad2(k + 1)}</span><span>${pad2(k + 1)}A</span></span></button>`).join('');
     const prev = n > 1 ? `<a href="#${world}-${n - 1}"><span class="t-label">上一頁</span><span class="t-title">← ${pad2(n - 1)}</span></a>` : `<a href="#foto"><span class="t-label">返回</span><span class="t-title">← FOTO</span></a>`;
     const next = n < w.pages ? `<a href="#${world}-${n + 1}"><span class="t-label">下一頁</span><span class="t-title">${pad2(n + 1)} →</span></a>` : `<a href="#foto"><span class="t-label">返回</span><span class="t-title">FOTO →</span></a>`;
     return `
@@ -1085,7 +1152,7 @@ function galleryView(world, n) {
     </div>
 </section>
 
-<section class="frame" data-viewer aria-roledescription="carousel" aria-label="${w.zh}精選" tabindex="0">
+${roll ? '' : `<section class="frame" data-viewer aria-roledescription="carousel" aria-label="${w.zh}精選" tabindex="0">
     <div class="viewer__stage">${feat.map((p, i) => `<button type="button" data-feat="${i}" class="${i === 0 ? 'is-on' : ''}" aria-label="放大精選 ${i + 1}"${i ? ' tabindex="-1"' : ''}>${img(p, { alt: `${w.zh}精選 ${i + 1}`, sizes: '(max-width: 900px) 100vw, 1320px', eager: i === 0, cap: false })}</button>`).join('')}</div>
     <div class="viewer__bar deck">
         <div class="deck__lcd">
@@ -1099,12 +1166,12 @@ function galleryView(world, n) {
             <button class="key" type="button" data-step="1" aria-label="下一張">${px('next')}</button>
         </div>
     </div>
-</section>
+</section>`}
 
 <section class="frame block" style="padding-bottom:0">
     <div class="plates plates--${layout}" data-world="${world}" data-page="${n}">${plates}</div>
 </section>
-${world === 'film' ? `<section class="frame block" style="padding-bottom:0"><div class="strips">${w.strips(n).map((p, i) => `<button class="strip reveal" type="button" data-strip="${i}" aria-label="放大底片條 ${i + 1}">${img(p, { alt: `底片條｜第 ${n} 輯 第 ${i + 1} 條`, sizes: '(max-width: 1320px) 100vw, 1320px' })}</button>`).join('')}</div></section>` : ''}
+${world === 'film' && w.strips(n).length ? `<section class="frame block" style="padding-bottom:0"><div class="strips">${w.strips(n).map((p, i) => `<button class="strip reveal" type="button" data-strip="${i}" aria-label="放大底片條 ${i + 1}">${img(p, { alt: `底片條｜第 ${n} 輯 第 ${i + 1} 條`, sizes: '(max-width: 1320px) 100vw, 1320px' })}</button>`).join('')}</div></section>` : ''}
 <div class="frame"><nav class="pagenav" aria-label="上一頁／下一頁">${prev}${next}</nav></div>`;
 }
 
@@ -1134,7 +1201,7 @@ views.video = () => `
     <ol class="shelf" data-shelf>${VIDEOS.map((v, i) => `
         <li class="tape reveal">
             <button class="tape__pick" type="button" data-tape="${i}" aria-pressed="false" aria-label="播放 ${esc(v.en)} ${v.zh}">
-                <span class="tape__no t-label" aria-hidden="true">${pad2(i + 1)}</span>
+                <span class="tape__no hand" aria-hidden="true">${pad2(i + 1)}</span>
                 <span class="tape__cover">${img(photo(`${v.poster}`, 1280, 720, [640, 1280]), { sizes: '(max-width: 700px) 36vw, 240px', max: 640, cap: false })}</span>
                 <span class="tape__name">${esc(v.en)}<span class="t-zh">${v.zh}</span></span>
                 <span class="tape__tc t-label" data-tape-tc="${i}" aria-hidden="true">--:--:--</span>
@@ -1146,40 +1213,39 @@ views.video = () => `
 
 function shopView(key) {
     const p = PRODUCTS[key];
-    const order = [key, ...PRODUCT_KEYS.filter((k) => k !== key)];
     return `
 <section class="shop-head">
     <div class="shop-head__pattern" style="background-image:url('${A}${p.banner}-640.webp')" aria-hidden="true"></div>
     <div class="frame page-head">
         <nav class="crumbs" aria-label="目前位置"><a href="#shop">SHOP</a><span aria-hidden="true">/</span><span aria-current="page">${p.name}</span></nav>
-        <div class="page-head__row"><h1 class="t-page">SHOP!</h1><p class="t-label">${pad2(PRODUCT_KEYS.length)} ITEMS</p></div>
-        <nav class="catalog" aria-label="商品目錄">${PRODUCT_KEYS.map((k, i) => `
-            <a class="case" href="#${PRODUCTS[k].route}"${k === key ? ' aria-current="page"' : ''}>
-                <span class="case__art">${img(productImg(k), { alt: '', sizes: '(max-width: 600px) 30vw, 260px', max: 640, cap: false })}</span>
-                <span class="case__info"><span class="case__no t-label" aria-hidden="true">No.${pad2(i + 1)}</span><span class="case__name">${PRODUCTS[k].name}<span class="t-zh">${PRODUCTS[k].zh}</span></span><span class="case__price t-label">NT.${PRODUCTS[k].price}</span></span>
-            </a>`).join('')}
-        </nav>
+        <div class="page-head__row">
+            <h1 class="t-page">SHOP!</h1>
+            <nav class="account" aria-label="會員"><a class="account__link" href="#login">${px('user')}<span>LOG IN</span></a><a class="account__link" href="#login">${px('cart')}<span>CART</span></a></nav>
+        </div>
     </div>
 </section>
-<section class="frame product">
-    <div class="product__media" data-product-media>
-        <div class="product__thumbs">${order.map((k, i) => `<button type="button" data-pimg="${i}" aria-label="商品照片 ${i + 1}" aria-current="${i === 0}">${img(productImg(k), { sizes: '76px', max: 640, cap: false })}</button>`).join('')}</div>
-        <div class="product__main">${order.map((k, i) => img(productImg(k), { alt: `${PRODUCTS[k].name} ${PRODUCTS[k].zh}`, sizes: '(max-width: 900px) 92vw, 50vw', eager: i === 0, cap: false, attrs: `data-pmain="${i}"${i === 0 ? ' data-on' : ''}` })).join('')}</div>
-    </div>
+<section class="frame catalog-wrap" aria-label="商品">
+    <nav class="catalog" aria-label="商品項目">${PRODUCT_KEYS.map((k) => `
+        <a class="case" href="#${PRODUCTS[k].route}"${k === key ? ' aria-current="page"' : ''}>
+            <span class="case__art">${img(productImg(k), { alt: PRODUCTS[k].name, sizes: '96px', max: 640, cap: false })}</span>
+            <span class="case__info"><span class="case__name"><span class="ring">${PRODUCTS[k].name}${doodle('circle')}</span></span><span class="case__price">NT.${PRODUCTS[k].price}</span></span>
+        </a>`).join('')}
+    </nav>
+</section>
+<section class="frame product" aria-labelledby="product-name">
+    <button class="product__main" type="button" data-product-zoom aria-label="放大 ${p.name} 商品照片">${img(productImg(key), { alt: p.name, sizes: '(max-width: 900px) 92vw, 56vw', eager: true, max: 1250, cap: false })}</button>
     <div class="product__info">
-        <h2 class="t-section">${p.name}</h2>
-        <span class="t-zh">${p.zh}</span>
-        <span class="price"><span class="visually-hidden">售價 </span>NT.${p.price}</span>
+        <h2 class="t-section" id="product-name">${p.name}</h2>
+        <p class="price"><span class="visually-hidden">售價 </span><span class="sticker">NT.${p.price}</span></p>
         <div class="qty" data-qty>
-            <button type="button" data-q="-1" aria-label="減少數量">-</button>
-            <input type="number" inputmode="numeric" min="1" max="99" value="1" aria-label="購買數量">
+            <button type="button" data-q="-1" aria-label="減少數量">−</button>
+            <input type="number" inputmode="numeric" min="1" max="99" value="1" aria-label="數量">
             <button type="button" data-q="1" aria-label="增加數量">+</button>
         </div>
         <div class="buy">
-            <button class="btn px" type="button" data-add="${key}">ADD TO CART</button>
-            <button class="btn btn--dark px" type="button" data-buy="${key}">BUY NOW</button>
+            <a class="btn px" href="#login">ADD TO CART</a>
+            <a class="btn btn--dark px" href="#login">BUY NOW</a>
         </div>
-        <div class="product__links"><a class="link" href="#login">${S.user ? esc(S.user.toUpperCase()) : 'LOG IN'}</a><button class="link" type="button" data-open-cart>CART</button></div>
     </div>
 </section>`;
 }
@@ -1194,11 +1260,7 @@ views.login = () => `
         <h1 class="t-page">LOG IN</h1>
         <img src="assets/img/d-180.webp" width="180" height="180" alt="" loading="lazy">
     </div>
-    <div class="form-page__body reveal" data-auth-box>${S.user ? `
-        <div class="stack">
-            <p class="t-section">${esc(S.user.toUpperCase())}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:20px"><a class="btn px" href="#shop">SHOP</a><button class="btn btn--light px" type="button" data-logout>LOG OUT</button></div>
-        </div>` : `
+    <div class="form-page__body reveal" data-auth-box>
         <div class="auth__tabs" role="tablist" aria-label="登入或註冊">
             <button class="cur" type="button" role="tab" aria-selected="true" data-auth-tab="login">LOGIN</button>
             <button class="cur" type="button" role="tab" aria-selected="false" data-auth-tab="register">REGISTER</button>
@@ -1221,14 +1283,14 @@ views.login = () => `
             <button type="button" data-social-login="Facebook" aria-label="使用 Facebook 登入"><img src="${A}facebook-512.webp" width="512" height="512" alt=""></button>
             <button type="button" data-social-login="Google" aria-label="使用 Google 登入"><img src="${A}google-512.webp" width="512" height="512" alt=""></button>
             <button type="button" data-social-login="Twitter" aria-label="使用 Twitter 登入"><img src="${A}twitter-512.webp" width="512" height="512" alt=""></button>
-        </div>`}
+        </div>
     </div>
 </section>`;
 
 views.contact = () => `
 <section class="frame mail">
     <div class="mail__side reveal">
-        <h1 class="t-page">CONTACT!</h1>
+        <h1 class="t-page has-underline">CONTACT!${doodle('underline', 'is-drawn')}</h1>
         <div class="mail__art" aria-hidden="true" data-mail-art><span class="mail__env">${px('contact')}</span><img src="assets/img/d-180.webp" width="180" height="180" alt="" loading="lazy"></div>
     </div>
     <form class="mail__win reveal" data-contact novalidate>
@@ -1237,7 +1299,7 @@ views.contact = () => `
         <label class="mail__row"><span class="mail__key">YOUR NAME</span><input class="input" name="name" autocomplete="name" required></label>
         <label class="mail__row"><span class="mail__key">YOUR EMAIL</span><input class="input" type="email" name="email" autocomplete="email" required></label>
         <label class="mail__row"><span class="mail__key">YOUR PHONE</span><input class="input" type="tel" name="phone" autocomplete="tel" pattern="[0-9+()\\-\\s]{6,20}"></label>
-        <label class="mail__body"><span class="mail__key">YOUR MESSAGE</span><textarea class="input" name="message" required rows="8"></textarea></label>
+        <label class="mail__body"><span class="mail__key">YOUR MESSAGE</span><textarea class="input lined" name="message" required rows="8"></textarea></label>
         <div class="mail__foot"><button class="btn px" type="submit">${px('contact')} SEND ▶</button></div>
     </form>
 </section>`;
@@ -1265,11 +1327,16 @@ function resolve(route) {
     if (views[route] && route !== 'notfound') return { html: views[route](), base: route.split('-')[0] };
     return { html: null, base: '' };
 }
+let swapTimer = 0;
+const cleanups = [];                     // per-page teardown (observers, timers) registered by bind*()
+function onLeave(fn) { cleanups.push(fn); }
 function render() {
     const route = (location.hash.slice(1) || 'home').toLowerCase();
     let { html, base } = resolve(route);
     if (!html) html = views.notfound();
     const swap = () => {
+        swapTimer = 0;
+        while (cleanups.length) cleanups.pop()();
         stopVideos();
         const room = base === 'video';
         app.innerHTML = `<div class="view${room ? ' is-room' : ''}">${html}</div>`;
@@ -1281,11 +1348,15 @@ function render() {
         if (!firstRender) { window.scrollTo(0, 0); app.focus({ preventScroll: true }); }
         firstRender = false;
     };
+    // leaving a page always closes the photo viewer, the start menu and the cart
+    resetLb(); closeMenu();
     if (firstRender || reduceMotion) { swap(); return; }
+    clearTimeout(swapTimer);             // rapid clicks: only the last destination is drawn
     wipe.classList.remove('run'); void wipe.offsetWidth; wipe.classList.add('run');
-    setTimeout(swap, 240);
+    swapTimer = setTimeout(swap, 240);
 }
 window.addEventListener('hashchange', render);
+wipe.addEventListener('animationend', (e) => { if (e.target === wipe.lastElementChild) wipe.classList.remove('run'); });
 function markNav(base) {
     $$('[data-nav] a, [data-menu] a').forEach((a) => {
         const item = NAV.find((n) => n.route === a.dataset.route);
@@ -1319,6 +1390,7 @@ function bindMedia() {
     const rev = $$('.reveal', app);
     if (revealIO) revealIO.disconnect();
     if ('IntersectionObserver' in window && !reduceMotion) {
+        onLeave(() => revealIO && revealIO.disconnect());
         revealIO = new IntersectionObserver((entries) => entries.forEach((en) => {
             if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); }
         }), { rootMargin: '0px 0px -8% 0px', threshold: .06 });
@@ -1346,7 +1418,8 @@ function bindGba() {
     $('[data-ch-enter]', g).addEventListener('click', () => { location.hash = CHANNELS[ch].route; });
 }
 
-let deckTimer = 0, deckClock = 0;
+let deckTimer = 0, deckClock = 0, deckStop = null;
+document.addEventListener('visibilitychange', () => { if (document.hidden && deckStop) deckStop(); });
 function bindViewer() {
     clearInterval(deckTimer); clearInterval(deckClock);
     const v = $('[data-viewer]', app);
@@ -1379,10 +1452,11 @@ function bindViewer() {
     };
     playBtn.addEventListener('click', () => (deck.classList.contains('is-playing') ? stop() : start()));
     $$('[data-feat]', v).forEach((b) => b.addEventListener('click', stop));   // opening the lightbox pauses the deck
-    document.addEventListener('visibilitychange', () => { if (document.hidden && deck.isConnected) stop(); });
+    deckStop = stop;
+    onLeave(() => { stop(); deckStop = null; });
     let x0 = null;
-    v.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-    v.addEventListener('touchend', (e) => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); x0 = null; });
+    v.addEventListener('touchstart', (e) => { x0 = e.touches.length === 1 ? e.touches[0].clientX : null; }, { passive: true });
+    v.addEventListener('touchend', (e) => { if (x0 === null || !e.changedTouches.length) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); x0 = null; });
     (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(() => $$('img[loading="lazy"]', v).forEach((im) => { im.loading = 'eager'; }));
 }
 
@@ -1397,16 +1471,11 @@ function bindGallery() {
     if (world === 'film') { const s = w.strips(n).map((p) => ({ p, t: 'FILM ROLL' })); $$('[data-strip]', app).forEach((b, i) => b.addEventListener('click', () => openLb(s, i))); }
 }
 
-let returnTo = null;
 function bindShop() {
-    const media = $('[data-product-media]', app);
-    if (media) {
-        $$('[data-pmain][data-on]', media).forEach((im) => im.classList.add('is-on'));
-        $$('[data-pimg]', media).forEach((b) => b.addEventListener('click', () => {
-            const i = +b.dataset.pimg;
-            $$('[data-pimg]', media).forEach((x) => x.setAttribute('aria-current', String(x === b)));
-            $$('[data-pmain]', media).forEach((im) => im.classList.toggle('is-on', +im.dataset.pmain === i));
-        }));
+    const zoom = $('[data-product-zoom]', app);
+    if (zoom) {
+        const k = PRODUCT_KEYS.find((x) => PRODUCTS[x].route === (location.hash.slice(1) || 'shop')) || 'album';
+        zoom.addEventListener('click', () => openLb([{ p: productImg(k), t: PRODUCTS[k].name }], 0));
     }
     const qty = $('[data-qty]', app);
     if (!qty) return;
@@ -1414,18 +1483,6 @@ function bindShop() {
     const clamp = (v) => Math.max(1, Math.min(99, isNaN(v) ? 1 : v));
     $$('[data-q]', qty).forEach((b) => b.addEventListener('click', () => { input.value = clamp(+input.value + +b.dataset.q); }));
     input.addEventListener('change', () => { input.value = clamp(parseInt(input.value, 10)); });
-    $('[data-add]', app).addEventListener('click', (e) => {
-        const k = e.currentTarget.dataset.add, q = clamp(+input.value);
-        S.cart[k] = Math.min(99, S.cart[k] + q);
-        save(); renderHeader();
-        $$('.head [data-open-cart]').forEach((b) => { b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); });
-        toast(`${PRODUCTS[k].name} × ${q} 已加入購物車。`);
-    });
-    $('[data-buy]', app).addEventListener('click', (e) => {
-        const k = e.currentTarget.dataset.buy, q = clamp(+input.value);
-        if (!S.user) { returnTo = location.hash; toast('請先登入，登入後會回到這個商品。'); location.hash = 'login'; return; }
-        toast(`${PRODUCTS[k].name} × ${q}，NT.${PRODUCTS[k].price * q}（作品展示，不會實際付款）`);
-    });
 }
 
 function validate(form) {
@@ -1459,15 +1516,10 @@ function bindAuth() {
         f.addEventListener('submit', (e) => {
             e.preventDefault();
             if (!validate(f)) return;
-            S.user = f.elements.user.value.trim().slice(0, 20);
-            save(); renderHeader();
-            toast(`${S.user}，${f.dataset.auth === 'register' ? '註冊' : '登入'}成功（作品展示，未連接會員系統）。`);
-            location.hash = returnTo ? returnTo.slice(1) : 'shop';
-            returnTo = null;
+            // the original site has no member system behind this form: say so instead of pretending
+            toast(`${f.dataset.auth === 'register' ? '註冊' : '登入'}功能尚未開放（作品展示，沒有會員系統）。`);
         });
     });
-    const out = $('[data-logout]', box);
-    if (out) out.addEventListener('click', () => { S.user = null; save(); renderHeader(); render(); toast('已登出。'); });
 }
 
 function bindContact() {
@@ -1539,6 +1591,7 @@ function bindPlayer() {
     // the cover reel plays when the player is on screen (as the original page did); pauses when it leaves
     const io = new IntersectionObserver(([en]) => { if (!en.isIntersecting) v.pause(); else if (want) v.play().catch(() => {}); }, { threshold: .25 });
     io.observe(pl);
+    onLeave(() => { io.disconnect(); v.pause(); v.removeAttribute('src'); v.load(); });
     paint();
     // each tape label shows its real running time (metadata only, no video download)
     const probeAll = () => $$('[data-tape-tc]', app).forEach((el) => {
@@ -1549,6 +1602,7 @@ function bindPlayer() {
     });
     const tcIO = new IntersectionObserver(([en]) => { if (en.isIntersecting) { tcIO.disconnect(); probeAll(); } }, { rootMargin: '300px 0px' });
     tcIO.observe($('[data-shelf]', app));
+    onLeave(() => tcIO.disconnect());
 }
 
 function bind() { bindMedia(); bindGba(); bindViewer(); bindGallery(); bindSheets(); bindPlayer(); bindShop(); bindAuth(); bindContact(); }
@@ -1561,7 +1615,7 @@ const HI = {"bw/bw1/bw1":[3264,2448,[1280,2000,2560]],"bw/bw1/bw2":[3264,2448,[1
 const hiOf = (p) => (HI[p.path] ? { path: `hi/${p.path}`, w: HI[p.path][0], h: HI[p.path][1], widths: HI[p.path][2] } : p);
 const lb = $('#lightbox');
 const stage = $('[data-lb-stage]', lb);
-let lbList = [], lbIndex = 0, lbReturn = null, lbImg = null;
+let lbList = [], lbIndex = 0, lbReturn = null, lbImg = null, lbClosing = false;
 // fit the photo's true ratio into the stage; files that only exist small are never blown up past 1.5x
 function lbBox(p) {
     const r = stage.getBoundingClientRect();
@@ -1580,7 +1634,11 @@ function preload(i) {
     const p = hiOf(it.p), box = lbBox(p), im = new Image(); lbSource(im, p, box);
 }
 function openLb(list, i) {
+    if (lb.classList.contains('on')) { lbList = list; showLb(i, 0); return; }
+    closeMenu();
     lbList = list; lbReturn = document.activeElement;
+    history.pushState({ lb: true }, '');
+    if (!reduceMotion) { const f = $('[data-flash]'); f.classList.remove('pop'); void f.offsetWidth; f.classList.add('pop'); }   // camera flash            // the browser / phone Back button closes the viewer
     const sb = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden'; if (sb > 0) document.body.style.paddingRight = `${sb}px`;
     lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false');
@@ -1607,6 +1665,7 @@ function showLb(i, dir) {
     };
     (im.decode ? im.decode() : Promise.resolve()).then(reveal, reveal);
     if (old) { old.classList.remove('is-in'); old.classList.add(dir < 0 ? 'is-out-r' : 'is-out-l'); setTimeout(() => old.remove(), 500); }
+    $$('img', stage).forEach((o) => { if (o !== im && o !== old) o.remove(); });   // fast arrow presses never stack layers
     $('[data-lb-title]', lb).textContent = im.alt;
     $('[data-lb-count]', lb).innerHTML = `<b>${pad2(lbIndex + 1)}</b> / ${pad2(lbList.length)}`;
     const multi = lbList.length > 1;
@@ -1614,13 +1673,24 @@ function showLb(i, dir) {
 }
 function closeLb() {
     if (!lb.classList.contains('on')) return;
+    if (lbClosing) return;                                       // a second Esc / click while Back is in flight
+    if (history.state && history.state.lb) { lbClosing = true; history.back(); return; }   // popstate finishes the close
+    resetLb(true);
+}
+// put the viewer fully back to its closed state (also used when the page changes underneath it)
+function resetLb(restoreFocus) {
+    lbClosing = false;
+    if (!lb.classList.contains('on')) return;
     lb.classList.remove('on', 'is-loading'); lb.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = ''; document.body.style.paddingRight = '';
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     if (lbImg) lbImg.classList.remove('is-in');
-    setTimeout(() => { $$('img', stage).forEach((o) => o.remove()); lbImg = null; }, 400);
-    if (lbReturn) lbReturn.focus({ preventScroll: true });
+    lbImg = null;
+    setTimeout(() => { $$('img', stage).forEach((o) => { if (o !== lbImg) o.remove(); }); }, 400);
+    if (restoreFocus && lbReturn && lbReturn.isConnected) lbReturn.focus({ preventScroll: true });
+    lbReturn = null;
 }
+window.addEventListener('popstate', () => { if (lb.classList.contains('on') && !(history.state && history.state.lb)) resetLb(true); });
 // keep the photo fitted when the window, the phone toolbar or the orientation changes
 window.addEventListener('resize', () => { if (!lbImg || !lb.classList.contains('on')) return; const b = lbBox(lbImg._p); lbImg.style.width = `${b.w}px`; lbImg.style.height = `${b.h}px`; lbImg.sizes = `${b.w}px`; });
 $('[data-lb-close]', lb).addEventListener('click', closeLb);
@@ -1641,9 +1711,9 @@ lb.addEventListener('keydown', (e) => {
 });
 // touch: swipe sideways to change, swipe down to close
 let tx = null, ty = null;
-lb.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+lb.addEventListener('touchstart', (e) => { const t = e.touches.length === 1 && e.touches[0]; tx = t ? t.clientX : null; ty = t ? t.clientY : null; }, { passive: true });   // two fingers = pinch, not a swipe
 lb.addEventListener('touchend', (e) => {
-    if (tx === null) return;
+    if (tx === null || !e.changedTouches.length) return;
     const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showLb(lbIndex + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
     else if (dy > 90 && dy > Math.abs(dx)) closeLb();
@@ -1651,28 +1721,9 @@ lb.addEventListener('touchend', (e) => {
 });
 
 /* ==========================================================================
-   9. Cart window & start menu
+   9. Start menu
    ========================================================================== */
-const drawer = $('#drawer'), scrim = $('[data-scrim]'), menu = $('#menu');
-function renderCart() {
-    const body = $('[data-cart-body]'), footEl = $('[data-cart-foot]');
-    const keys = PRODUCT_KEYS.filter((k) => S.cart[k] > 0);
-    if (!keys.length) {
-        body.innerHTML = `<div class="empty"><img src="assets/img/cactus-180.webp" width="180" height="180" alt=""><p>購物車是空的。</p><a class="link" href="#shop" data-close-cart>SHOP</a></div>`;
-        footEl.innerHTML = '';
-        return;
-    }
-    body.innerHTML = keys.map((k) => `
-        <div class="line">
-            ${img(productImg(k), { sizes: '64px', max: 640, cap: false })}
-            <div><span class="line__name">${PRODUCTS[k].name}</span><span class="t-label">NT.${PRODUCTS[k].price}</span></div>
-            <div class="qty"><button type="button" data-cart-step="-1" data-k="${k}" aria-label="減少 ${PRODUCTS[k].name}">-</button><output>${S.cart[k]}</output><button type="button" data-cart-step="1" data-k="${k}" aria-label="增加 ${PRODUCTS[k].name}">+</button></div>
-        </div>`).join('');
-    $$('img.ph', body).forEach((im) => im.classList.add('is-loaded'));
-    footEl.innerHTML = `<div class="total"><span>TOTAL</span><span>NT.${cartTotal()}</span></div><button class="btn px" type="button" data-checkout style="width:calc(100% - 8px)">CHECKOUT</button>`;
-}
-function openCart() { renderCart(); closeMenu(); drawer.classList.add('on'); scrim.classList.add('on'); $('[data-close-cart]', drawer).focus(); }
-function closeCart() { drawer.classList.remove('on'); scrim.classList.remove('on'); }
+const menu = $('#menu');
 function openMenu() {
     menu.classList.add('on'); $('[data-open-menu]').setAttribute('aria-expanded', 'true');
     const first = $('[aria-current="page"]', menu) || $('.menu__item', menu);
@@ -1694,17 +1745,8 @@ menu.addEventListener('keydown', (e) => {
 });
 
 document.addEventListener('click', (e) => {
-    if (e.target.closest('[data-open-cart]')) openCart();
-    else if (e.target.closest('[data-close-cart]')) closeCart();
-    else if (e.target.closest('[data-open-menu]')) (menu.classList.contains('on') ? closeMenu() : openMenu());
-    else if (e.target.closest('[data-scrim]')) closeCart();
+    if (e.target.closest('[data-open-menu]')) (menu.classList.contains('on') ? closeMenu() : openMenu());
     else if (e.target.closest('#menu a') || (menu.classList.contains('on') && !e.target.closest('#menu'))) closeMenu();
-    const step = e.target.closest('[data-cart-step]');
-    if (step) { const k = step.dataset.k; S.cart[k] = Math.max(0, Math.min(99, S.cart[k] + +step.dataset.cartStep)); save(); renderHeader(); renderCart(); }
-    if (e.target.closest('[data-checkout]')) {
-        if (!S.user) { closeCart(); returnTo = '#shop'; toast('結帳前請先登入。'); location.hash = 'login'; }
-        else { toast(`NT.${cartTotal()}，謝謝購買！（作品展示，不會實際付款）`); S.cart = fresh().cart; save(); renderHeader(); renderCart(); }
-    }
 });
 document.addEventListener('keydown', (e) => {
     if (lb.classList.contains('on')) {
@@ -1713,7 +1755,7 @@ document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft' && lbList.length > 1) showLb(lbIndex - 1, -1);
         return;
     }
-    if (e.key === 'Escape') { closeCart(); closeMenu(true); }
+    if (e.key === 'Escape') closeMenu(true);
 });
 window.addEventListener('scroll', () => $('[data-head]').classList.toggle('is-scrolled', window.scrollY > 8), { passive: true });
 
@@ -1806,7 +1848,7 @@ function tickTc() {
 }
 function showIntro(boot) {
     entering = false;
-    closeMenu(); closeCart();
+    closeMenu();
     intro.hidden = false;
     intro.classList.remove('is-pressed');
     intro.classList.toggle('is-booting', !!boot && !reduceMotion);
@@ -1865,7 +1907,6 @@ $('[data-menu]').innerHTML = NAV.map((n) => `<li><a class="menu__item" href="#${
 $('[data-footnav]').innerHTML = NAV.map((n) => `<li><a href="#${n.route}"><svg data-px="${n.route}"></svg><span>${n.label}</span></a></li>`).join('');
 $$('svg[data-px]').forEach((s) => { s.outerHTML = px(s.dataset.px); });
 
-renderHeader();
 // The intro opens every fresh visit to the site root (or #start); deep links go straight to their page.
 const firstHash = location.hash;
 render();
