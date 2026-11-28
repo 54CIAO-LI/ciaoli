@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>FOTO!</title>
-<meta name="description" content="CIAO-LI 的攝影與影像作品集：黑白、彩色、底片攝影，旅行影片與攝影周邊商品。">
+<meta name="description" content="CIAO 的攝影與影像作品集：黑白、彩色、底片攝影，旅行影片與攝影周邊商品。">
 <meta name="theme-color" content="#fbf8ee" data-theme-color>
 <meta property="og:type" content="website">
 <meta property="og:title" content="FOTO!">
-<meta property="og:description" content="CIAO-LI 的黑白、彩色、底片攝影與旅行影像。">
+<meta property="og:description" content="CIAO 的黑白、彩色、底片攝影與旅行影像。">
 <meta property="og:image" content="https://54ciao-li.github.io/FOTO/assets/img/bw/bw4-1280.webp">
 <link rel="icon" href="assets/img/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/icon-180.png">
@@ -24,7 +24,7 @@
 </script>
 <style>
 /* ==========================================================================
-   FOTO! — CIAO-LI Photography
+   FOTO! — CIAO Photography
 
    Art direction
    · Photography is the subject: true ratios, original colour, generous space.
@@ -802,7 +802,7 @@ textarea.input { min-height: 140px; resize: vertical; }
         <img class="intro__logo" src="img/logo.gif" width="200" height="150" alt="FOTO!">
         <button class="intro__start" type="button" data-start><span class="intro__arrow" aria-hidden="true">▶</span>PRESS START</button>
     </div>
-    <div class="intro__foot" aria-hidden="true"><span>CIAO-LI <span class="intro__type" id="typewriter"></span></span><span>© 2022</span></div>
+    <div class="intro__foot" aria-hidden="true"><span>CIAO<span class="intro__type" id="typewriter"></span></span><span>© 2022</span></div>
 </section>
 <div class="mosaic" aria-hidden="true" data-mosaic></div>
 
@@ -827,7 +827,7 @@ textarea.input { min-height: 140px; resize: vertical; }
     <div class="frame foot__in">
         <div class="foot__brand">
             <a href="#start" aria-label="回到開場畫面"><img src="img/logo.gif" width="200" height="150" alt="FOTO!" loading="lazy"></a>
-            <span class="foot__tag">CIAO-LI Photography</span>
+            <span class="foot__tag">CIAO Photography</span>
         </div>
         <nav class="foot__nav" aria-label="頁尾選單"><ul data-footnav></ul></nav>
         <div class="foot__legal"><span>Copyright © 2022 CIAO-LI.</span></div>
@@ -1057,7 +1057,7 @@ const CHANNELS = [
 views.home = () => `
 <section class="frame hero">
     <div class="hero__copy">
-        <p class="hero__kicker"><span class="hand">CIAO-LI Photography</span>${doodle('underline', 'is-drawn')}</p>
+        <p class="hero__kicker"><span class="hand">CIAO Photography</span>${doodle('underline', 'is-drawn')}</p>
         <h1 class="t-giant hero__hello">HELLO!</h1>
         <nav class="index" aria-label="網站目錄">
             <ol>${NAV.filter((n) => n.route !== 'home').map((n, i) => `
@@ -1296,7 +1296,7 @@ views.contact = () => `
     </div>
     <form class="mail__win reveal" data-contact novalidate>
         <div class="mail__bar" aria-hidden="true"><span>NEW MESSAGE</span><span class="winbtns"><i></i><i></i><i></i></span></div>
-        <div class="mail__row mail__row--to"><span class="mail__key">TO</span><span class="mail__to">CIAO-LI</span></div>
+        <div class="mail__row mail__row--to"><span class="mail__key">TO</span><span class="mail__to">CIAO</span></div>
         <label class="mail__row"><span class="mail__key">YOUR NAME</span><input class="input" name="name" autocomplete="name" required></label>
         <label class="mail__row"><span class="mail__key">YOUR EMAIL</span><input class="input" type="email" name="email" autocomplete="email" required></label>
         <label class="mail__row"><span class="mail__key">YOUR PHONE</span><input class="input" type="tel" name="phone" autocomplete="tel" pattern="[0-9+()\\-\\s]{6,20}"></label>
@@ -1343,7 +1343,7 @@ function render() {
         app.innerHTML = `<div class="view${room ? ' is-room' : ''}">${html}</div>`;
         
         const nav = NAV.find((n) => n.match.includes(base));
-        document.title = base === 'home' ? 'FOTO!｜CIAO-LI Photography' : `${nav ? nav.label : 'FOTO!'}${WORLDS[base] ? ' · ' + WORLDS[base].name : ''}｜FOTO!`;
+        document.title = base === 'home' ? 'FOTO!｜CIAO Photography' : `${nav ? nav.label : 'FOTO!'}${WORLDS[base] ? ' · ' + WORLDS[base].name : ''}｜FOTO!`;
         markNav(base);
         bind();
         if (!firstRender) { window.scrollTo(0, 0); app.focus({ preventScroll: true }); }
